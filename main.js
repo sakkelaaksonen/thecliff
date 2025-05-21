@@ -1,144 +1,124 @@
 (() => {
     'use strict';
 
-    // DOM Elements
-    const elements = {
-        video: null,
-        soundToggle: null,
-        soundOnIcon: null,
-        soundOffIcon: null,
-        navDots: null,
-        navLinks: null
+    /**
+     * Video Control Module
+     * Handles background video sound toggling and related UI
+     */
+    const VideoControl = {
+        elements: {
+            video: null,
+            soundToggle: null,
+            soundOnIcon: null,
+            soundOffIcon: null
+        },
+
+        init() {
+            this.elements.video = document.getElementById('bgVideo');
+            this.elements.soundToggle = document.getElementById('soundToggle');
+            this.elements.soundOnIcon = document.getElementById('soundOnIcon');
+            this.elements.soundOffIcon = document.getElementById('soundOffIcon');
+
+            if (!this.elements.video || !this.elements.soundToggle) return;
+            this.bindEvents();
+        },
+
+        bindEvents() {
+            this.elements.soundToggle.addEventListener('click', () => this.toggleSound());
+        },
+
+        toggleSound() {
+            this.elements.video.muted = !this.elements.video.muted;
+            this.elements.soundOnIcon.classList.toggle('hidden');
+            this.elements.soundOffIcon.classList.toggle('hidden');
+        }
     };
 
-    // Configuration
-    const config = {
-        sections: ['hero', 'menu', 'events'],
-        heroThreshold: window.innerHeight / 2,
-        menuThreshold: 100
+    /**
+     * Navigation Module
+     * Handles smooth scrolling and navigation state
+     */
+    const Navigation = {
+        config: {
+            sections: ['hero', 'menu', 'events'],
+            heroThreshold: window.innerHeight / 2,
+            menuThreshold: 100
+        },
+
+        elements: {
+            dots: null,
+            links: null
+        },
+
+        init() {
+            this.elements.dots = document.querySelectorAll('.fixed.right-4 a');
+            this.elements.links = document.querySelectorAll('nav a');
+            this.bindEvents();
+        },
+
+        bindEvents() {
+            // Smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', (e) => this.handleSmoothScroll(e, anchor));
+            });
+
+            // Scroll spy
+            window.addEventListener('scroll', () => this.handleScroll());
+        },
+
+        handleSmoothScroll(e, anchor) {
+            e.preventDefault();
+            const target = document.querySelector(anchor.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        },
+
+        handleScroll() {
+            let activeSection = false;
+            
+            this.config.sections.forEach((section, index) => {
+                const element = document.getElementById(section);
+                if (!element) return;
+                
+                const rect = element.getBoundingClientRect();
+                const isHero = section === 'hero';
+                const threshold = isHero ? this.config.heroThreshold : this.config.menuThreshold;
+                
+                if (rect.top <= threshold && rect.bottom >= threshold) {
+                    activeSection = true;
+                    this.updateNavigation(index);
+                }
+            });
+
+            if (!activeSection) {
+                this.resetNavigation();
+            }
+        },
+
+        updateNavigation(activeIndex) {
+            this.elements.dots.forEach(dot => dot.classList.remove('bg-amber-500'));
+            this.elements.links.forEach(link => link.classList.remove('text-amber-300'));
+            
+            this.elements.dots[activeIndex].classList.add('bg-amber-500');
+            this.elements.links[activeIndex].classList.add('text-amber-300');
+        },
+
+        resetNavigation() {
+            this.elements.dots.forEach(dot => dot.classList.remove('bg-amber-500'));
+            this.elements.links.forEach(link => link.classList.remove('text-amber-300'));
+            this.elements.links[0].classList.add('text-amber-300');
+        }
     };
 
     /**
      * Initialize the application
      */
     function init() {
-        // Cache DOM elements
-        elements.video = document.getElementById('bgVideo');
-        elements.soundToggle = document.getElementById('soundToggle');
-        elements.soundOnIcon = document.getElementById('soundOnIcon');
-        elements.soundOffIcon = document.getElementById('soundOffIcon');
-        elements.navDots = document.querySelectorAll('.fixed.right-4 a');
-        elements.navLinks = document.querySelectorAll('nav a');
-
-        // Bind events
-        bindEvents();
-    }
-
-    /**
-     * Bind all event listeners
-     */
-    function bindEvents() {
-        // Sound toggle
-        elements.soundToggle?.addEventListener('click', handleSoundToggle);
-
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', handleSmoothScroll);
-        });
-
-        // Scroll spy
-        window.addEventListener('scroll', handleScroll);
-    }
-
-    /**
-     * Handle sound toggle click
-     */
-    function handleSoundToggle() {
-        if (elements.video.muted) {
-            unmute();
-        } else {
-            mute();
-        }
-    }
-
-    /**
-     * Unmute video and update UI
-     */
-    function unmute() {
-        elements.video.muted = false;
-        elements.soundOnIcon.classList.remove('hidden');
-        elements.soundOffIcon.classList.add('hidden');
-        elements.soundToggle.setAttribute('aria-label', 'Mute sound');
-    }
-
-    /**
-     * Mute video and update UI
-     */
-    function mute() {
-        elements.video.muted = true;
-        elements.soundOnIcon.classList.add('hidden');
-        elements.soundOffIcon.classList.remove('hidden');
-        elements.soundToggle.setAttribute('aria-label', 'Unmute sound');
-    }
-
-    /**
-     * Handle smooth scrolling
-     * @param {Event} e - Click event
-     */
-    function handleSmoothScroll(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-    }
-
-    /**
-     * Handle scroll events for navigation updates
-     */
-    function handleScroll() {
-        let activeSection = false;
-        
-        config.sections.forEach((section, index) => {
-            const element = document.getElementById(section);
-            if (!element) return;
-            
-            const rect = element.getBoundingClientRect();
-            const isHero = section === 'hero';
-            const threshold = isHero ? config.heroThreshold : config.menuThreshold;
-            
-            if (rect.top <= threshold && rect.bottom >= threshold) {
-                activeSection = true;
-                updateNavigation(index);
-            }
-        });
-
-        if (!activeSection) {
-            resetNavigation();
-        }
-    }
-
-    /**
-     * Update navigation state
-     * @param {number} activeIndex - Index of active section
-     */
-    function updateNavigation(activeIndex) {
-        elements.navDots.forEach(dot => dot.classList.remove('bg-amber-500'));
-        elements.navLinks.forEach(link => link.classList.remove('text-amber-300'));
-        
-        elements.navDots[activeIndex].classList.add('bg-amber-500');
-        elements.navLinks[activeIndex].classList.add('text-amber-300');
-    }
-
-    /**
-     * Reset navigation to default state
-     */
-    function resetNavigation() {
-        elements.navDots.forEach(dot => dot.classList.remove('bg-amber-500'));
-        elements.navLinks.forEach(link => link.classList.remove('text-amber-300'));
-        elements.navLinks[0].classList.add('text-amber-300');
+        VideoControl.init();
+        Navigation.init();
     }
 
     // Initialize when DOM is ready

@@ -627,7 +627,7 @@
   display: none !important;
 }
 .scroll-target {
-  scroll-margin-top: 6rem;
+  scroll-margin-top: 4rem;
 }
 @property --tw-translate-x {
   syntax: "*";
