@@ -11,6 +11,11 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test", 
+    "build": "tailwindcss -i ./source.css -o ./main.css --watch"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.7",
+    "tailwindcss": "^4.1.7"
   }
 }
