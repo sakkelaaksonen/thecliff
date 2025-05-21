@@ -12,7 +12,7 @@
   "main": "index.js",
   "scripts": {
     "test": "test", 
-    "build": "tailwindcss -i ./source.css -o ./main.css --watch"
+    "dev": "tailwindcss -i ./source.css -o ./main.css --watch"
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.1.7",

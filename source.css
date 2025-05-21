@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+/* Video fallback for noscript */
+.video-fallback { display: block !important; }
+.hero-video { display: none !important; }
+
+/* Scroll offset for sections */
+#cocktails, #wine, #beer, #food {
+    scroll-margin-top: 6rem;
+}
