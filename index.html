@@ -22,7 +22,7 @@
 <body>
     <main>
         <!-- Hero Section -->
-        <section class="relative h-screen w-full overflow-hidden" role="banner" aria-label="Welcome to The Cliff">
+        <section id="hero" class="relative h-screen w-full overflow-hidden" role="banner" aria-label="Welcome to The Cliff">
             <!-- Video Background -->
             <video 
                 class="absolute inset-0 w-full h-full object-cover"
@@ -181,8 +181,13 @@
             <!-- Navigation Dots -->
             <div class="fixed right-4 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-4">
                 <a 
-                    href="#cocktails"
+                    href="#hero"
                     class="w-3 h-3 rounded-full bg-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-300 transition-colors duration-300"
+                    aria-label="Go to home section"
+                ></a>
+                <a 
+                    href="#cocktails"
+                    class="w-3 h-3 rounded-full bg-white/50 hover:bg-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-300 transition-colors duration-300"
                     aria-label="Go to cocktails section"
                 ></a>
                 <a 
@@ -204,61 +209,7 @@
         </section>
     </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const video = document.getElementById('bgVideo');
-            const soundToggle = document.getElementById('soundToggle');
-            const soundOnIcon = document.getElementById('soundOnIcon');
-            const soundOffIcon = document.getElementById('soundOffIcon');
-
-            soundToggle.addEventListener('click', function() {
-                if (video.muted) {
-                    video.muted = false;
-                    soundOnIcon.classList.remove('hidden');
-                    soundOffIcon.classList.add('hidden');
-                    soundToggle.setAttribute('aria-label', 'Mute sound');
-                } else {
-                    video.muted = true;
-                    soundOnIcon.classList.add('hidden');
-                    soundOffIcon.classList.remove('hidden');
-                    soundToggle.setAttribute('aria-label', 'Unmute sound');
-                }
-            });
-        });
-
-        // Add smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-
-        // Update active states on scroll
-        window.addEventListener('scroll', function() {
-            const sections = ['cocktails', 'wine', 'beer', 'food'];
-            const navDots = document.querySelectorAll('.fixed.right-4 a');
-            const navLinks = document.querySelectorAll('nav a');
-            
-            sections.forEach((section, index) => {
-                const element = document.getElementById(section);
-                const rect = element.getBoundingClientRect();
-                
-                if (rect.top <= 100 && rect.bottom >= 100) {
-                    navDots.forEach(dot => dot.classList.remove('bg-amber-500'));
-                    navLinks.forEach(link => link.classList.remove('text-amber-300'));
-                    
-                    navDots[index].classList.add('bg-amber-500');
-                    navLinks[index + 1].classList.add('text-amber-300');
-                }
-            });
-        });
-    </script>
+    <script src="main.js"></script>
 </body>
 </html>
 
