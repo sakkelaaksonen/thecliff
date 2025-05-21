@@ -1,0 +1,16 @@
+{
+  "name": "thecliff",
+  "version": "1.0.0",
+  "description": "The cliff website",
+  "keywords": [
+    "music",
+    "beer"
+  ],
+  "license": "ISC",
+  "author": "Sakari Laaksonen",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  }
+}
