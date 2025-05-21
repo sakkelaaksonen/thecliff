@@ -13,7 +13,7 @@
 
     // Configuration
     const config = {
-        sections: ['hero', 'cocktails', 'wine', 'beer', 'food'],
+        sections: ['hero', 'menu', 'events'],
         heroThreshold: window.innerHeight / 2,
         menuThreshold: 100
     };

@@ -52,10 +52,8 @@
             <nav class="fixed top-0 w-full z-50 p-6 bg-black/80 backdrop-blur-sm">
                 <ul class="flex justify-center space-x-8">
                     <li><a href="#hero" class="text-white hover:text-amber-300 focus:text-amber-300 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-300 rounded-lg px-2 py-1" aria-current="page">Home</a></li>
-                    <li><a href="#cocktails" class="text-white hover:text-amber-300 focus:text-amber-300 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-300 rounded-lg px-2 py-1">Cocktails</a></li>
-                    <li><a href="#wine" class="text-white hover:text-amber-300 focus:text-amber-300 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-300 rounded-lg px-2 py-1">Wine</a></li>
-                    <li><a href="#beer" class="text-white hover:text-amber-300 focus:text-amber-300 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-300 rounded-lg px-2 py-1">Beer</a></li>
-                    <li><a href="#food" class="text-white hover:text-amber-300 focus:text-amber-300 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-300 rounded-lg px-2 py-1">Food</a></li>
+                    <li><a href="#menu" class="text-white hover:text-amber-300 focus:text-amber-300 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-300 rounded-lg px-2 py-1">Menu</a></li>
+                    <li><a href="#events" class="text-white hover:text-amber-300 focus:text-amber-300 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-300 rounded-lg px-2 py-1">Events</a></li>
                 </ul>
             </nav>
 
@@ -94,77 +92,164 @@
             </a>
         </section>
 
-        <!-- Menu Sections -->
-        <section id="menu" class="min-h-screen bg-black text-white">
-            <!-- Drinks Menu -->
-            <div id="cocktails" class="min-h-screen flex flex-col p-6 md:p-12 pt-24">
-                <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Signature Cocktails</h2>
-                <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
-                    <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
-                        <h3 class="text-2xl font-semibold mb-2 text-amber-400">Cliff Hanger</h3>
-                        <p class="text-gray-300 mb-2">Premium tequila, fresh lime, agave nectar, with a chili rim</p>
-                        <p class="text-amber-500 font-semibold">$14</p>
-                    </div>
-                    <!-- Add more cocktail items following the same pattern -->
-                </div>
-            </div>
-
-            <!-- Wine Menu -->
-            <div id="wine" class="min-h-screen flex flex-col p-6 md:p-12 pt-24 bg-neutral-900">
-                <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Wine Selection</h2>
-                <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
-                    <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
-                        <h3 class="text-2xl font-semibold mb-2 text-amber-400">Red Wines</h3>
-                        <ul class="space-y-4">
-                            <li>
-                                <p class="font-semibold">Cabernet Sauvignon</p>
-                                <p class="text-gray-300">Glass $12 | Bottle $48</p>
-                            </li>
-                            <!-- Add more wine items -->
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Beer Menu -->
-            <div id="beer" class="min-h-screen flex flex-col p-6 md:p-12 pt-24">
-                <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Craft Beers</h2>
-                <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
-                    <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
-                        <h3 class="text-2xl font-semibold mb-2 text-amber-400">On Tap</h3>
-                        <ul class="space-y-4">
-                            <li class="flex justify-between items-baseline">
-                                <div>
-                                    <p class="font-semibold">Cliff Side IPA</p>
-                                    <p class="text-sm text-gray-300">Local craft, 6.5% ABV</p>
-                                </div>
-                                <p class="text-amber-500">$8</p>
-                            </li>
-                            <!-- Add more beer items -->
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bar Bites Menu -->
-            <div id="food" class="min-h-screen flex flex-col p-6 md:p-12 pt-24 bg-neutral-900">
-                <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Bar Bites</h2>
-                <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
-                    <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
-                        <h3 class="text-2xl font-semibold mb-2 text-amber-400">Small Plates</h3>
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-baseline">
-                                <div>
-                                    <p class="font-semibold">Truffle Fries</p>
-                                    <p class="text-sm text-gray-300">Parmesan, herbs, garlic aioli</p>
-                                </div>
-                                <p class="text-amber-500">$12</p>
-                            </div>
-                            <!-- Add more food items -->
+        <!-- Content Wrapper -->
+        <div class="bg-black text-white">
+            <!-- Menu Sections -->
+            <section id="menu" class="min-h-screen scroll-target">
+                <!-- Drinks Menu -->
+                <div class="min-h-screen flex flex-col p-6 md:p-12 pt-24">
+                    <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Signature Cocktails</h2>
+                    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
+                        <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                            <h3 class="text-2xl font-semibold mb-2 text-amber-400">Cliff Hanger</h3>
+                            <p class="text-gray-300 mb-2">Premium tequila, fresh lime, agave nectar, with a chili rim</p>
+                            <p class="text-amber-500 font-semibold">$14</p>
+                        </div>
+                        <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                            <h3 class="text-2xl font-semibold mb-2 text-amber-400">Ocean Mist</h3>
+                            <p class="text-gray-300 mb-2">Gin, blue curaçao, elderflower liqueur, fresh citrus</p>
+                            <p class="text-amber-500 font-semibold">$15</p>
+                        </div>
+                        <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                            <h3 class="text-2xl font-semibold mb-2 text-amber-400">Sunset Sour</h3>
+                            <p class="text-gray-300 mb-2">Bourbon, amaretto, lemon juice, egg white, red wine float</p>
+                            <p class="text-amber-500 font-semibold">$16</p>
                         </div>
                     </div>
                 </div>
-            </div>
+
+                <!-- Wine Menu -->
+                <div class="min-h-screen flex flex-col p-6 md:p-12 pt-24 bg-neutral-900">
+                    <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Wine Selection</h2>
+                    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
+                        <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                            <h3 class="text-2xl font-semibold mb-2 text-amber-400">Red Wines</h3>
+                            <ul class="space-y-4">
+                                <li>
+                                    <p class="font-semibold">Cabernet Sauvignon</p>
+                                    <p class="text-gray-300">Glass $12 | Bottle $48</p>
+                                </li>
+                                <li>
+                                    <p class="font-semibold">Pinot Noir</p>
+                                    <p class="text-gray-300">Glass $14 | Bottle $56</p>
+                                </li>
+                                <li>
+                                    <p class="font-semibold">Malbec</p>
+                                    <p class="text-gray-300">Glass $11 | Bottle $44</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                            <h3 class="text-2xl font-semibold mb-2 text-amber-400">White Wines</h3>
+                            <ul class="space-y-4">
+                                <li>
+                                    <p class="font-semibold">Chardonnay</p>
+                                    <p class="text-gray-300">Glass $11 | Bottle $44</p>
+                                </li>
+                                <li>
+                                    <p class="font-semibold">Sauvignon Blanc</p>
+                                    <p class="text-gray-300">Glass $10 | Bottle $40</p>
+                                </li>
+                                <li>
+                                    <p class="font-semibold">Riesling</p>
+                                    <p class="text-gray-300">Glass $12 | Bottle $48</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Beer Menu -->
+                <div class="min-h-screen flex flex-col p-6 md:p-12 pt-24">
+                    <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Craft Beers</h2>
+                    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
+                        <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                            <h3 class="text-2xl font-semibold mb-2 text-amber-400">On Tap</h3>
+                            <ul class="space-y-4">
+                                <li class="flex justify-between items-baseline">
+                                    <div>
+                                        <p class="font-semibold">Cliff Side IPA</p>
+                                        <p class="text-sm text-gray-300">Local craft, 6.5% ABV</p>
+                                    </div>
+                                    <p class="text-amber-500">$8</p>
+                                </li>
+                                <li class="flex justify-between items-baseline">
+                                    <div>
+                                        <p class="font-semibold">Coastal Lager</p>
+                                        <p class="text-sm text-gray-300">House brew, 4.8% ABV</p>
+                                    </div>
+                                    <p class="text-amber-500">$7</p>
+                                </li>
+                                <li class="flex justify-between items-baseline">
+                                    <div>
+                                        <p class="font-semibold">Foggy Stout</p>
+                                        <p class="text-sm text-gray-300">Nitro, 5.5% ABV</p>
+                                    </div>
+                                    <p class="text-amber-500">$8</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bar Bites Menu -->
+                <div class="min-h-screen flex flex-col p-6 md:p-12 pt-24 bg-neutral-900">
+                    <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Bar Bites</h2>
+                    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
+                        <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                            <h3 class="text-2xl font-semibold mb-2 text-amber-400">Small Plates</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-baseline">
+                                    <div>
+                                        <p class="font-semibold">Truffle Fries</p>
+                                        <p class="text-sm text-gray-300">Parmesan, herbs, garlic aioli</p>
+                                    </div>
+                                    <p class="text-amber-500">$12</p>
+                                </div>
+                                <div class="flex justify-between items-baseline">
+                                    <div>
+                                        <p class="font-semibold">Coastal Wings</p>
+                                        <p class="text-sm text-gray-300">Choice of buffalo, BBQ, or honey garlic</p>
+                                    </div>
+                                    <p class="text-amber-500">$14</p>
+                                </div>
+                                <div class="flex justify-between items-baseline">
+                                    <div>
+                                        <p class="font-semibold">Sea Salt Edamame</p>
+                                        <p class="text-sm text-gray-300">Steamed and tossed with sea salt</p>
+                                    </div>
+                                    <p class="text-amber-500">$8</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Events Section -->
+            <section id="events" class="min-h-screen flex flex-col p-6 md:p-12 pt-24 scroll-target">
+                <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Upcoming Events</h2>
+                <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
+                    <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                        <h3 class="text-2xl font-semibold mb-2 text-amber-400">Jazz Night</h3>
+                        <p class="text-gray-300 mb-2">Every Thursday | 8PM - 11PM</p>
+                        <p class="text-sm text-gray-300">Live jazz performances by local artists</p>
+                        <p class="text-amber-500 mt-4">Free Entry</p>
+                    </div>
+                    <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                        <h3 class="text-2xl font-semibold mb-2 text-amber-400">Acoustic Sessions</h3>
+                        <p class="text-gray-300 mb-2">Fridays | 7PM - 10PM</p>
+                        <p class="text-sm text-gray-300">Intimate acoustic performances</p>
+                        <p class="text-amber-500 mt-4">Cover: $5</p>
+                    </div>
+                    <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                        <h3 class="text-2xl font-semibold mb-2 text-amber-400">DJ Nights</h3>
+                        <p class="text-gray-300 mb-2">Saturdays | 9PM - 2AM</p>
+                        <p class="text-sm text-gray-300">Featured local and guest DJs</p>
+                        <p class="text-amber-500 mt-4">Cover: $10</p>
+                    </div>
+                </div>
+            </section>
 
             <!-- Navigation Dots -->
             <div class="fixed right-4 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-4">
@@ -174,27 +259,17 @@
                     aria-label="Go to home section"
                 ></a>
                 <a 
-                    href="#cocktails"
+                    href="#menu"
                     class="w-3 h-3 rounded-full bg-white/50 hover:bg-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-300 transition-colors duration-300"
-                    aria-label="Go to cocktails section"
+                    aria-label="Go to menu section"
                 ></a>
                 <a 
-                    href="#wine"
+                    href="#events"
                     class="w-3 h-3 rounded-full bg-white/50 hover:bg-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-300 transition-colors duration-300"
-                    aria-label="Go to wine section"
-                ></a>
-                <a 
-                    href="#beer"
-                    class="w-3 h-3 rounded-full bg-white/50 hover:bg-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-300 transition-colors duration-300"
-                    aria-label="Go to beer section"
-                ></a>
-                <a 
-                    href="#food"
-                    class="w-3 h-3 rounded-full bg-white/50 hover:bg-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-300 transition-colors duration-300"
-                    aria-label="Go to food section"
+                    aria-label="Go to events section"
                 ></a>
             </div>
-        </section>
+        </div>
     </main>
 
     <script src="main.js"></script>
