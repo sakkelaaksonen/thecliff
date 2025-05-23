@@ -10,6 +10,24 @@
   --color-nav-bg: rgb(0 0 0 / 0.8);
 }
 
+@layer components {
+  .menu-card {
+    @apply bg-card-bg p-6 rounded-lg border border-cliff-amber;
+  }
+  
+  .menu-card-title {
+    @apply text-2xl font-semibold mb-2 text-amber-400;
+  }
+  
+  .menu-card-description {
+    @apply text-gray-300 mb-2;
+  }
+  
+  .menu-card-price {
+    @apply text-amber-500 font-semibold;
+  }
+}
+
 /* Video fallback for noscript */
 .video-fallback { display: block !important; }
 
