@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <main>
+    <main id="main-content">
         <!-- Hero Section -->
         <section id="hero" class="relative h-screen w-full overflow-hidden" role="banner" aria-label="Welcome to The Cliff">
             <!-- Video Background -->
@@ -24,7 +24,7 @@
                 <source src="./teaser-small.mp4" type="video/mp4">
                 <!-- Fallback for browsers that don't support video -->
                 <img 
-                    src="/path/to/fallback-image.jpg" 
+                    src="fallback-image.jpg" 
                     alt="The Cliff bar atmosphere" 
                     class="video-fallback hidden w-full h-full object-cover"
                 >
@@ -46,12 +46,12 @@
             </button>
 
             <!-- Accessible overlay with proper contrast -->
-            <div class="absolute inset-0 bg-black/75" aria-hidden="true"></div>
+            <div class="absolute inset-0 bg-overlay" aria-hidden="true"></div>
 
             <!-- Navigation -->
-            <nav class="fixed top-0 w-full z-50 p-6 bg-black/80 backdrop-blur-sm">
+            <nav class="fixed top-0 w-full z-50 p-6 bg-nav-bg backdrop-blur-sm">
                 <ul class="flex justify-center space-x-8">
-                    <li><a href="#hero" class="text-white hover:text-amber-300 focus:text-amber-300 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-300 rounded-lg px-2 py-1" aria-current="page">Home</a></li>
+                    <li><a href="#hero" class="text-white hover:text-amber-300 focus:text-amber-300 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-300 rounded-lg px-2 py-1">Home</a></li>
                     <li><a href="#menu" class="text-white hover:text-amber-300 focus:text-amber-300 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-300 rounded-lg px-2 py-1">Menu</a></li>
                     <li><a href="#events" class="text-white hover:text-amber-300 focus:text-amber-300 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-300 rounded-lg px-2 py-1">Events</a></li>
                 </ul>
@@ -67,29 +67,19 @@
                 </p>
                 <div class="space-x-4">
                     <a 
-                        href="/reserve" 
+                        href="#menu" 
                         class="inline-block bg-amber-600 hover:bg-amber-700 focus:bg-amber-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-amber-300"
-                        role="button"
-                    >
-                        Reserve a Table
-                    </a>
-                    <a 
-                        href="/menu" 
-                        class="inline-block bg-transparent border-2 border-white hover:border-amber-300 focus:border-amber-300 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-amber-300"
-                        role="button"
                     >
                         View Menu
                     </a>
+                    <a 
+                        href="#events" 
+                        class="inline-block bg-transparent border-2 border-white hover:border-amber-300 focus:border-amber-300 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-amber-300"
+                    >
+                        See Events
+                    </a>
                 </div>
             </div>
-
-            <!-- Skip to main content link for keyboard users -->
-            <a 
-                href="#main-content" 
-                class="absolute top-0 left-0 p-4 -translate-y-full focus:translate-y-0 bg-amber-600 text-white z-50 focus:outline-none focus:ring-2 focus:ring-amber-300"
-            >
-                Skip to main content
-            </a>
         </section>
 
         <!-- Content Wrapper -->
@@ -100,17 +90,17 @@
                 <div class="min-h-screen flex flex-col p-6 md:p-12 pt-24">
                     <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Signature Cocktails</h2>
                     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
-                        <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                        <div class="bg-card-bg p-6 rounded-lg border border-cliff-amber">
                             <h3 class="text-2xl font-semibold mb-2 text-amber-400">Cliff Hanger</h3>
                             <p class="text-gray-300 mb-2">Premium tequila, fresh lime, agave nectar, with a chili rim</p>
                             <p class="text-amber-500 font-semibold">$14</p>
                         </div>
-                        <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                        <div class="bg-card-bg p-6 rounded-lg border border-cliff-amber">
                             <h3 class="text-2xl font-semibold mb-2 text-amber-400">Ocean Mist</h3>
                             <p class="text-gray-300 mb-2">Gin, blue curaçao, elderflower liqueur, fresh citrus</p>
                             <p class="text-amber-500 font-semibold">$15</p>
                         </div>
-                        <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                        <div class="bg-card-bg p-6 rounded-lg border border-cliff-amber">
                             <h3 class="text-2xl font-semibold mb-2 text-amber-400">Sunset Sour</h3>
                             <p class="text-gray-300 mb-2">Bourbon, amaretto, lemon juice, egg white, red wine float</p>
                             <p class="text-amber-500 font-semibold">$16</p>
@@ -122,7 +112,7 @@
                 <div class="min-h-screen flex flex-col p-6 md:p-12 pt-24 bg-neutral-900">
                     <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Wine Selection</h2>
                     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
-                        <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                        <div class="bg-card-bg p-6 rounded-lg border border-cliff-amber">
                             <h3 class="text-2xl font-semibold mb-2 text-amber-400">Red Wines</h3>
                             <ul class="space-y-4">
                                 <li>
@@ -139,7 +129,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                        <div class="bg-card-bg p-6 rounded-lg border border-cliff-amber">
                             <h3 class="text-2xl font-semibold mb-2 text-amber-400">White Wines</h3>
                             <ul class="space-y-4">
                                 <li>
@@ -163,7 +153,7 @@
                 <div class="min-h-screen flex flex-col p-6 md:p-12 pt-24">
                     <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Craft Beers</h2>
                     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
-                        <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                        <div class="bg-card-bg p-6 rounded-lg border border-cliff-amber">
                             <h3 class="text-2xl font-semibold mb-2 text-amber-400">On Tap</h3>
                             <ul class="space-y-4">
                                 <li class="flex justify-between items-baseline">
@@ -196,7 +186,7 @@
                 <div class="min-h-screen flex flex-col p-6 md:p-12 pt-24 bg-neutral-900">
                     <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Bar Bites</h2>
                     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
-                        <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                        <div class="bg-card-bg p-6 rounded-lg border border-cliff-amber">
                             <h3 class="text-2xl font-semibold mb-2 text-amber-400">Small Plates</h3>
                             <div class="space-y-4">
                                 <div class="flex justify-between items-baseline">
@@ -230,19 +220,19 @@
             <section id="events" class="min-h-screen flex flex-col p-6 md:p-12 pt-24 scroll-target">
                 <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Upcoming Events</h2>
                 <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
-                    <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                    <div class="bg-card-bg p-6 rounded-lg border border-cliff-amber">
                         <h3 class="text-2xl font-semibold mb-2 text-amber-400">Jazz Night</h3>
                         <p class="text-gray-300 mb-2">Every Thursday | 8PM - 11PM</p>
                         <p class="text-sm text-gray-300">Live jazz performances by local artists</p>
                         <p class="text-amber-500 mt-4">Free Entry</p>
                     </div>
-                    <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                    <div class="bg-card-bg p-6 rounded-lg border border-cliff-amber">
                         <h3 class="text-2xl font-semibold mb-2 text-amber-400">Acoustic Sessions</h3>
                         <p class="text-gray-300 mb-2">Fridays | 7PM - 10PM</p>
                         <p class="text-sm text-gray-300">Intimate acoustic performances</p>
                         <p class="text-amber-500 mt-4">Cover: $5</p>
                     </div>
-                    <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                    <div class="bg-card-bg p-6 rounded-lg border border-cliff-amber">
                         <h3 class="text-2xl font-semibold mb-2 text-amber-400">DJ Nights</h3>
                         <p class="text-gray-300 mb-2">Saturdays | 9PM - 2AM</p>
                         <p class="text-sm text-gray-300">Featured local and guest DJs</p>

@@ -1,10 +1,69 @@
 @import "tailwindcss";
 
+@theme {
+  /* Brand Colors - The Cliff Identity */
+  --color-cliff-amber: #f59e0b;
+  
+  /* Semantic Colors - Functional Usage */
+  --color-overlay: rgb(0 0 0 / 0.75);
+  --color-card-bg: rgb(0 0 0 / 0.5);
+  --color-nav-bg: rgb(0 0 0 / 0.8);
+}
+
 /* Video fallback for noscript */
 .video-fallback { display: block !important; }
-.hero-video { display: none !important; }
 
 /* Scroll offset for sections */
 .scroll-target {
     scroll-margin-top: 4rem;
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .border-cliff-amber,
+  .border-amber-600 {
+    border-width: 2px;
+    border-color: white;
+  }
+  
+  .focus\:ring-amber-300:focus {
+    ring-width: 4px;
+    ring-color: white;
+  }
+}
+
+/* Print styles */
+@media print {
+  .fixed, .absolute {
+    position: static !important;
+  }
+  
+  video, .bg-black, .bg-neutral-900 {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .text-white, 
+  .text-amber-500, 
+  .text-amber-400, 
+  .text-gray-300 {
+    color: black !important;
+  }
+  
+  .border-cliff-amber, .border-amber-600 {
+    border-color: black !important;
+  }
 }
