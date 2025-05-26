@@ -68,15 +68,19 @@
 
     /**
      * Navigation Module
-     * Handles smooth scrolling and navigation state
+     * Handles smooth scrolling, navigation highlighting, and visibility
      */
     const Navigation = {
         elements: {
-            links: null
+            links: null,
+            nav: null,
+            heroSection: null
         },
 
         init() {
             this.elements.links = document.querySelectorAll('nav a');
+            this.elements.nav = document.querySelector('nav');
+            this.elements.heroSection = document.getElementById('hero');
             this.bindEvents();
         },
 
@@ -86,8 +90,11 @@
                 anchor.addEventListener('click', (e) => this.handleSmoothScroll(e, anchor));
             });
 
-            // Scroll spy for navigation highlighting
+            // Scroll spy for navigation highlighting and visibility
             window.addEventListener('scroll', () => this.handleScroll());
+            
+            // Initial check on page load
+            this.handleScroll();
         },
 
         handleSmoothScroll(e, anchor) {
@@ -101,7 +108,25 @@
         },
 
         handleScroll() {
-            const sections = ['hero', 'menu', 'events'];
+            this.updateNavigationVisibility();
+            this.updateNavigationHighlight();
+        },
+
+        updateNavigationVisibility() {
+            if (!this.elements.heroSection || !this.elements.nav) return;
+            
+            const heroRect = this.elements.heroSection.getBoundingClientRect();
+            const heroVisible = heroRect.bottom > 100; // Show nav when hero is mostly out of view
+            
+            if (heroVisible) {
+                this.elements.nav.classList.add('nav-hidden');
+            } else {
+                this.elements.nav.classList.remove('nav-hidden');
+            }
+        },
+
+        updateNavigationHighlight() {
+            const sections = ['hero', 'menu', 'events', 'contact'];
             let activeSection = 0;
             
             sections.forEach((section, index) => {

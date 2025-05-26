@@ -12,7 +12,7 @@ The website will be built using HTML, CSS, and JavaScript.
 - site description : A music bar called "The Cliff"
 - site keywords : music, bar, events, drinks, food
 - site author : muchmodedesign
-- domain name : thecliff.fi
+- address : Kallio District, Helsinki, Finland, Toinen Linja 7 00530 Helsinki, 
 - Use JSDoc to document the code.
 - Use Tailwind CSS for the design.
 - Avoid front end frameworks.
