@@ -17,7 +17,7 @@ The website will be built using HTML, CSS, and JavaScript.
 - Use Tailwind CSS for the design.
 - Avoid front end frameworks.
 - No server side code.
-- Static hosting in Static.app, Kinsta, or Cloudflare Pages.
+- Static hosting in local hosting company with apache and FTP
 - Use a custom domain name.
 
  ### Prompt Generation Rules:

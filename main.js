@@ -20,16 +20,27 @@
             // Only redirect if we're on the production domain and not already using HTTPS
             if (hostname === this.config.productionDomain && protocol === 'http:') {
                 this.redirectToHTTPS();
-            }else {
-                console.log('Not redirecting to HTTPS');
             }
         },
 
         redirectToHTTPS() {
-            const httpsUrl = window.location.href.replace('http:', 'https:');
-            
-            // Use replace() instead of assign() to avoid back button issues
-            window.location.replace(httpsUrl);
+            try {
+                const currentUrl = new URL(window.location.href);
+                
+                // Validate domain
+                if (currentUrl.hostname !== this.config.productionDomain) {
+                    console.warn('Unexpected hostname for HTTPS redirect:', currentUrl.hostname);
+                    return;
+                }
+                
+                // Set protocol to HTTPS
+                currentUrl.protocol = 'https:';
+                
+                console.warn('Redirecting to HTTPS:', currentUrl.href);
+                window.location.replace(currentUrl.href);
+            } catch (error) {
+                console.error('Invalid URL for HTTPS redirect:', error);
+            }
         }
     };
 
