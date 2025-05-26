@@ -6,6 +6,15 @@
     <title>The Cliff - Music Bar</title>
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <link rel="stylesheet" href="main.css">
+    <!-- Add favicon and meta tags -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <meta name="description" content="The Cliff - Experience live music and craft cocktails in the most iconic venue in Kallio, Helsinki">
+    <meta name="keywords" content="music bar, live music, cocktails, Kallio, Helsinki, craft beer">
+    <meta property="og:title" content="The Cliff - Music Bar">
+    <meta property="og:description" content="Experience live music and craft cocktails in the most iconic venue in Kallio">
+    <meta property="og:image" content="https://thecliff.fi/assets/og-image.jpg">
+    <meta property="og:url" content="https://thecliff.fi">
+    <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
     <main id="main-content">
@@ -244,6 +253,25 @@
     </main>
 
     <script src="main.js"></script>
+
+    <!-- Add structured data for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BarOrPub",
+        "name": "The Cliff",
+        "description": "Music bar with live performances and craft cocktails",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Helsinki",
+            "addressRegion": "Uusimaa",
+            "addressCountry": "FI"
+        },
+        "telephone": "+358-XX-XXXXXXX",
+        "url": "https://thecliff.fi",
+        "openingHours": "Mo-Su 18:00-02:00"
+    }
+    </script>
 </body>
 </html>
 

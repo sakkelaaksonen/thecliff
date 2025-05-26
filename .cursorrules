@@ -8,13 +8,17 @@ The website will be built using HTML, CSS, and JavaScript.
 
 
 ## Guidelines
-
- - Use JSDoc to document the code.
- - Use Tailwind CSS for the design.
- - Avoid front end frameworks.
- - No server side code.
- - Static hosting in Static.app, Kinsta, or Cloudflare Pages.
- - Use a custom domain name.
+- site name : The Cliff
+- site description : A music bar called "The Cliff"
+- site keywords : music, bar, events, drinks, food
+- site author : muchmodedesign
+- domain name : thecliff.fi
+- Use JSDoc to document the code.
+- Use Tailwind CSS for the design.
+- Avoid front end frameworks.
+- No server side code.
+- Static hosting in Static.app, Kinsta, or Cloudflare Pages.
+- Use a custom domain name.
 
  ### Prompt Generation Rules:
 

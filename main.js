@@ -120,8 +120,13 @@
         },
 
         updateNavigation(activeIndex) {
-            this.elements.links.forEach(link => link.classList.remove('text-cliff-carmine-light'));
+            this.elements.links.forEach(link => {
+                link.classList.remove('text-cliff-carmine-light');
+                link.classList.remove('ring-2', 'ring-white');
+            });
+            
             this.elements.links[activeIndex].classList.add('text-cliff-carmine-light');
+            this.elements.links[activeIndex].classList.add('ring-2', 'ring-white');
         }
     };
 
