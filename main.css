@@ -7,11 +7,6 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
-    --color-amber-300: oklch(87.9% 0.169 91.605);
-    --color-amber-400: oklch(82.8% 0.189 84.429);
-    --color-amber-500: oklch(76.9% 0.188 70.08);
-    --color-amber-600: oklch(66.6% 0.179 58.318);
-    --color-amber-700: oklch(55.5% 0.163 48.998);
     --color-gray-300: oklch(87.2% 0.01 258.338);
     --color-neutral-900: oklch(20.5% 0 0);
     --color-black: #000;
@@ -31,13 +26,8 @@
     --text-4xl--line-height: calc(2.5 / 2.25);
     --text-5xl: 3rem;
     --text-5xl--line-height: 1;
-    --text-6xl: 3.75rem;
-    --text-6xl--line-height: 1;
-    --text-7xl: 4.5rem;
-    --text-7xl--line-height: 1;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
-    --tracking-wider: 0.05em;
     --leading-relaxed: 1.625;
     --radius-lg: 0.5rem;
     --blur-sm: 8px;
@@ -45,7 +35,12 @@
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
-    --color-cliff-amber: #f59e0b;
+    --color-cliff-carmine: #dc143c;
+    --color-cliff-carmine-dark: #b91c3c;
+    --color-cliff-carmine-light: #ff4757;
+    --color-cliff-wine: #a0394a;
+    --color-cliff-carmine-bright: #ff3742;
+    --color-cliff-wine-bright: #c44569;
     --color-overlay: rgb(0 0 0 / 0.75);
     --color-card-bg: rgb(0 0 0 / 0.5);
     --color-nav-bg: rgb(0 0 0 / 0.8);
@@ -197,6 +192,17 @@
   }
 }
 @layer utilities {
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
   .absolute {
     position: absolute;
   }
@@ -206,14 +212,14 @@
   .relative {
     position: relative;
   }
+  .static {
+    position: static;
+  }
   .inset-0 {
     inset: calc(var(--spacing) * 0);
   }
   .top-0 {
     top: calc(var(--spacing) * 0);
-  }
-  .top-1\/2 {
-    top: calc(1/2 * 100%);
   }
   .right-4 {
     right: calc(var(--spacing) * 4);
@@ -242,6 +248,9 @@
   .mb-8 {
     margin-bottom: calc(var(--spacing) * 8);
   }
+  .block {
+    display: block;
+  }
   .flex {
     display: flex;
   }
@@ -257,8 +266,8 @@
   .inline-block {
     display: inline-block;
   }
-  .h-3 {
-    height: calc(var(--spacing) * 3);
+  .table {
+    display: table;
   }
   .h-6 {
     height: calc(var(--spacing) * 6);
@@ -272,9 +281,6 @@
   .min-h-screen {
     min-height: 100vh;
   }
-  .w-3 {
-    width: calc(var(--spacing) * 3);
-  }
   .w-6 {
     width: calc(var(--spacing) * 6);
   }
@@ -287,9 +293,11 @@
   .max-w-7xl {
     max-width: var(--container-7xl);
   }
-  .-translate-y-1\/2 {
-    --tw-translate-y: calc(calc(1/2 * 100%) * -1);
-    translate: var(--tw-translate-x) var(--tw-translate-y);
+  .border-collapse {
+    border-collapse: collapse;
+  }
+  .resize {
+    resize: both;
   }
   .flex-col {
     flex-direction: column;
@@ -305,9 +313,6 @@
   }
   .justify-center {
     justify-content: center;
-  }
-  .gap-4 {
-    gap: calc(var(--spacing) * 4);
   }
   .gap-6 {
     gap: calc(var(--spacing) * 6);
@@ -342,18 +347,19 @@
   .rounded-lg {
     border-radius: var(--radius-lg);
   }
+  .border {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+  }
   .border-2 {
     border-style: var(--tw-border-style);
     border-width: 2px;
   }
+  .border-cliff-wine {
+    border-color: var(--color-cliff-wine);
+  }
   .border-white {
     border-color: var(--color-white);
-  }
-  .bg-amber-500 {
-    background-color: var(--color-amber-500);
-  }
-  .bg-amber-600 {
-    background-color: var(--color-amber-600);
   }
   .bg-black {
     background-color: var(--color-black);
@@ -363,6 +369,9 @@
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-black) 50%, transparent);
     }
+  }
+  .bg-cliff-carmine {
+    background-color: var(--color-cliff-carmine);
   }
   .bg-nav-bg {
     background-color: var(--color-nav-bg);
@@ -375,12 +384,6 @@
   }
   .bg-transparent {
     background-color: transparent;
-  }
-  .bg-white\/50 {
-    background-color: color-mix(in srgb, #fff 50%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-white) 50%, transparent);
-    }
   }
   .object-cover {
     object-fit: cover;
@@ -412,14 +415,6 @@
   .text-center {
     text-align: center;
   }
-  .text-4xl {
-    font-size: var(--text-4xl);
-    line-height: var(--tw-leading, var(--text-4xl--line-height));
-  }
-  .text-6xl {
-    font-size: var(--text-6xl);
-    line-height: var(--tw-leading, var(--text-6xl--line-height));
-  }
   .text-lg {
     font-size: var(--text-lg);
     line-height: var(--tw-leading, var(--text-lg--line-height));
@@ -444,15 +439,14 @@
     --tw-font-weight: var(--font-weight-semibold);
     font-weight: var(--font-weight-semibold);
   }
-  .tracking-wider {
-    --tw-tracking: var(--tracking-wider);
-    letter-spacing: var(--tracking-wider);
+  .text-cliff-carmine {
+    color: var(--color-cliff-carmine);
   }
-  .text-amber-300 {
-    color: var(--color-amber-300);
+  .text-cliff-carmine-light {
+    color: var(--color-cliff-carmine-light);
   }
-  .text-amber-500 {
-    color: var(--color-amber-500);
+  .text-cliff-wine-bright {
+    color: var(--color-cliff-wine-bright);
   }
   .text-gray-300 {
     color: var(--color-gray-300);
@@ -460,8 +454,19 @@
   .text-white {
     color: var(--color-white);
   }
+  .underline {
+    text-decoration-line: underline;
+  }
+  .outline {
+    outline-style: var(--tw-outline-style);
+    outline-width: 1px;
+  }
   .backdrop-blur-sm {
     --tw-backdrop-blur: blur(var(--blur-sm));
+    -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+    backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+  }
+  .backdrop-filter {
     -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
     backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
   }
@@ -479,24 +484,10 @@
     --tw-duration: 300ms;
     transition-duration: 300ms;
   }
-  .hover\:border-amber-300 {
+  .hover\:border-cliff-carmine-light {
     &:hover {
       @media (hover: hover) {
-        border-color: var(--color-amber-300);
-      }
-    }
-  }
-  .hover\:bg-amber-500 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-amber-500);
-      }
-    }
-  }
-  .hover\:bg-amber-700 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-amber-700);
+        border-color: var(--color-cliff-carmine-light);
       }
     }
   }
@@ -510,26 +501,33 @@
       }
     }
   }
-  .hover\:text-amber-300 {
+  .hover\:bg-cliff-carmine-dark {
     &:hover {
       @media (hover: hover) {
-        color: var(--color-amber-300);
+        background-color: var(--color-cliff-carmine-dark);
       }
     }
   }
-  .focus\:border-amber-300 {
-    &:focus {
-      border-color: var(--color-amber-300);
+  .hover\:text-cliff-carmine-light {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-cliff-carmine-light);
+      }
     }
   }
-  .focus\:bg-amber-700 {
+  .focus\:border-cliff-carmine-light {
     &:focus {
-      background-color: var(--color-amber-700);
+      border-color: var(--color-cliff-carmine-light);
     }
   }
-  .focus\:text-amber-300 {
+  .focus\:bg-cliff-carmine-dark {
     &:focus {
-      color: var(--color-amber-300);
+      background-color: var(--color-cliff-carmine-dark);
+    }
+  }
+  .focus\:text-cliff-carmine-light {
+    &:focus {
+      color: var(--color-cliff-carmine-light);
     }
   }
   .focus\:ring-2 {
@@ -538,9 +536,14 @@
       box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
     }
   }
-  .focus\:ring-amber-300 {
+  .focus\:ring-cliff-carmine-light {
     &:focus {
-      --tw-ring-color: var(--color-amber-300);
+      --tw-ring-color: var(--color-cliff-carmine-light);
+    }
+  }
+  .focus\:ring-white {
+    &:focus {
+      --tw-ring-color: var(--color-white);
     }
   }
   .focus\:outline-none {
@@ -565,23 +568,6 @@
       line-height: var(--tw-leading, var(--text-2xl--line-height));
     }
   }
-  .md\:text-5xl {
-    @media (width >= 48rem) {
-      font-size: var(--text-5xl);
-      line-height: var(--tw-leading, var(--text-5xl--line-height));
-    }
-  }
-  .md\:text-7xl {
-    @media (width >= 48rem) {
-      font-size: var(--text-7xl);
-      line-height: var(--tw-leading, var(--text-7xl--line-height));
-    }
-  }
-  .lg\:flex {
-    @media (width >= 64rem) {
-      display: flex;
-    }
-  }
   .lg\:grid-cols-3 {
     @media (width >= 64rem) {
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -593,7 +579,7 @@
     border-radius: var(--radius-lg);
     border-style: var(--tw-border-style);
     border-width: 1px;
-    border-color: var(--color-cliff-amber);
+    border-color: var(--color-cliff-carmine);
     background-color: var(--color-card-bg);
     padding: calc(var(--spacing) * 6);
   }
@@ -603,7 +589,7 @@
     line-height: var(--tw-leading, var(--text-2xl--line-height));
     --tw-font-weight: var(--font-weight-semibold);
     font-weight: var(--font-weight-semibold);
-    color: var(--color-amber-400);
+    color: var(--color-cliff-carmine-bright);
   }
   .menu-card-description {
     margin-bottom: calc(var(--spacing) * 2);
@@ -612,7 +598,47 @@
   .menu-card-price {
     --tw-font-weight: var(--font-weight-semibold);
     font-weight: var(--font-weight-semibold);
-    color: var(--color-amber-500);
+    color: var(--color-cliff-carmine);
+  }
+  .wine-section-heading {
+    margin-bottom: calc(var(--spacing) * 8);
+    text-align: center;
+    font-size: var(--text-4xl);
+    line-height: var(--tw-leading, var(--text-4xl--line-height));
+    --tw-font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-cliff-wine-bright);
+    @media (width >= 48rem) {
+      font-size: var(--text-5xl);
+      line-height: var(--tw-leading, var(--text-5xl--line-height));
+    }
+  }
+  .carmine-section-heading {
+    margin-bottom: calc(var(--spacing) * 8);
+    text-align: center;
+    font-size: var(--text-4xl);
+    line-height: var(--tw-leading, var(--text-4xl--line-height));
+    --tw-font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-cliff-carmine-bright);
+    @media (width >= 48rem) {
+      font-size: var(--text-5xl);
+      line-height: var(--tw-leading, var(--text-5xl--line-height));
+    }
+  }
+  .logo-heading {
+    width: 320px;
+    height: 160px;
+    background-image: url('./assets/logo_trans.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  @media (min-width: 768px) {
+    .logo-heading {
+      width: 500px;
+      height: 250px;
+    }
   }
 }
 .video-fallback {
@@ -629,13 +655,16 @@
   }
 }
 @media (prefers-contrast: high) {
-  .border-cliff-amber, .border-amber-600 {
+  .border-cliff-carmine, .border-cliff-wine {
     border-width: 2px;
     border-color: white;
   }
-  .focus\:ring-amber-300:focus {
+  .focus\:ring-cliff-carmine:focus, .focus\:ring-cliff-carmine-light:focus {
     ring-width: 4px;
     ring-color: white;
+  }
+  .wine-section-heading, .carmine-section-heading {
+    color: white !important;
   }
 }
 @media print {
@@ -649,27 +678,12 @@
     background: white !important;
     color: black !important;
   }
-  .text-white, .text-amber-500, .text-amber-400, .text-gray-300 {
+  .text-white, .text-gray-300, .text-cliff-carmine, .text-cliff-carmine-light, .text-cliff-carmine-bright, .text-cliff-wine, .text-cliff-wine-bright {
     color: black !important;
   }
-  .border-cliff-amber, .border-amber-600 {
+  .border-cliff-carmine, .border-cliff-wine {
     border-color: black !important;
   }
-}
-@property --tw-translate-x {
-  syntax: "*";
-  inherits: false;
-  initial-value: 0;
-}
-@property --tw-translate-y {
-  syntax: "*";
-  inherits: false;
-  initial-value: 0;
-}
-@property --tw-translate-z {
-  syntax: "*";
-  inherits: false;
-  initial-value: 0;
 }
 @property --tw-space-y-reverse {
   syntax: "*";
@@ -694,9 +708,10 @@
   syntax: "*";
   inherits: false;
 }
-@property --tw-tracking {
+@property --tw-outline-style {
   syntax: "*";
   inherits: false;
+  initial-value: solid;
 }
 @property --tw-backdrop-blur {
   syntax: "*";
@@ -806,15 +821,12 @@
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
-      --tw-translate-x: 0;
-      --tw-translate-y: 0;
-      --tw-translate-z: 0;
       --tw-space-y-reverse: 0;
       --tw-space-x-reverse: 0;
       --tw-border-style: solid;
       --tw-leading: initial;
       --tw-font-weight: initial;
-      --tw-tracking: initial;
+      --tw-outline-style: solid;
       --tw-backdrop-blur: initial;
       --tw-backdrop-brightness: initial;
       --tw-backdrop-contrast: initial;

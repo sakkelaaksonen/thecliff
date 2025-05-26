@@ -21,7 +21,7 @@
                 playsinline
                 aria-hidden="true"
             >
-                <source src="./teaser-small.mp4" type="video/mp4">
+                <source src="./assets/teaser-small.mp4" type="video/mp4">
                 <!-- Fallback for browsers that don't support video -->
                 <img 
                     src="fallback-image.jpg" 
@@ -34,7 +34,7 @@
             <button 
                 id="soundToggle"
                 aria-label="Toggle sound"
-                class="absolute bottom-4 right-4 z-20 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-amber-300"
+                class="absolute bottom-4 right-4 z-20 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light"
             >
                 <svg id="soundOffIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
@@ -51,16 +51,16 @@
             <!-- Navigation -->
             <nav class="fixed top-0 w-full z-50 p-6 bg-nav-bg backdrop-blur-sm">
                 <ul class="flex justify-center space-x-8">
-                    <li><a href="#hero" class="text-white hover:text-amber-300 focus:text-amber-300 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-300 rounded-lg px-2 py-1">Home</a></li>
-                    <li><a href="#menu" class="text-white hover:text-amber-300 focus:text-amber-300 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-300 rounded-lg px-2 py-1">Menu</a></li>
-                    <li><a href="#events" class="text-white hover:text-amber-300 focus:text-amber-300 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-amber-300 rounded-lg px-2 py-1">Events</a></li>
+                    <li><a href="#hero" class="text-white hover:text-cliff-carmine-light focus:text-cliff-carmine-light text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-white rounded-lg px-2 py-1">Home</a></li>
+                    <li><a href="#menu" class="text-white hover:text-cliff-carmine-light focus:text-cliff-carmine-light text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-white rounded-lg px-2 py-1">Menu</a></li>
+                    <li><a href="#events" class="text-white hover:text-cliff-carmine-light focus:text-cliff-carmine-light text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-white rounded-lg px-2 py-1">Events</a></li>
                 </ul>
             </nav>
 
             <!-- Hero Content -->
             <div class="relative z-10 h-full flex flex-col justify-center items-center text-center px-4">
-                <h1 class="text-6xl md:text-7xl font-bold text-white mb-6 tracking-wider">
-                    THE CLIFF
+                <h1 class="logo-heading mb-6">
+                    <span class="sr-only">THE CLIFF</span>
                 </h1>
                 <p class="text-xl md:text-2xl text-white mb-8 max-w-2xl leading-relaxed">
                     Experience live music and craft cocktails in the most iconic venue in Kallio
@@ -68,13 +68,13 @@
                 <div class="space-x-4">
                     <a 
                         href="#menu" 
-                        class="inline-block bg-amber-600 hover:bg-amber-700 focus:bg-amber-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-amber-300"
+                        class="inline-block bg-cliff-carmine hover:bg-cliff-carmine-dark focus:bg-cliff-carmine-dark text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light"
                     >
                         View Menu
                     </a>
                     <a 
                         href="#events" 
-                        class="inline-block bg-transparent border-2 border-white hover:border-amber-300 focus:border-amber-300 text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-amber-300"
+                        class="inline-block bg-transparent border-2 border-white hover:border-cliff-carmine-light focus:border-cliff-carmine-light text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light"
                     >
                         See Events
                     </a>
@@ -88,7 +88,7 @@
             <section id="menu" class="min-h-screen scroll-target">
                 <!-- Drinks Menu -->
                 <div class="min-h-screen flex flex-col p-6 md:p-12 pt-24">
-                    <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Signature Cocktails</h2>
+                    <h2 class="carmine-section-heading">Signature Cocktails</h2>
                     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
                         <div class="menu-card">
                             <h3 class="menu-card-title">Cliff Hanger</h3>
@@ -110,7 +110,7 @@
 
                 <!-- Wine Menu -->
                 <div class="min-h-screen flex flex-col p-6 md:p-12 pt-24 bg-neutral-900">
-                    <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Wine Selection</h2>
+                    <h2 class="wine-section-heading">Wine Selection</h2>
                     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
                         <div class="menu-card">
                             <h3 class="menu-card-title">Red Wines</h3>
@@ -151,7 +151,7 @@
 
                 <!-- Beer Menu -->
                 <div class="min-h-screen flex flex-col p-6 md:p-12 pt-24">
-                    <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Craft Beers</h2>
+                    <h2 class="carmine-section-heading">Craft Beers</h2>
                     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
                         <div class="menu-card">
                             <h3 class="menu-card-title">On Tap</h3>
@@ -161,21 +161,21 @@
                                         <p class="font-semibold">Cliff Side IPA</p>
                                         <p class="text-sm text-gray-300">Local craft, 6.5% ABV</p>
                                     </div>
-                                    <p class="text-amber-500">$8</p>
+                                    <p class="text-cliff-carmine">$8</p>
                                 </li>
                                 <li class="flex justify-between items-baseline">
                                     <div>
                                         <p class="font-semibold">Coastal Lager</p>
                                         <p class="text-sm text-gray-300">House brew, 4.8% ABV</p>
                                     </div>
-                                    <p class="text-amber-500">$7</p>
+                                    <p class="text-cliff-carmine">$7</p>
                                 </li>
                                 <li class="flex justify-between items-baseline">
                                     <div>
                                         <p class="font-semibold">Foggy Stout</p>
                                         <p class="text-sm text-gray-300">Nitro, 5.5% ABV</p>
                                     </div>
-                                    <p class="text-amber-500">$8</p>
+                                    <p class="text-cliff-carmine">$8</p>
                                 </li>
                             </ul>
                         </div>
@@ -184,7 +184,7 @@
 
                 <!-- Bar Bites Menu -->
                 <div class="min-h-screen flex flex-col p-6 md:p-12 pt-24 bg-neutral-900">
-                    <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Bar Bites</h2>
+                    <h2 class="wine-section-heading">Bar Bites</h2>
                     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
                         <div class="menu-card">
                             <h3 class="menu-card-title">Small Plates</h3>
@@ -194,21 +194,21 @@
                                         <p class="font-semibold">Truffle Fries</p>
                                         <p class="text-sm text-gray-300">Parmesan, herbs, garlic aioli</p>
                                     </div>
-                                    <p class="text-amber-500">$12</p>
+                                    <p class="text-cliff-carmine">$12</p>
                                 </div>
                                 <div class="flex justify-between items-baseline">
                                     <div>
                                         <p class="font-semibold">Coastal Wings</p>
                                         <p class="text-sm text-gray-300">Choice of buffalo, BBQ, or honey garlic</p>
                                     </div>
-                                    <p class="text-amber-500">$14</p>
+                                    <p class="text-cliff-carmine">$14</p>
                                 </div>
                                 <div class="flex justify-between items-baseline">
                                     <div>
                                         <p class="font-semibold">Sea Salt Edamame</p>
                                         <p class="text-sm text-gray-300">Steamed and tossed with sea salt</p>
                                     </div>
-                                    <p class="text-amber-500">$8</p>
+                                    <p class="text-cliff-carmine">$8</p>
                                 </div>
                             </div>
                         </div>
@@ -218,7 +218,7 @@
 
             <!-- Events Section -->
             <section id="events" class="min-h-screen flex flex-col p-6 md:p-12 pt-24 scroll-target">
-                <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">Upcoming Events</h2>
+                <h2 class="carmine-section-heading">Upcoming Events</h2>
                 <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
                     <div class="menu-card">
                         <h3 class="menu-card-title">Jazz Night</h3>
@@ -240,25 +240,6 @@
                     </div>
                 </div>
             </section>
-
-            <!-- Navigation Dots -->
-            <div class="fixed right-4 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-4">
-                <a 
-                    href="#hero"
-                    class="w-3 h-3 rounded-full bg-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-300 transition-colors duration-300"
-                    aria-label="Go to home section"
-                ></a>
-                <a 
-                    href="#menu"
-                    class="w-3 h-3 rounded-full bg-white/50 hover:bg-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-300 transition-colors duration-300"
-                    aria-label="Go to menu section"
-                ></a>
-                <a 
-                    href="#events"
-                    class="w-3 h-3 rounded-full bg-white/50 hover:bg-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-300 transition-colors duration-300"
-                    aria-label="Go to events section"
-                ></a>
-            </div>
         </div>
     </main>
 

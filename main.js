@@ -2,6 +2,38 @@
     'use strict';
 
     /**
+     * HTTPS Redirect Module
+     * Redirects to HTTPS when on production domain thecliff.fi
+     */
+    const HTTPSRedirect = {
+        config: {
+            productionDomain: 'thecliff.fi'
+        },
+
+        init() {
+            this.checkAndRedirect();
+        },
+
+        checkAndRedirect() {
+            const { hostname, protocol } = window.location;
+            
+            // Only redirect if we're on the production domain and not already using HTTPS
+            if (hostname === this.config.productionDomain && protocol === 'http:') {
+                this.redirectToHTTPS();
+            }else {
+                console.log('Not redirecting to HTTPS');
+            }
+        },
+
+        redirectToHTTPS() {
+            const httpsUrl = window.location.href.replace('http:', 'https:');
+            
+            // Use replace() instead of assign() to avoid back button issues
+            window.location.replace(httpsUrl);
+        }
+    };
+
+    /**
      * Video Control Module
      * Handles background video sound toggling and related UI
      */
@@ -39,19 +71,11 @@
      * Handles smooth scrolling and navigation state
      */
     const Navigation = {
-        config: {
-            sections: ['hero', 'menu', 'events'],
-            heroThreshold: window.innerHeight / 2,
-            menuThreshold: 100
-        },
-
         elements: {
-            dots: null,
             links: null
         },
 
         init() {
-            this.elements.dots = document.querySelectorAll('.fixed.right-4 a');
             this.elements.links = document.querySelectorAll('nav a');
             this.bindEvents();
         },
@@ -62,7 +86,7 @@
                 anchor.addEventListener('click', (e) => this.handleSmoothScroll(e, anchor));
             });
 
-            // Scroll spy
+            // Scroll spy for navigation highlighting
             window.addEventListener('scroll', () => this.handleScroll());
         },
 
@@ -77,39 +101,27 @@
         },
 
         handleScroll() {
-            let activeSection = false;
+            const sections = ['hero', 'menu', 'events'];
+            let activeSection = 0;
             
-            this.config.sections.forEach((section, index) => {
+            sections.forEach((section, index) => {
                 const element = document.getElementById(section);
                 if (!element) return;
                 
                 const rect = element.getBoundingClientRect();
-                const isHero = section === 'hero';
-                const threshold = isHero ? this.config.heroThreshold : this.config.menuThreshold;
+                const threshold = section === 'hero' ? window.innerHeight / 2 : 100;
                 
                 if (rect.top <= threshold && rect.bottom >= threshold) {
-                    activeSection = true;
-                    this.updateNavigation(index);
+                    activeSection = index;
                 }
             });
 
-            if (!activeSection) {
-                this.resetNavigation();
-            }
+            this.updateNavigation(activeSection);
         },
 
         updateNavigation(activeIndex) {
-            this.elements.dots.forEach(dot => dot.classList.remove('bg-amber-500'));
-            this.elements.links.forEach(link => link.classList.remove('text-amber-300'));
-            
-            this.elements.dots[activeIndex].classList.add('bg-amber-500');
-            this.elements.links[activeIndex].classList.add('text-amber-300');
-        },
-
-        resetNavigation() {
-            this.elements.dots.forEach(dot => dot.classList.remove('bg-amber-500'));
-            this.elements.links.forEach(link => link.classList.remove('text-amber-300'));
-            this.elements.links[0].classList.add('text-amber-300');
+            this.elements.links.forEach(link => link.classList.remove('text-cliff-carmine-light'));
+            this.elements.links[activeIndex].classList.add('text-cliff-carmine-light');
         }
     };
 
@@ -117,6 +129,7 @@
      * Initialize the application
      */
     function init() {
+        HTTPSRedirect.init(); // Run HTTPS redirect first
         VideoControl.init();
         Navigation.init();
     }

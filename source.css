@@ -2,7 +2,15 @@
 
 @theme {
   /* Brand Colors - The Cliff Identity */
-  --color-cliff-amber: #f59e0b;
+  --color-cliff-carmine: #dc143c;
+  --color-cliff-carmine-dark: #b91c3c;
+  --color-cliff-carmine-light: #ff4757;
+  --color-cliff-wine: #a0394a;
+  --color-cliff-wine-dark: #5c252a;
+  
+  /* High contrast variants for better accessibility */
+  --color-cliff-carmine-bright: #ff3742;
+  --color-cliff-wine-bright: #c44569;
   
   /* Semantic Colors - Functional Usage */
   --color-overlay: rgb(0 0 0 / 0.75);
@@ -12,11 +20,11 @@
 
 @layer components {
   .menu-card {
-    @apply bg-card-bg p-6 rounded-lg border border-cliff-amber;
+    @apply bg-card-bg p-6 rounded-lg border border-cliff-carmine;
   }
   
   .menu-card-title {
-    @apply text-2xl font-semibold mb-2 text-amber-400;
+    @apply text-2xl font-semibold mb-2 text-cliff-carmine-bright;
   }
   
   .menu-card-description {
@@ -24,7 +32,29 @@
   }
   
   .menu-card-price {
-    @apply text-amber-500 font-semibold;
+    @apply text-cliff-carmine font-semibold;
+  }
+  
+  /* Section-specific heading styles for better contrast */
+  .wine-section-heading {
+    @apply text-4xl md:text-5xl font-bold mb-8 text-center text-cliff-wine-bright;
+  }
+  
+  .carmine-section-heading {
+    @apply text-4xl md:text-5xl font-bold mb-8 text-center text-cliff-carmine-bright;
+  }
+  
+  .logo-heading {
+    width: 320px;
+    height: 160px;
+    @apply bg-[url('./assets/logo_trans.png')] bg-no-repeat bg-center bg-contain;
+  }
+  
+  @media (min-width: 768px) {
+    .logo-heading {
+      width: 500px;
+      height: 250px;
+    }
   }
 }
 
@@ -47,15 +77,22 @@
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
-  .border-cliff-amber,
-  .border-amber-600 {
+  .border-cliff-carmine,
+  .border-cliff-wine {
     border-width: 2px;
     border-color: white;
   }
   
-  .focus\:ring-amber-300:focus {
+  .focus\:ring-cliff-carmine:focus,
+  .focus\:ring-cliff-carmine-light:focus {
     ring-width: 4px;
     ring-color: white;
+  }
+  
+  /* Force maximum contrast in high contrast mode */
+  .wine-section-heading,
+  .carmine-section-heading {
+    color: white !important;
   }
 }
 
@@ -75,13 +112,17 @@
   }
   
   .text-white, 
-  .text-amber-500, 
-  .text-amber-400, 
-  .text-gray-300 {
+  .text-gray-300,
+  .text-cliff-carmine,
+  .text-cliff-carmine-light,
+  .text-cliff-carmine-bright,
+  .text-cliff-wine,
+  .text-cliff-wine-bright {
     color: black !important;
   }
   
-  .border-cliff-amber, .border-amber-600 {
+  .border-cliff-carmine,
+  .border-cliff-wine {
     border-color: black !important;
   }
 }
