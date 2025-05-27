@@ -19,6 +19,28 @@
 }
 
 @layer components {
+  /* Video styling for mobile portrait optimization */
+  .hero-video {
+    @apply absolute inset-0 w-full h-full;
+    object-fit: cover;
+    object-position: center;
+  }
+  
+  /* Mobile portrait specific video handling */
+  @media (max-width: 768px) and (orientation: portrait) {
+    .hero-video {
+      object-fit: cover;
+      object-position: center;
+      min-height: 100vh;
+      min-width: 100vw;
+    }
+  }
+  
+  /* Ensure video container doesn't create scrollbars */
+  .hero-video-container {
+    @apply relative min-h-screen w-full overflow-hidden border-1 border-black;
+  }
+  
   .menu-card {
     @apply bg-card-bg p-6 rounded-lg border border-cliff-carmine;
   }

@@ -126,10 +126,15 @@
         updateNavigationVisibility() {
             if (!this.elements.heroSection || !this.elements.nav) return;
             
-            const heroRect = this.elements.heroSection.getBoundingClientRect();
-            const heroVisible = heroRect.bottom > 100; // Show nav when hero is mostly out of view
+            // Get the first video container (pure video section)
+            const videoContainer = this.elements.heroSection.querySelector('.hero-video-container');
+            if (!videoContainer) return;
             
-            if (heroVisible) {
+            const videoRect = videoContainer.getBoundingClientRect();
+            // Show navigation when video section is mostly scrolled past
+            const videoVisible = videoRect.bottom > 50;
+            
+            if (videoVisible) {
                 this.elements.nav.classList.add('nav-hidden');
             } else {
                 this.elements.nav.classList.remove('nav-hidden');
@@ -145,7 +150,8 @@
                 if (!element) return;
                 
                 const rect = element.getBoundingClientRect();
-                const threshold = section === 'hero' ? window.innerHeight / 2 : 100;
+                // Adjust threshold for the new hero structure
+                const threshold = section === 'hero' ? window.innerHeight : 100;
                 
                 if (rect.top <= threshold && rect.bottom >= threshold) {
                     activeSection = index;
