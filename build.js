@@ -14,7 +14,7 @@ console.log('🏗️  The Cliff Website Build & Deploy');
 console.log('====================================');
 
 /**
- * Build CSS using Tailwind CLI
+ * Build CSS using Tailwind CLI and inject build tag
  */
 function buildCSS() {
     console.log('🎨 Building CSS...');
@@ -31,10 +31,30 @@ function buildCSS() {
             process.exit(1);
         }
         
+        // Build CSS with Tailwind
         execSync('npx tailwindcss -i ./src/source.css -o ./htdocs/main.css --minify', { 
             stdio: 'inherit' 
         });
+        
+        // Generate build tag
+        const now = new Date();
+        const isoDate = now.toISOString().split('T')[0]; // YYYY-MM-DD
+        const timestamp = now.toISOString().replace(/[:.]/g, '-').slice(11, 19); // HH-MM-SS
+        const buildTag = `thecliff-${isoDate}-${timestamp}`;
+        
+        // Read the compiled CSS
+        let cssContent = fs.readFileSync('htdocs/main.css', 'utf8');
+        
+        // Prepend build tag comment
+        const buildComment = `/* Build: ${buildTag} */\n`;
+        cssContent = buildComment + cssContent;
+        
+        // Write back to file
+        fs.writeFileSync('htdocs/main.css', cssContent, 'utf8');
+        
         console.log('✅ CSS built successfully');
+        console.log(`🏷️  Build tag: ${buildTag}`);
+        
     } catch (error) {
         console.error('❌ CSS build failed:', error.message);
         process.exit(1);
