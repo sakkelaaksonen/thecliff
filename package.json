@@ -1,24 +1,32 @@
 {
-  "name": "thecliff",
+  "name": "thecliff-website",
   "version": "1.0.0",
-  "description": "The cliff website",
+  "description": "Static website for The Cliff music bar",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "npx tailwindcss -i ./src/source.css -o ./htdocs/main.css --watch",
+    "build": "node build.js prod",
+    "build:prod": "node build.js prod",
+    "build:deploy": "node build.js deploy",
+    "video:info": "node scripts/video-info.js",
+    "video:compress": "node scripts/video-compress.js",
+    "video:web": "node scripts/video-compress.js --preset web",
+    "video:mobile": "node scripts/video-compress.js --preset mobile",
+    "video:720p": "node scripts/video-compress.js --preset 720p",
+    "video:480p": "node scripts/video-compress.js --preset 480p"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  },
   "keywords": [
     "music",
-    "beer"
+    "bar",
+    "events",
+    "drinks",
+    "food",
+    "helsinki",
+    "kallio"
   ],
-  "license": "ISC",
-  "author": "Sakari Laaksonen",
-  "type": "commonjs",
-  "main": "index.js",
-  "scripts": {
-    "test": "test", 
-    "dev": "tailwindcss -i ./src/source.css -o ./htdocs/main.css --watch",
-    "build": "node build.js",
-    "build:prod": "node build.js prod",
-    "build:deploy": "node build.js deploy"
-  },
-  "dependencies": {
-    "@tailwindcss/cli": "^4.1.7",
-    "tailwindcss": "^4.1.7"
-  }
+  "author": "muchmodedesign"
 }

@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Cliff - Music Bar</title>
     <link rel="stylesheet" href="main.css">
+    <link rel="preload" href="./assets/launch-small.mp4" as="video" type="video/mp4">
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-        
+    <link rel="preload" href="./assets/fallback-image.png" as="image">
     <!-- TODO meta description-->
     <meta name="description" content="The Cliff - Experience live music and craft cocktails in the most iconic venue in Kallio, Helsinki">
     <!-- TODO meta keywords-->
@@ -42,14 +43,16 @@
                     loop 
                     muted
                     playsinline
+                    preload="metadata"
                     aria-hidden="true"
                 >
-                    <source src="./assets/launch.mp4" type="video/mp4">
+                    <source src="./assets/launch-small.mp4" type="video/mp4">
                     <!-- Fallback for browsers that don't support video -->
                     <img 
                         src="./assets/fallback-image.png" 
                         alt="The Cliff bar atmosphere" 
                         class="video-fallback hidden w-full h-full object-cover"
+                        loading="lazy"
                     >
                 </video>
 
@@ -447,7 +450,7 @@
         </div>
     </main>
 
-    <script src="main.js"></script>
+    <script src="main.js" defer></script>
 
     <!-- TODO LD+JSON structured data for SEO -->
     <script type="application/ld+json">

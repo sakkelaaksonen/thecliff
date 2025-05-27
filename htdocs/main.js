@@ -1,14 +1,68 @@
 (() => {
     'use strict';
+
+    /**
+     * Configuration object for all CSS classes, IDs, and magic numbers
+     */
+    const CONFIG = {
+        // Element IDs
+        elements: {
+            bgVideo: 'bgVideo',
+            soundToggle: 'soundToggle',
+            soundOnIcon: 'soundOnIcon',
+            soundOffIcon: 'soundOffIcon',
+            hero: 'hero',
+            mainContent: 'main-content'
+        },
+
+        // CSS Classes
+        classes: {
+            // Navigation classes
+            navHidden: 'nav-hidden',
+            textCliffCarmineLight: 'text-cliff-carmine-light',
+            ring2: 'ring-2',
+            ringWhite: 'ring-white',
+            
+            // Icon visibility
+            hidden: 'hidden',
+            
+            // Hero video container
+            heroVideoContainer: 'hero-video-container'
+        },
+
+        // Selectors
+        selectors: {
+            nav: 'nav',
+            navLinks: 'nav a',
+            anchorLinks: 'a[href^="#"]'
+        },
+
+        // Magic numbers and thresholds
+        thresholds: {
+            videoVisibilityOffset: 50,
+            heroScrollThreshold: 100, // For non-hero sections
+            navigationHighlightThreshold: 100
+        },
+
+        // Section names for navigation
+        sections: ['hero', 'menu', 'events', 'contact'],
+
+        // Domain configuration
+        domains: {
+            production: 'thecliff.fi'
+        },
+
+        // Scroll behavior
+        scroll: {
+            behavior: 'smooth'
+        }
+    };
+
     /**
      * HTTPS Redirect Module
      * Redirects to HTTPS when on production domain thecliff.fi
      */
     const HTTPSRedirect = {
-        config: {
-            productionDomain: 'thecliff.fi'
-        },
-
         init() {
             this.checkAndRedirect();
         },
@@ -17,7 +71,7 @@
             const { hostname, protocol } = window.location;
             
             // Only redirect if we're on the production domain and not already using HTTPS
-            if (hostname === this.config.productionDomain && protocol === 'http:') {
+            if (hostname === CONFIG.domains.production && protocol === 'http:') {
                 this.redirectToHTTPS();
             }
         },
@@ -27,7 +81,7 @@
                 const currentUrl = new URL(window.location.href);
                 
                 // Validate domain
-                if (currentUrl.hostname !== this.config.productionDomain) {
+                if (currentUrl.hostname !== CONFIG.domains.production) {
                     console.warn('Unexpected hostname for HTTPS redirect:', currentUrl.hostname);
                     return;
                 }
@@ -56,10 +110,10 @@
         },
 
         init() {
-            this.elements.video = document.getElementById('bgVideo');
-            this.elements.soundToggle = document.getElementById('soundToggle');
-            this.elements.soundOnIcon = document.getElementById('soundOnIcon');
-            this.elements.soundOffIcon = document.getElementById('soundOffIcon');
+            this.elements.video = document.getElementById(CONFIG.elements.bgVideo);
+            this.elements.soundToggle = document.getElementById(CONFIG.elements.soundToggle);
+            this.elements.soundOnIcon = document.getElementById(CONFIG.elements.soundOnIcon);
+            this.elements.soundOffIcon = document.getElementById(CONFIG.elements.soundOffIcon);
 
             if (!this.elements.video || !this.elements.soundToggle) return;
             this.bindEvents();
@@ -71,8 +125,8 @@
 
         toggleSound() {
             this.elements.video.muted = !this.elements.video.muted;
-            this.elements.soundOnIcon.classList.toggle('hidden');
-            this.elements.soundOffIcon.classList.toggle('hidden');
+            this.elements.soundOnIcon.classList.toggle(CONFIG.classes.hidden);
+            this.elements.soundOffIcon.classList.toggle(CONFIG.classes.hidden);
         }
     };
 
@@ -88,15 +142,15 @@
         },
 
         init() {
-            this.elements.links = document.querySelectorAll('nav a');
-            this.elements.nav = document.querySelector('nav');
-            this.elements.heroSection = document.getElementById('hero');
+            this.elements.links = document.querySelectorAll(CONFIG.selectors.navLinks);
+            this.elements.nav = document.querySelector(CONFIG.selectors.nav);
+            this.elements.heroSection = document.getElementById(CONFIG.elements.hero);
             this.bindEvents();
         },
 
         bindEvents() {
             // Smooth scrolling
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            document.querySelectorAll(CONFIG.selectors.anchorLinks).forEach(anchor => {
                 anchor.addEventListener('click', (e) => this.handleSmoothScroll(e, anchor));
             });
 
@@ -112,7 +166,7 @@
             const target = document.querySelector(anchor.getAttribute('href'));
             if (target) {
                 target.scrollIntoView({
-                    behavior: 'smooth'
+                    behavior: CONFIG.scroll.behavior
                 });
             }
         },
@@ -126,31 +180,32 @@
             if (!this.elements.heroSection || !this.elements.nav) return;
             
             // Get the first video container (pure video section)
-            const videoContainer = this.elements.heroSection.querySelector('.hero-video-container');
+            const videoContainer = this.elements.heroSection.querySelector(`.${CONFIG.classes.heroVideoContainer}`);
             if (!videoContainer) return;
             
             const videoRect = videoContainer.getBoundingClientRect();
             // Show navigation when video section is mostly scrolled past
-            const videoVisible = videoRect.bottom > 50;
+            const videoVisible = videoRect.bottom > CONFIG.thresholds.videoVisibilityOffset;
             
             if (videoVisible) {
-                this.elements.nav.classList.add('nav-hidden');
+                this.elements.nav.classList.add(CONFIG.classes.navHidden);
             } else {
-                this.elements.nav.classList.remove('nav-hidden');
+                this.elements.nav.classList.remove(CONFIG.classes.navHidden);
             }
         },
 
         updateNavigationHighlight() {
-            const sections = ['hero', 'menu', 'events', 'contact'];
             let activeSection = 0;
             
-            sections.forEach((section, index) => {
+            CONFIG.sections.forEach((section, index) => {
                 const element = document.getElementById(section);
                 if (!element) return;
                 
                 const rect = element.getBoundingClientRect();
                 // Adjust threshold for the new hero structure
-                const threshold = section === 'hero' ? window.innerHeight : 100;
+                const threshold = section === CONFIG.elements.hero ? 
+                    window.innerHeight : 
+                    CONFIG.thresholds.navigationHighlightThreshold;
                 
                 if (rect.top <= threshold && rect.bottom >= threshold) {
                     activeSection = index;
@@ -162,12 +217,14 @@
 
         updateNavigation(activeIndex) {
             this.elements.links.forEach(link => {
-                link.classList.remove('text-cliff-carmine-light');
-                link.classList.remove('ring-2', 'ring-white');
+                link.classList.remove(CONFIG.classes.textCliffCarmineLight);
+                link.classList.remove(CONFIG.classes.ring2, CONFIG.classes.ringWhite);
             });
             
-            this.elements.links[activeIndex].classList.add('text-cliff-carmine-light');
-            this.elements.links[activeIndex].classList.add('ring-2', 'ring-white');
+            if (this.elements.links[activeIndex]) {
+                this.elements.links[activeIndex].classList.add(CONFIG.classes.textCliffCarmineLight);
+                this.elements.links[activeIndex].classList.add(CONFIG.classes.ring2, CONFIG.classes.ringWhite);
+            }
         }
     };
 
