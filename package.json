@@ -16,9 +16,6 @@
     "video:720p": "node scripts/video-compress.js --preset 720p",
     "video:480p": "node scripts/video-compress.js --preset 480p"
   },
-  "devDependencies": {
-    "tailwindcss": "^3.4.0"
-  },
   "keywords": [
     "music",
     "bar",
@@ -28,5 +25,9 @@
     "helsinki",
     "kallio"
   ],
-  "author": "muchmodedesign"
+  "author": "muchmodedesign",
+  "dependencies": {
+    "@tailwindcss/cli": "4.1.7",
+    "tailwindcss": "4.1.7"
+  }
 }

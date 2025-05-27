@@ -280,16 +280,60 @@ function buildProd() {
 }
 
 /**
+ * Ask for deployment confirmation at the very start
+ */
+async function confirmBuildAndDeploy() {
+    console.log('\n⚠️  BUILD & DEPLOY CONFIRMATION');
+    console.log('===============================');
+    console.log('🏗️  This will build the website AND deploy to production');
+    console.log('📁 Source: src/ → htdocs/');
+    console.log('🌐 Target: Live production server');
+    console.log('');
+    console.log('💡 If you only want to build without deploying, use:');
+    console.log('   npm run build:prod  or  node build.js prod');
+    
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+    
+    return new Promise((resolve) => {
+        rl.question('\n❓ Do you want to BUILD and DEPLOY to production? (yes/no): ', (answer) => {
+            rl.close();
+            
+            const normalizedAnswer = answer.toLowerCase().trim();
+            
+            if (normalizedAnswer === 'yes' || normalizedAnswer === 'y') {
+                console.log('✅ Build and deployment confirmed');
+                resolve(true);
+            } else {
+                console.log('❌ Build and deployment cancelled');
+                console.log('💡 To build only, run: node build.js prod');
+                resolve(false);
+            }
+        });
+    });
+}
+
+/**
  * Deploy process (build + deploy)
  */
 async function buildDeploy() {
     try {
-        // First run production build
+        // Ask for confirmation at the very start
+        const confirmed = await confirmBuildAndDeploy();
+        
+        if (!confirmed) {
+            console.log('\n🛑 Build and deployment aborted by user');
+            process.exit(0);
+        }
+        
+        // Run production build
         buildProd();
         
         console.log('\n🚀 Starting deployment process...');
         
-        // Then deploy via SFTP
+        // Deploy via SFTP
         await deploySFTP();
         
     } catch (error) {

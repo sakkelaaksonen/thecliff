@@ -1,4 +1,4 @@
- @import "tailwindcss";
+@import "tailwindcss";
 
 @theme {
   /* Brand Colors - The Cliff Identity */
@@ -7,11 +7,11 @@
   --color-cliff-carmine-light: #ff4757;
   --color-cliff-wine: #a0394a;
   --color-cliff-wine-dark: #5c252a;
-  
+
   /* High contrast variants for better accessibility */
   --color-cliff-carmine-bright: #ff3742;
   --color-cliff-wine-bright: #c44569;
-  
+
   /* Semantic Colors - Functional Usage */
   --color-overlay: rgb(0 0 0 / 0.75);
   --color-card-bg: rgb(0 0 0 / 0.5);
@@ -19,13 +19,14 @@
 }
 
 @layer components {
+
   /* Video styling for mobile portrait optimization */
   .hero-video {
     @apply absolute inset-0 w-full h-full;
     object-fit: cover;
     object-position: center;
   }
-  
+
   /* Mobile portrait specific video handling */
   @media (max-width: 768px) and (orientation: portrait) {
     .hero-video {
@@ -35,37 +36,37 @@
       min-width: 100vw;
     }
   }
-  
+
   /* Ensure video container doesn't create scrollbars */
   .hero-video-container {
     @apply relative min-h-screen w-full overflow-hidden border-1 border-black;
   }
-  
+
   .menu-card {
     @apply bg-card-bg p-6 rounded-lg border border-cliff-carmine;
   }
-  
+
   .menu-card-title {
     @apply text-2xl font-semibold mb-2 text-cliff-carmine-bright;
   }
-  
+
   .menu-card-description {
     @apply text-gray-300 mb-2;
   }
-  
+
   .menu-card-price {
     @apply text-cliff-carmine font-semibold;
   }
-  
+
   /* Section-specific heading styles for better contrast */
   .wine-section-heading {
-    @apply text-4xl md:text-5xl font-bold mb-8 text-center text-cliff-wine-bright;
+    @apply text-4xl md:text-5xl font-bold mb-8 text-center text-cliff-carmine-bright;
   }
-  
+
   .carmine-section-heading {
     @apply text-4xl md:text-5xl font-bold mb-8 text-center text-cliff-carmine-bright;
   }
-  
+
   .logo-heading {
     @apply text-6xl md:text-8xl font-bold text-white;
     background-image: url('./assets/logo_trans.png');
@@ -76,107 +77,109 @@
     height: 150px;
     text-indent: -9999px;
   }
-  
+
   /* Navigation visibility transitions */
   nav {
     @apply transition-all duration-500 ease-in-out;
     transform: translateY(0);
     opacity: 1;
   }
-  
+
   nav.nav-hidden {
     transform: translateY(-100%);
     opacity: 0;
     pointer-events: none;
   }
-  
+
   /* Footer styles */
   footer {
     @apply relative;
   }
-  
+
   footer h3 {
     @apply relative;
   }
-  
+
   footer h3::after {
     content: '';
     @apply absolute bottom-0 left-0 w-8 h-0.5 bg-cliff-carmine-bright;
     margin-top: 0.5rem;
   }
-  
+
   /* Footer link hover effects */
   footer nav a {
     @apply relative;
     transition: all 0.3s ease;
   }
-  
+
   footer nav a::before {
     content: '';
     @apply absolute left-0 bottom-0 w-0 h-0.5 bg-cliff-carmine-light;
     transition: width 0.3s ease;
   }
-  
+
   footer nav a:hover::before {
     @apply w-full;
   }
-  
+
   /* Hero contact link */
   .hero-contact-link {
     @apply text-sm text-gray-300 hover:text-cliff-carmine-light transition-colors duration-300;
     @apply focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light rounded-lg px-2 py-1;
     @apply relative;
   }
-  
+
   .hero-contact-link::after {
     content: '';
     @apply absolute bottom-0 left-0 w-0 h-px bg-cliff-carmine-light;
     transition: width 0.3s ease;
   }
-  
+
   .hero-contact-link:hover::after {
     @apply w-full;
   }
-  
+
   /* Address link styling */
   .address-link {
     @apply text-gray-300 hover:text-white transition-colors duration-300;
     @apply focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light rounded-lg;
     @apply relative inline-block p-2;
   }
-  
+
   .address-link:hover {
     @apply text-white;
   }
-  
+
   .address-link:hover .text-cliff-carmine-light {
     @apply text-cliff-carmine-bright;
   }
-  
+
   /* Footer quick links styling */
   .footer-link {
     @apply text-gray-300 hover:text-cliff-carmine-light transition-colors duration-300;
     @apply focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light rounded-lg px-2 py-1;
     @apply relative block;
   }
-  
+
   .footer-link::before {
     content: '';
     @apply absolute left-0 bottom-0 w-0 h-0.5 bg-cliff-carmine-light;
     transition: width 0.3s ease;
   }
-  
+
   .footer-link:hover::before {
     @apply w-full;
   }
 }
 
 /* Video fallback for noscript */
-.video-fallback { display: block !important; }
+.video-fallback {
+  display: block !important;
+}
 
 /* Scroll offset for sections */
 .scroll-target {
-    scroll-margin-top: 4rem;
+  scroll-margin-top: 4rem;
 }
 
 /* Accessibility improvements */
@@ -190,18 +193,19 @@
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
+
   .border-cliff-carmine,
   .border-cliff-wine {
     border-width: 2px;
     border-color: white;
   }
-  
+
   .focus\:ring-cliff-carmine:focus,
   .focus\:ring-cliff-carmine-light:focus {
     ring-width: 4px;
     ring-color: white;
   }
-  
+
   /* Force maximum contrast in high contrast mode */
   .wine-section-heading,
   .carmine-section-heading {
@@ -211,20 +215,24 @@
 
 /* Print styles */
 @media print {
-  .fixed, .absolute {
+
+  .fixed,
+  .absolute {
     position: static !important;
   }
-  
-  video, .bg-black, .bg-neutral-900 {
+
+  video,
+  .bg-black,
+  .bg-neutral-900 {
     display: none !important;
   }
-  
+
   body {
     background: white !important;
     color: black !important;
   }
-  
-  .text-white, 
+
+  .text-white,
   .text-gray-300,
   .text-cliff-carmine,
   .text-cliff-carmine-light,
@@ -233,7 +241,7 @@
   .text-cliff-wine-bright {
     color: black !important;
   }
-  
+
   .border-cliff-carmine,
   .border-cliff-wine {
     border-color: black !important;
