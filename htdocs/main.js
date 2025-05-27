@@ -1,6 +1,6 @@
 (() => {
     'use strict';
-
+    console.log('main.js loaded');
     /**
      * HTTPS Redirect Module
      * Redirects to HTTPS when on production domain thecliff.fi
