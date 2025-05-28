@@ -39,7 +39,7 @@ function buildCSS() {
         // Generate build tag
         const now = new Date();
         const isoDate = now.toISOString().split('T')[0]; // YYYY-MM-DD
-        const timestamp = now.toISOString().replace(/[:.]/g, '-').slice(11, 19); // HH-MM-SS
+        const timestamp = now.getTime(); //ep
         const buildTag = `thecliff-${isoDate}-${timestamp}`;
         
         // Read the compiled CSS
@@ -54,6 +54,8 @@ function buildCSS() {
         
         console.log('✅ CSS built successfully');
         console.log(`🏷️  Build tag: ${buildTag}`);
+        
+        return buildTag; // Return build tag for use in other functions
         
     } catch (error) {
         console.error('❌ CSS build failed:', error.message);
@@ -113,6 +115,72 @@ function processSrcFiles() {
         
     } catch (error) {
         console.error('❌ Source file processing failed:', error.message);
+        process.exit(1);
+    }
+}
+
+/**
+ * Process HTML files to inject build version into asset URLs
+ */
+function processHTMLFiles(buildTag) {
+    console.log('🔧 Processing HTML files for cache busting...');
+    
+    try {
+        const htmlFiles = ['index.html', '404.html']; // Add more as needed
+        
+        htmlFiles.forEach(filename => {
+            const filePath = `htdocs/${filename}`;
+            
+            if (!fs.existsSync(filePath)) {
+                console.warn(`⚠️  ${filename} not found, skipping`);
+                return;
+            }
+            
+            let htmlContent = fs.readFileSync(filePath, 'utf8');
+            
+            // Store original for comparison
+            const originalContent = htmlContent;
+            
+            // Replace CSS references (handles both with and without existing query strings)
+            htmlContent = htmlContent.replace(
+                /href="main\.css(\?[^"]*)?"/g, 
+                `href="main.css?v=${buildTag}"`
+            );
+            
+            // Replace JS references (handles both with and without existing query strings)
+            htmlContent = htmlContent.replace(
+                /src="main\.js(\?[^"]*)?"/g, 
+                `src="main.js?v=${buildTag}"`
+            );
+            
+            // Add/update build version meta tag for debugging
+            const metaTag = `    <meta name="build-version" content="${buildTag}">`;
+            
+            if (htmlContent.includes('<meta name="build-version"')) {
+                // Update existing meta tag
+                htmlContent = htmlContent.replace(
+                    /<meta name="build-version" content="[^"]*">/,
+                    metaTag
+                );
+            } else {
+                // Add new meta tag after viewport
+                htmlContent = htmlContent.replace(
+                    /(<meta name="viewport"[^>]*>\n)/,
+                    `$1${metaTag}\n`
+                );
+            }
+            
+            // Only write if content changed
+            if (htmlContent !== originalContent) {
+                fs.writeFileSync(filePath, htmlContent, 'utf8');
+                console.log(`✅ Processed ${filename} with build version ${buildTag}`);
+            } else {
+                console.log(`ℹ️  ${filename} - no changes needed`);
+            }
+        });
+        
+    } catch (error) {
+        console.error('❌ HTML processing failed:', error.message);
         process.exit(1);
     }
 }
@@ -265,12 +333,14 @@ async function getSFTPCredentials() {
  */
 function buildProd() {
     try {
-        buildCSS();
+        const buildTag = buildCSS();
         generateSitemap();
         processSrcFiles();
+        processHTMLFiles(buildTag); // Add HTML processing with build tag
         verifyBuild();
         
         console.log('\n🚀 Production build complete!');
+        console.log(`🏷️  All assets versioned with: ${buildTag}`);
         console.log('📁 htdocs/ ready for deployment');
         
     } catch (error) {
