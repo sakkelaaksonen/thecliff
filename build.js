@@ -79,12 +79,6 @@ function generateSitemap() {
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
-    <url>
-        <loc>https://thecliff.fi/accessibility</loc>
-        <lastmod>${currentDate}</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
 </urlset>`;
 
     try {
