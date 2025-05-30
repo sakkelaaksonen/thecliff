@@ -1,0 +1,18 @@
+@theme {
+    /* Brand Colors - The Cliff Identity */
+    --color-cliff-carmine: #dc143c;
+    --color-cliff-carmine-dark: #b91c3c;
+    --color-cliff-carmine-light: #ff4757;
+    --color-cliff-wine: #a0394a;
+    --color-cliff-wine-dark: #5c252a;
+  
+    /* High contrast variants for better accessibility */
+    --color-cliff-carmine-bright: #ff3742;
+    --color-cliff-wine-bright: #c44569;
+  
+    /* Semantic Colors - Functional Usage */
+    --color-overlay: rgb(0 0 0 / 0.75);
+    --color-card-bg: rgb(0 0 0 / 0.5);
+    --color-nav-bg: rgb(0 0 0 / 0.8);
+  }
+  

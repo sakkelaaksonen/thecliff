@@ -1,85 +1,70 @@
+---
+title: "The Cliff - Music Bar"
+description: "The Cliff - Embrace great food, drinks all around and a cozy atmosphere - all wrapped up in a fabulous musical tapestry"
+keywords: "music bar, live music, cocktails, Kallio, Helsinki, craft bee, burgers, lunch, brunch"
+buildVersion: "thecliff-2025-05-30-1748590940856"
+og:
+  title: "The Cliff - Music Bar"
+  description: "Experience live music in Kallio"
+preload:
+  - href: "./assets/launch-small.mp4"
+    as: "video"
+    type: "video/mp4"
+  - href: "./assets/fallback-image.png"
+    as: "image"
+hero:
+  video:
+    src: "/assets/launch-small.mp4"
+    fallback: "/assets/fallback-image.png"
+    fallbackAlt: "The Cliff bar atmosphere"
+  heading: "THE CLIFF"
+  tagline: "The Cliff - Embrace great food, drinks all around and a cozy atmosphere - all wrapped up in a fabulous musical tapestry"
+  announcement:
+    fi: "Avajais A'la Carte Brunssi puoleen hintaan. Lisätietoja SoMessa."
+    en: "Opening A'la Carte Brunch at half price. More info on social media."
+
+  contact:
+    text: "Find us in Kallio, Helsinki"
+    link: "#contact"
+navigation:
+  - text: "Home"
+    href: "#hero"
+  - text: "Menu"
+    href: "#menu"
+  - text: "Events"
+    href: "#events"
+---
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="build-version" content="thecliff-2025-05-30-1748590940856">
-    <title>The Cliff - Music Bar</title>
+    <meta name="build-version" content="{{ buildVersion }}">
+    <title>{{ title }}</title>
     <link rel="stylesheet" href="css/main.css?v={{ buildVersion }}">
-    <link rel="preload" href="./assets/launch-small.mp4" as="video" type="video/mp4">
+    {% for item in preload %}
+    <link rel="preload" href="{{ item.href }}" as="{{ item.as }}"{% if item.type %} type="{{ item.type }}"{% endif %}>
+    {% endfor %}
     <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-    <link rel="preload" href="./assets/fallback-image.png" as="image">
-    <meta name="description"
-        content="The Cliff -The Cliff - Embrace great food, drinks all around and a cozy atmosphere - all wrapped up in a fabulous musical tapestry">
-    <meta name="keywords"
-        content="music bar, live music, cocktails, Kallio, Helsinki, craft bee, burgers, lunch, brunch ">
-    <meta property="og:title" content="The Cliff - Music Bar">
-    <meta property="og:description" content="Experience live music in Kallio">
-
-
+    <meta name="description" content="{{ description }}">
+    <meta name="keywords" content="{{ keywords }}">
+    <meta property="og:title" content="{{ og.title }}">
+    <meta property="og:description" content="{{ og.description }}">
 </head>
 
 <body>
     <main id="main-content">
-        {% include "components/hero.njk" %}
+        {% include "hero.njk" %}
 
-        {% include "components/footer.njk" %}
+        {% include "footer.njk" %}
         </div>
     </main>
 
     <script src="js/main.js?v={{ buildVersion }}" defer></script>
 
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BarOrPub",
-        "name": "The Cliff",
-        "description": "Music bar with live performances and craft cocktails",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Toinen Linja 7",
-            "postalCode": "00530",
-            "addressLocality": "Helsinki",
-            "addressRegion": "Uusimaa",
-            "addressCountry": "FI"
-        },
-        "email": "info@thecliff.fi",
-        "url": "https://thecliff.fi",
-        "openingHours": [
-            "Mo-Th 10:00-24:00",
-            "Fr 10:00-02:00",
-            "Fr-Sa 11:00-02:00",
-            "Su 11:00-24:00"
-        ],
-        "image": "https://thecliff.fi/assets/og-image.jpg",
-        "priceRange": "$$",
-        "servesCuisine": "Bar food",
-        "hasMenu": "https://thecliff.fi/#menu",
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "60.1699",
-            "longitude": "24.9384"
-        },
-        "sameAs": [
-            "https://www.facebook.com/thecliffkallio/",
-            "https://www.instagram.com/thecliffkallio/"
-        ],
-        "foundingDate": "2025",
-        "maximumAttendeeCapacity": 80,
-        "amenityFeature": [
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Live Music",
-                "value": "Weekly live performances"
-            },
-            {
-                "@type": "LocationFeatureSpecification", 
-                "name": "Age Restriction",
-                "value": "18+"
-            }
-        ]
-    }
+        {% include "schema.json" %}
     </script>
 </body>
 

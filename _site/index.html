@@ -6,32 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="build-version" content="thecliff-2025-05-30-1748590940856">
     <title>The Cliff - Music Bar</title>
-    <link rel="stylesheet" href="css/main.css?v=">
+    <link rel="stylesheet" href="css/main.css?v=thecliff-2025-05-30-1748590940856">
+    
     <link rel="preload" href="./assets/launch-small.mp4" as="video" type="video/mp4">
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    
     <link rel="preload" href="./assets/fallback-image.png" as="image">
-    <meta name="description"
-        content="The Cliff -The Cliff - Embrace great food, drinks all around and a cozy atmosphere - all wrapped up in a fabulous musical tapestry">
-    <meta name="keywords"
-        content="music bar, live music, cocktails, Kallio, Helsinki, craft bee, burgers, lunch, brunch ">
+    
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <meta name="description" content="The Cliff - Embrace great food, drinks all around and a cozy atmosphere - all wrapped up in a fabulous musical tapestry">
+    <meta name="keywords" content="music bar, live music, cocktails, Kallio, Helsinki, craft bee, burgers, lunch, brunch">
     <meta property="og:title" content="The Cliff - Music Bar">
     <meta property="og:description" content="Experience live music in Kallio">
-
-
 </head>
 
 <body>
     <main id="main-content">
-        <!-- Hero Section -->
+           <!-- Hero Section -->
         <section id="hero" class="relative scroll-target bg-black" role="banner" aria-label="Welcome to The Cliff">
             <!-- Pure Video Section -->
             <div class="hero-video-container">
                 <!-- Video Background -->
                 <video class="hero-video" id="bgVideo" autoplay loop muted playsinline preload="metadata"
                     aria-hidden="true">
-                    <source src="./assets/launch-small.mp4" type="video/mp4">
+                    <source src="/assets/launch-small.mp4" type="video/mp4">
                     <!-- Fallback for browsers that don't support video -->
-                    <img src="./assets/fallback-image.png" alt="The Cliff bar atmosphere"
+                    <img src="/assets/fallback-image.png" alt="The Cliff bar atmosphere"
                         class="video-fallback hidden w-full h-full object-cover" loading="lazy">
                 </video>
 
@@ -60,15 +59,19 @@
                 <!-- Navigation -->
                 <nav class="fixed top-0 w-full z-50 p-6 bg-nav-bg backdrop-blur-sm hidden">
                     <ul class="flex justify-center space-x-8">
+                        
                         <li><a href="#hero"
                                 class="text-white hover:text-cliff-carmine-light focus:text-cliff-carmine-light text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-white rounded-lg px-2 py-1">Home</a>
                         </li>
+                        
                         <li><a href="#menu"
                                 class="text-white hover:text-cliff-carmine-light focus:text-cliff-carmine-light text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-white rounded-lg px-2 py-1">Menu</a>
                         </li>
+                        
                         <li><a href="#events"
                                 class="text-white hover:text-cliff-carmine-light focus:text-cliff-carmine-light text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-white rounded-lg px-2 py-1">Events</a>
                         </li>
+                        
                     </ul>
                 </nav>
 
@@ -78,31 +81,24 @@
                         <span class="sr-only">THE CLIFF</span>
                     </h1>
                     <p class="text-xl md:text-2xl text-white mb-8 max-w-2xl leading-relaxed">
-                        The Cliff - Embrace great food, drinks all around and a cozy atmosphere - all wrapped up in a
-                        fabulous musical tapestry </p>
-                    <p lang="fi" class="text-2xl mt-6 mb-6 text-cliff-carmine">
-
-                        1.6.2025 Avajais A'la Carte Brunssi puoleen hintaan.
-                        Lisätietoja SoMessa.
+                        The Cliff - Embrace great food, drinks all around and a cozy atmosphere - all wrapped up in a fabulous musical tapestry
                     </p>
+                    
+                    <!-- Hero Announcement Box -->
+                    <div class="hero-announcement-box">
+    <p class="hero-announcement-text">
+        <span class="hero-announcement-date">1.6.2025</span> 
+        Opening A'la Carte Brunch <span class="hero-announcement-highlight">at half price</span>. 
+        More info on social media.
+    </p>
+</div>
 
 
-                    <div class="space-x-4 hidden">
-
-                        <a href="#menu"
-                            class="inline-block bg-cliff-carmine hover:bg-cliff-carmine-dark focus:bg-cliff-carmine-dark text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light">
-                            View Menu
-                        </a>
-                        <a href="#events"
-                            class="inline-block bg-transparent border-2 border-white hover:border-cliff-carmine-light focus:border-cliff-carmine-light text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light">
-                            See Events
-                        </a>
-                    </div>
+                    
 
                     <!-- Contact Link -->
                     <div class="mt-8">
                         <a href="#contact" class="hero-contact-link">
-
                             <svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -110,8 +106,6 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-
-
                             Find us in Kallio, Helsinki
                         </a>
                     </div>
@@ -119,7 +113,7 @@
             </div>
         </section>
 
-
+        
         <!-- Footer -->
         <footer id="contact" class="bg-neutral-900 border-t border-cliff-carmine py-12">
             <div class="max-w-7xl mx-auto px-6 md:px-12">
@@ -289,58 +283,58 @@
         </div>
     </main>
 
-    <script src="js/main.js?v=" defer></script>
+    <script src="js/main.js?v=thecliff-2025-05-30-1748590940856" defer></script>
 
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BarOrPub",
-        "name": "The Cliff",
-        "description": "Music bar with live performances and craft cocktails",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Toinen Linja 7",
-            "postalCode": "00530",
-            "addressLocality": "Helsinki",
-            "addressRegion": "Uusimaa",
-            "addressCountry": "FI"
+        {
+    "@context": "https://schema.org",
+    "@type": "BarOrPub",
+    "name": "The Cliff",
+    "description": "Music bar with live performances and craft cocktails",
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Toinen Linja 7",
+        "postalCode": "00530",
+        "addressLocality": "Helsinki",
+        "addressRegion": "Uusimaa",
+        "addressCountry": "FI"
+    },
+    "email": "info@thecliff.fi",
+    "url": "https://thecliff.fi",
+    "openingHours": [
+        "Mo-Th 10:00-24:00",
+        "Fr 10:00-02:00",
+        "Fr-Sa 11:00-02:00",
+        "Su 11:00-24:00"
+    ],
+    "image": "https://thecliff.fi/assets/og-image.jpg",
+    "priceRange": "$$",
+    "servesCuisine": "Bar food",
+    "hasMenu": "https://thecliff.fi/#menu",
+    "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "60.1699",
+        "longitude": "24.9384"
+    },
+    "sameAs": [
+        "https://www.facebook.com/thecliffkallio/",
+        "https://www.instagram.com/thecliffkallio/"
+    ],
+    "foundingDate": "2025",
+    "maximumAttendeeCapacity": 80,
+    "amenityFeature": [
+        {
+            "@type": "LocationFeatureSpecification",
+            "name": "Live Music",
+            "value": "Weekly live performances"
         },
-        "email": "info@thecliff.fi",
-        "url": "https://thecliff.fi",
-        "openingHours": [
-            "Mo-Th 10:00-24:00",
-            "Fr 10:00-02:00",
-            "Fr-Sa 11:00-02:00",
-            "Su 11:00-24:00"
-        ],
-        "image": "https://thecliff.fi/assets/og-image.jpg",
-        "priceRange": "$$",
-        "servesCuisine": "Bar food",
-        "hasMenu": "https://thecliff.fi/#menu",
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "60.1699",
-            "longitude": "24.9384"
-        },
-        "sameAs": [
-            "https://www.facebook.com/thecliffkallio/",
-            "https://www.instagram.com/thecliffkallio/"
-        ],
-        "foundingDate": "2025",
-        "maximumAttendeeCapacity": 80,
-        "amenityFeature": [
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Live Music",
-                "value": "Weekly live performances"
-            },
-            {
-                "@type": "LocationFeatureSpecification", 
-                "name": "Age Restriction",
-                "value": "18+"
-            }
-        ]
-    }
+        {
+            "@type": "LocationFeatureSpecification", 
+            "name": "Age Restriction",
+            "value": "18+"
+        }
+    ]
+}
     </script>
 </body>
 
