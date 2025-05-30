@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title or config.siteName }}</title>
+  <meta name="description" content="{{ description or config.siteDescription }}">
+  <meta name="author" content="{{ config.siteAuthor }}">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="icon" type="image/png" href="assets/favicon.svg">
+</head>
+<body class="bg-amber-50 text-gray-900 font-sans">
+    {% include "navigation.njk" %}
+    {{ content | safe }}
+    
+    {% include "footer.njk" %}
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html> 
+

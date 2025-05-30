@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="build-version" content="thecliff-2025-05-30-1748590940856">
+    <title>The Cliff - Music Bar</title>
+    <link rel="stylesheet" href="css/main.css?v={{ buildVersion }}">
+    <link rel="preload" href="./assets/launch-small.mp4" as="video" type="video/mp4">
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <link rel="preload" href="./assets/fallback-image.png" as="image">
+    <meta name="description"
+        content="The Cliff -The Cliff - Embrace great food, drinks all around and a cozy atmosphere - all wrapped up in a fabulous musical tapestry">
+    <meta name="keywords"
+        content="music bar, live music, cocktails, Kallio, Helsinki, craft bee, burgers, lunch, brunch ">
+    <meta property="og:title" content="The Cliff - Music Bar">
+    <meta property="og:description" content="Experience live music in Kallio">
+
+
+</head>
+
+<body>
+    <main id="main-content">
+        {% include "components/hero.njk" %}
+
+        {% include "components/footer.njk" %}
+        </div>
+    </main>
+
+    <script src="js/main.js?v={{ buildVersion }}" defer></script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BarOrPub",
+        "name": "The Cliff",
+        "description": "Music bar with live performances and craft cocktails",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Toinen Linja 7",
+            "postalCode": "00530",
+            "addressLocality": "Helsinki",
+            "addressRegion": "Uusimaa",
+            "addressCountry": "FI"
+        },
+        "email": "info@thecliff.fi",
+        "url": "https://thecliff.fi",
+        "openingHours": [
+            "Mo-Th 10:00-24:00",
+            "Fr 10:00-02:00",
+            "Fr-Sa 11:00-02:00",
+            "Su 11:00-24:00"
+        ],
+        "image": "https://thecliff.fi/assets/og-image.jpg",
+        "priceRange": "$$",
+        "servesCuisine": "Bar food",
+        "hasMenu": "https://thecliff.fi/#menu",
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "60.1699",
+            "longitude": "24.9384"
+        },
+        "sameAs": [
+            "https://www.facebook.com/thecliffkallio/",
+            "https://www.instagram.com/thecliffkallio/"
+        ],
+        "foundingDate": "2025",
+        "maximumAttendeeCapacity": 80,
+        "amenityFeature": [
+            {
+                "@type": "LocationFeatureSpecification",
+                "name": "Live Music",
+                "value": "Weekly live performances"
+            },
+            {
+                "@type": "LocationFeatureSpecification", 
+                "name": "Age Restriction",
+                "value": "18+"
+            }
+        ]
+    }
+    </script>
+</body>
+
+</html>

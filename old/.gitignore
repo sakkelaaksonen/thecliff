@@ -1,0 +1,36 @@
+#large files
+teaser.mp4
+
+#node_modules
+node_modules
+
+#package-lock.json
+package-lock.json
+
+# Dependencies
+node_modules/
+
+# Build outputs
+htdocs/main.css
+htdocs/sitemap.xml
+
+# Deployment scripts
+.sftp_script
+.lftp_script
+
+# Credentials (NEVER commit these)
+keys.json
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*

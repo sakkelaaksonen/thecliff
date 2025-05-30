@@ -1,34 +1,29 @@
 {
-  "name": "thecliff-website",
+  "name": "thecliff",
   "version": "1.0.0",
-  "description": "Static website for The Cliff music bar",
-  "private": true,
-  "license": "UNLICENSED",
-  "scripts": {
-    "dev": "npx tailwindcss -i ./src/source.css -o ./htdocs/main.css --watch",
-    "build": "node build.js prod",
-    "build:prod": "node build.js prod",
-    "build:deploy": "node build.js deploy",
-    "video:info": "node scripts/video-info.js",
-    "video:compress": "node scripts/video-compress.js",
-    "video:web": "node scripts/video-compress.js --preset web",
-    "video:mobile": "node scripts/video-compress.js --preset mobile",
-    "video:720p": "node scripts/video-compress.js --preset 720p",
-    "video:480p": "node scripts/video-compress.js --preset 480p"
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
   },
-  "keywords": [
-    "music",
-    "bar",
-    "events",
-    "drinks",
-    "food",
-    "helsinki",
-    "kallio"
-  ],
-  "author": "muchmodedesign",
+  "scripts": {
+    "build": "npm run build:css && npm run build:js && eleventy",
+    "build:css": "tailwindcss -i ./src/css/main.css -o ./_site/css/main.css --minify",
+    "build:js": "esbuild src/js/main.js --bundle --outfile=_site/js/main.js --format=esm --minify",
+    "watch:css": "tailwindcss -i ./src/css/main.css -o ./_site/css/main.css --watch",
+    "watch:js": "esbuild src/js/main.js --bundle --outfile=_site/js/main.js --format=esm --watch",
+    "watch:11ty": "eleventy --serve --watch",
+    "dev": "concurrently \"npm run watch:css\" \"npm run watch:js\" \"npm run watch:11ty\"",
+    "preview": "eleventy --serve"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.0"
+  },
   "dependencies": {
-    "@tailwindcss/cli": "4.1.7",
-    "eleventy": "^1.0.7",
-    "tailwindcss": "4.1.7"
+    "@emailjs/browser": "^4.4.1",
+    "@tailwindcss/cli": "^4.1.8",
+    "concurrently": "^9.1.2",
+    "esbuild": "^0.25.5",
+    "mustache": "^4.2.0",
+    "tailwindcss": "^4.1.8"
   }
 }

@@ -1,0 +1,283 @@
+/* src/css/main.css */
+@import "tailwindcss";
+
+@theme {
+  /* Brand Colors - The Cliff Identity */
+  --color-cliff-carmine: #dc143c;
+  --color-cliff-carmine-dark: #b91c3c;
+  --color-cliff-carmine-light: #ff4757;
+  --color-cliff-wine: #a0394a;
+  --color-cliff-wine-dark: #5c252a;
+
+  /* High contrast variants for better accessibility */
+  --color-cliff-carmine-bright: #ff3742;
+  --color-cliff-wine-bright: #c44569;
+
+  /* Semantic Colors - Functional Usage */
+  --color-overlay: rgb(0 0 0 / 0.75);
+  --color-card-bg: rgb(0 0 0 / 0.5);
+  --color-nav-bg: rgb(0 0 0 / 0.8);
+}
+
+@layer components {
+
+  /* Default video styling - no scaling, natural fit */
+  .hero-video {
+    @apply absolute inset-0 w-full h-full;
+    object-fit: contain;
+    object-position: center center;
+    background-color: black;
+  }
+
+  /* For screens narrower than 16:9, use cover to fill */
+  @media (max-aspect-ratio: 16/9) {
+    .hero-video {
+      object-fit: cover;
+      object-position: center center;
+    }
+  }
+
+  /* Mobile portrait specific video handling */
+  @media (max-width: 768px) and (orientation: portrait) {
+    .hero-video {
+      object-fit: cover;
+      object-position: center center;
+      min-height: 100vh;
+      min-width: 100vw;
+    }
+  }
+
+  /* Specific handling for screens with aspect ratio similar to 357x667 or narrower */
+  @media (max-width: 768px) and (orientation: portrait) and (max-aspect-ratio: 9/16) {
+    .hero-video {
+      object-fit: cover;
+      object-position: center center;
+      min-height: 100vh;
+      min-width: 100vw;
+      transform: scale(1.1);
+      transform-origin: center;
+    }
+  }
+
+  /* Even more specific for very narrow screens (like 357x667) */
+  @media (max-width: 400px) and (orientation: portrait) and (max-aspect-ratio: 0.54) {
+    .hero-video {
+      object-fit: cover;
+      object-position: center center;
+      min-height: 100vh;
+      min-width: 100vw;
+      transform: scale(1.15);
+      transform-origin: center;
+    }
+  }
+
+  /* Ensure video container has black background */
+  .hero-video-container {
+    @apply relative min-h-screen w-full overflow-hidden bg-black;
+  }
+
+  .menu-card {
+    @apply bg-card-bg p-6 rounded-lg border border-cliff-carmine;
+  }
+
+  .menu-card-title {
+    @apply text-2xl font-semibold mb-2 text-cliff-carmine-bright;
+  }
+
+  .menu-card-description {
+    @apply text-gray-300 mb-2;
+  }
+
+  .menu-card-price {
+    @apply text-cliff-carmine font-semibold;
+  }
+
+  /* Section-specific heading styles for better contrast */
+  .wine-section-heading {
+    @apply text-4xl md:text-5xl font-bold mb-8 text-center text-cliff-carmine-bright;
+  }
+
+  .carmine-section-heading {
+    @apply text-4xl md:text-5xl font-bold mb-8 text-center text-cliff-carmine-bright;
+  }
+
+  .logo-heading {
+    @apply text-6xl md:text-8xl font-bold text-white;
+    background-image: url('/assets/logo_trans.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 300px;
+    height: 150px;
+    text-indent: -9999px;
+  }
+
+  /* Navigation visibility transitions */
+  nav {
+    @apply transition-all duration-500 ease-in-out;
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  nav.nav-hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Footer styles */
+  footer {
+    @apply relative;
+  }
+
+  footer h3 {
+    @apply relative;
+  }
+
+  footer h3::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-8 h-0.5 bg-cliff-carmine-bright;
+    margin-top: 0.5rem;
+  }
+
+  /* Footer link hover effects */
+  footer nav a {
+    @apply relative;
+    transition: all 0.3s ease;
+  }
+
+  footer nav a::before {
+    content: '';
+    @apply absolute left-0 bottom-0 w-0 h-0.5 bg-cliff-carmine-light;
+    transition: width 0.3s ease;
+  }
+
+  footer nav a:hover::before {
+    @apply w-full;
+  }
+
+  /* Hero contact link */
+  .hero-contact-link {
+    @apply text-sm text-gray-300 hover:text-cliff-carmine-light transition-colors duration-300;
+    @apply focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light rounded-lg px-2 py-1;
+    @apply relative;
+  }
+
+  .hero-contact-link::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-px bg-cliff-carmine-light;
+    transition: width 0.3s ease;
+  }
+
+  .hero-contact-link:hover::after {
+    @apply w-full;
+  }
+
+  /* Address link styling */
+  .address-link {
+    @apply text-gray-300 hover:text-white transition-colors duration-300;
+    @apply focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light rounded-lg;
+    @apply relative inline-block p-2;
+  }
+
+  .address-link:hover {
+    @apply text-white;
+  }
+
+  .address-link:hover .text-cliff-carmine-light {
+    @apply text-cliff-carmine-bright;
+  }
+
+  /* Footer quick links styling */
+  .footer-link {
+    @apply text-gray-300 hover:text-cliff-carmine-light transition-colors duration-300;
+    @apply focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light rounded-lg px-2 py-1;
+    @apply relative block;
+  }
+
+  .footer-link::before {
+    content: '';
+    @apply absolute left-0 bottom-0 w-0 h-0.5 bg-cliff-carmine-light;
+    transition: width 0.3s ease;
+  }
+
+  .footer-link:hover::before {
+    @apply w-full;
+  }
+}
+
+/* Video fallback for noscript */
+.video-fallback {
+  display: block !important;
+}
+
+/* Scroll offset for sections */
+.scroll-target {
+  scroll-margin-top: 4rem;
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+
+  .border-cliff-carmine,
+  .border-cliff-wine {
+    border-width: 2px;
+    border-color: white;
+  }
+
+  .focus\:ring-cliff-carmine:focus,
+  .focus\:ring-cliff-carmine-light:focus {
+    ring-width: 4px;
+    ring-color: white;
+  }
+
+  /* Force maximum contrast in high contrast mode */
+  .wine-section-heading,
+  .carmine-section-heading {
+    color: white !important;
+  }
+}
+
+/* Print styles */
+@media print {
+
+  .fixed,
+  .absolute {
+    position: static !important;
+  }
+
+  video,
+  .bg-black,
+  .bg-neutral-900 {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .text-white,
+  .text-gray-300,
+  .text-cliff-carmine,
+  .text-cliff-carmine-light,
+  .text-cliff-carmine-bright,
+  .text-cliff-wine,
+  .text-cliff-wine-bright {
+    color: black !important;
+  }
+
+  .border-cliff-carmine,
+  .border-cliff-wine {
+    border-color: black !important;
+  }
+}
