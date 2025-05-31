@@ -54,7 +54,7 @@
                     </p>
                     
                     <!-- Hero Announcement Box -->
-                    {% include "hero-announcement.njk" %}
+                    {# {% include "hero-announcement.njk" %} #}
 
                     {# <div class="space-x-4 hidden">
                         <a href="#menu"
@@ -69,9 +69,14 @@
 
                     <!-- Contact Link -->
                     <div class="mt-8">
-                        <a href="{{ hero.contact.link }}" class="hero-contact-link">
-                            <svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
+                        <a 
+                            href="{{ hero.contact.link }}" 
+                            id="heroContactBtn"
+                            data-maps-url="{{ config.footer.contact.address.mapsUrl }}"
+                            class="inline-block bg-cliff-carmine hover:bg-cliff-carmine-dark focus:bg-cliff-carmine-dark text-white font-bold py-4 px-8 rounded-lg text-xl transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light shadow-lg hover:shadow-xl transform hover:scale-105"
+                            aria-label="View contact information or open location in Google Maps"
+                        >
+                            <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
