@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: {{ config.siteUrl.production }}/sitemap.xml
+
+# Disallow common admin/system directories
+Disallow: /admin/
+Disallow: /private/
+Disallow: /.git/
+Disallow: /node_modules/ 

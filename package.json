@@ -6,14 +6,13 @@
     "node": ">=22.0.0"
   },
   "scripts": {
-    "build": "npm run build:css && npm run build:js && eleventy",
-    "build:css": "tailwindcss -i ./src/css/main.css -o ./_site/css/main.css --minify",
-    "build:js": "esbuild src/js/main.js --bundle --outfile=_site/js/main.js --format=esm --minify",
-    "watch:css": "tailwindcss -i ./src/css/main.css -o ./_site/css/main.css --watch",
-    "watch:js": "esbuild src/js/main.js --bundle --outfile=_site/js/main.js --format=esm --watch",
-    "watch:11ty": "eleventy --serve --watch",
-    "dev": "concurrently \"npm run watch:css\" \"npm run watch:js\" \"npm run watch:11ty\"",
-    "preview": "eleventy --serve"
+    "build": "npm run build:assets && eleventy",
+    "build:assets": "npm run build:css & npm run build:js & wait",
+    "build:css": "tailwindcss -i ./src/css/main.css -o ./htdocs/css/main.css --minify",
+    "build:js": "esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --minify",
+    "dev": "concurrently \"npm run watch:css\" \"npm run watch:js\" \"eleventy --serve --watch\"",
+    "watch:css": "tailwindcss -i ./src/css/main.css -o ./htdocs/css/main.css --watch",
+    "watch:js": "esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --watch"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.0"

@@ -1,6 +1,6 @@
 /* src/css/main.css */
 @import "tailwindcss";
-@import "theme.css";
+@import "./theme.css";
 
 @layer components {
 
