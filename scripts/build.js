@@ -193,3 +193,13 @@ async function confirmBuildAndDeploy() {
     });
 }
 
+
+function deploySite() {
+    confirmBuildAndDeploy().then(async (confirmed) => {
+        if (confirmed) {
+            verifyBuild();
+            deploySFTP();
+        }
+    });
+}
+export default deploySite
