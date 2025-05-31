@@ -19,6 +19,16 @@ export default function(eleventyConfig) {
   eleventyConfig.addWatchTarget("./src/js/");
   eleventyConfig.addWatchTarget("./src/assets/");
 
+  // Add date filter for sitemap
+  eleventyConfig.addFilter("date", function(date, format) {
+    if (!date) return '';
+    const d = new Date(date);
+    if (format === 'YYYY-MM-DD') {
+      return d.toISOString().split('T')[0];
+    }
+    return d.toISOString();
+  });
+
   // Add sitemap generation
   eleventyConfig.addCollection("sitemap", function(collectionApi) {
     return collectionApi.getAll().filter(item => {

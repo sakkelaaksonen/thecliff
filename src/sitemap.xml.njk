@@ -8,7 +8,7 @@ eleventyExcludeFromCollections: true
   <url>
     <loc>{{ config.siteUrl.production }}{{ page.url | url }}</loc>
     {%- if page.date %}
-    <lastmod>{{ page.date | date('YYYY-MM-DD') }}</lastmod>
+    <lastmod>{{ page.date | date("YYYY-MM-DD") }}</lastmod>
     {%- endif %}
     <changefreq>{% if page.url == '/' %}weekly{% else %}monthly{% endif %}</changefreq>
     <priority>{% if page.url == '/' %}1.0{% else %}0.8{% endif %}</priority>
