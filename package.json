@@ -12,7 +12,10 @@
     "build:js": "esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --minify",
     "dev": "concurrently \"npm run watch:css\" \"npm run watch:js\" \"eleventy --serve --watch\"",
     "watch:css": "tailwindcss -i ./src/css/main.css -o ./htdocs/css/main.css --watch",
-    "watch:js": "esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --watch"
+    "watch:js": "esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --watch",
+    "deploy": "npm run build && node scripts/deploy.js",
+    "deploy:verify": "node scripts/deploy.js --verify-only",
+    "deploy:test": "node scripts/deploy.js --test-connection"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.0"

@@ -5,14 +5,13 @@
  * Compiles CSS from src/ and prepares htdocs/ for deployment
  */
 
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
-const readline = require('readline');
+import { execSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import readline from 'readline';
 
 console.log('🏗️  The Cliff Website Build & Deploy');
 console.log('====================================');
-
 
 /**
  * Verify build outputs in htdocs
@@ -84,6 +83,45 @@ function verifyBuild() {
     }
     
     console.log('✅ Build verification complete');
+}
+
+/**
+ * Test SFTP connection without transferring files
+ */
+async function testSFTPConnection() {
+    console.log('\n🧪 Testing SFTP Connection...');
+    
+    // Get credentials from keys.json
+    const credentials = await getSFTPCredentials();
+    
+    console.log(`📡 Connecting to ${credentials.username}@${credentials.host}:${credentials.port}...`);
+    console.log(`📁 Target directory: ${credentials.remoteDir}`);
+    
+    try {
+        // Test connection with minimal commands - same as deploy but without file transfer
+        const sftpTestCommand = `sshpass -p '${credentials.password}' sftp -P ${credentials.port} -o StrictHostKeyChecking=no ${credentials.username}@${credentials.host} << 'EOF'
+pwd
+cd ${credentials.remoteDir}
+pwd
+ls -la
+quit
+EOF`;
+        
+        console.log('\n🔍 Connection test output:');
+        console.log('==========================');
+        
+        execSync(sftpTestCommand, { stdio: 'inherit', shell: '/bin/bash' });
+        
+        console.log('\n✅ SFTP connection test successful!');
+        console.log('🌐 Server is reachable and credentials are valid');
+        console.log('📁 Remote directory is accessible');
+        console.log('💡 You can now run "npm run deploy" to deploy your site');
+        
+    } catch (error) {
+        console.error('❌ SFTP connection test failed');
+        console.error('Error details:', error.message);
+        process.exit(1);
+    }
 }
 
 /**
@@ -168,7 +206,7 @@ async function confirmBuildAndDeploy() {
     console.log('🌐 Target: Live production server');
     console.log('');
     console.log('💡 If you only want to build without deploying, use:');
-    console.log('   npm run build:prod  or  node build.js prod');
+    console.log('   npm run build');
     
     const rl = readline.createInterface({
         input: process.stdin,
@@ -186,20 +224,40 @@ async function confirmBuildAndDeploy() {
                 resolve(true);
             } else {
                 console.log('❌ Build and deployment cancelled');
-                console.log('💡 To build only, run: node build.js prod');
+                console.log('💡 To build only, run: npm run build');
                 resolve(false);
             }
         });
     });
 }
 
-
-function deploySite() {
-    confirmBuildAndDeploy().then(async (confirmed) => {
-        if (confirmed) {
-            verifyBuild();
-            deploySFTP();
-        }
-    });
+async function deploySite() {
+    // Check for command line arguments
+    const args = process.argv.slice(2);
+    
+    if (args.includes('--test-connection')) {
+        // Only test connection, don't deploy
+        await testSFTPConnection();
+        return;
+    }
+    
+    if (args.includes('--verify-only')) {
+        // Only verify build, don't deploy
+        verifyBuild();
+        return;
+    }
+    
+    // Normal deployment flow
+    const confirmed = await confirmBuildAndDeploy();
+    if (confirmed) {
+        verifyBuild();
+        await deploySFTP();
+    }
 }
-export default deploySite
+
+export default deploySite;
+
+// Run if called directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+    deploySite();
+}
