@@ -7,20 +7,10 @@
   <meta name="description" content="{{ description or 'The Cliff Restaurant - Fine dining experience' }}">
   <meta name="author" content="{{ config.siteAuthor }}">
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="icon" type="image/png" href="assets/favicon.svg">
   
-  <!-- Page-specific CSS -->
-  {% if css %}
-  <link rel="stylesheet" href="{{ css }}">
-  {% endif %}
+  <link rel="icon" type="image/png" href="assets/favicon.svg">
 </head>
-<body class="bg-amber-50 text-gray-900 font-sans">
-    {% include "navigation.njk" %}
+<body class="bg-neutral-900 text-white font-sans">
     {{ content | safe }}
-    
-    {% include "footer.njk" %}
-
-    <script type="module" src="js/main.js"></script>
 </body>
 </html> 
-

@@ -6,11 +6,14 @@
     "node": ">=22.0.0"
   },
   "scripts": {
-    "build": "npm run build:assets && eleventy",
+    "build": "eleventy && npm run copy:php",
     "build:assets": "npm run build:css & npm run build:js & wait",
     "build:css": "tailwindcss -i ./src/css/main.css -o ./htdocs/css/main.css --minify",
     "build:js": "esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --minify",
-    "dev": "concurrently \"npm run watch:css\" \"npm run watch:js\" \"eleventy --serve --watch\"",
+    "copy:php": "mkdir -p htdocs/admin htdocs/api && cp -r php-src/admin/* htdocs/admin/ && cp -r php-src/api/* htdocs/api/",
+    "dev": "eleventy --serve --port=8081",
+    "dev:php": "cd htdocs && php -S localhost:8080",
+    "dev:all": "concurrently --names \"11ty,PHP\" --prefix-colors \"blue,yellow\" \"npm run dev\" \"npm run dev:php\"",
     "watch:css": "tailwindcss -i ./src/css/main.css -o ./htdocs/css/main.css --watch",
     "watch:js": "esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --watch",
     "deploy": "npm run build && node scripts/deploy.js",

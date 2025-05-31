@@ -1,0 +1,198 @@
+---
+layout: admin-base.njk
+title: Menu Administration
+permalink: /admin/index.html
+---
+
+<div class="min-h-screen p-6">
+    <div class="max-w-4xl mx-auto">
+        
+        <!-- Header -->
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-cliff-carmine-bright">Menu Administration</h1>
+            <p class="text-gray-300 mt-2">Manage lunch menu items</p>
+        </header>
+
+        <!-- Success/Error Messages -->
+        <div id="message-container" class="mb-6"></div>
+
+        <!-- Add Item Form -->
+        <div class="bg-gray-800 border border-cliff-carmine rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-cliff-carmine-bright mb-4">Add New Item</h2>
+            
+            <form action="/admin/menu-admin.php" method="POST" class="space-y-4">
+                <input type="hidden" name="action" value="add_item">
+                
+                <div>
+                    <label for="category_id" class="block text-sm font-medium text-gray-200 mb-2">Category</label>
+                    <select name="category_id" id="category_id" required 
+                            class="w-full px-3 py-2 bg-gray-700 border border-gray-500 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light focus:border-cliff-carmine-light">
+                        <option value="">Select Category</option>
+                        <option value="mains">Main Courses</option>
+                        <option value="sides">Sides & Appetizers</option>
+                        <option value="desserts">Desserts</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="item_name" class="block text-sm font-medium text-gray-200 mb-2">Item Name</label>
+                    <input type="text" name="item_name" id="item_name" required
+                           class="w-full px-3 py-2 bg-gray-700 border border-gray-500 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light focus:border-cliff-carmine-light">
+                </div>
+
+                <div>
+                    <label for="item_description" class="block text-sm font-medium text-gray-200 mb-2">Description</label>
+                    <textarea name="item_description" id="item_description" rows="3"
+                              class="w-full px-3 py-2 bg-gray-700 border border-gray-500 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light focus:border-cliff-carmine-light"></textarea>
+                </div>
+
+                <div>
+                    <label for="item_price" class="block text-sm font-medium text-gray-200 mb-2">Price ($)</label>
+                    <input type="number" name="item_price" id="item_price" step="0.01" min="0" required
+                           class="w-full px-3 py-2 bg-gray-700 border border-gray-500 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light focus:border-cliff-carmine-light">
+                </div>
+
+                <button type="submit" 
+                        class="bg-cliff-carmine hover:bg-cliff-carmine-bright text-white font-medium py-2 px-6 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light">
+                    Add Item
+                </button>
+            </form>
+        </div>
+
+        <!-- Current Menu Display -->
+        <div class="bg-gray-800 border border-cliff-carmine rounded-lg p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-cliff-carmine-bright">Current Menu</h2>
+                <button onclick="loadMenu()" 
+                        class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors">
+                    Refresh
+                </button>
+            </div>
+            
+            <div id="menu-container">
+                <div class="text-center text-gray-400 py-8">
+                    <div class="animate-spin w-6 h-6 border-2 border-cliff-carmine border-t-transparent rounded-full mx-auto mb-2"></div>
+                    Loading menu...
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+// Menu management functions
+async function loadMenu() {
+    const container = document.getElementById('menu-container');
+    
+    try {
+        const response = await fetch('/api/menu.php');
+        if (!response.ok) throw new Error('Failed to load menu');
+        
+        const menuData = await response.json();
+        renderMenu(menuData);
+    } catch (error) {
+        container.innerHTML = `
+            <div class="text-center text-red-400 py-8">
+                <p>Error loading menu: ${error.message}</p>
+                <button onclick="loadMenu()" class="mt-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded">
+                    Retry
+                </button>
+            </div>
+        `;
+    }
+}
+
+function renderMenu(menuData) {
+    const container = document.getElementById('menu-container');
+    
+    if (!menuData.categories || menuData.categories.length === 0) {
+        container.innerHTML = '<div class="text-gray-400 text-center py-8">No menu categories found</div>';
+        return;
+    }
+    
+    const html = menuData.categories.map(category => `
+        <div class="border border-gray-600 rounded-lg overflow-hidden mb-6">
+            <div class="bg-gray-700 px-4 py-3 border-b border-gray-600">
+                <h3 class="text-lg font-semibold text-cliff-carmine-light">${escapeHtml(category.name)}</h3>
+            </div>
+            
+            <div class="divide-y divide-gray-600">
+                ${category.items.length === 0 ? 
+                    '<div class="p-4 text-gray-400 italic">No items in this category</div>' :
+                    category.items.map(item => `
+                        <div class="p-4 ${!item.available ? 'opacity-50' : ''}">
+                            <div class="flex justify-between items-start">
+                                <div class="flex-1">
+                                    <div class="font-semibold text-white">${escapeHtml(item.name)}</div>
+                                    ${item.description ? `<div class="text-gray-300 text-sm mt-1">${escapeHtml(item.description)}</div>` : ''}
+                                    <div class="text-cliff-carmine-bright font-semibold mt-2">$${parseFloat(item.price).toFixed(2)}</div>
+                                </div>
+                                <div class="flex gap-2 ml-4">
+                                    <form method="POST" action="/admin/menu-admin.php" class="inline">
+                                        <input type="hidden" name="action" value="toggle_availability">
+                                        <input type="hidden" name="item_id" value="${escapeHtml(item.id)}">
+                                        <button type="submit" 
+                                                class="px-3 py-1 text-xs rounded ${item.available ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-green-600 hover:bg-green-700'} text-white transition-colors">
+                                            ${item.available ? 'Hide' : 'Show'}
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="/admin/menu-admin.php" class="inline">
+                                        <input type="hidden" name="action" value="delete_item">
+                                        <input type="hidden" name="item_id" value="${escapeHtml(item.id)}">
+                                        <button type="submit" 
+                                                class="px-3 py-1 text-xs rounded bg-red-600 hover:bg-red-700 text-white transition-colors"
+                                                onclick="return confirm('Delete ${escapeHtml(item.name)}?')">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')
+                }
+            </div>
+        </div>
+    `).join('');
+    
+    container.innerHTML = html;
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Handle URL messages
+function showMessage() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const message = urlParams.get('message');
+    const type = urlParams.get('type');
+    
+    if (message) {
+        const container = document.getElementById('message-container');
+        const bgColor = type === 'success' ? 'bg-green-600' : 'bg-red-600';
+        
+        container.innerHTML = `
+            <div class="${bgColor} text-white px-4 py-3 rounded-lg shadow-lg">
+                ${escapeHtml(message)}
+            </div>
+        `;
+        
+        // Clear URL parameters
+        window.history.replaceState({}, document.title, window.location.pathname);
+        
+        // Auto-hide message after 5 seconds
+        setTimeout(() => {
+            container.innerHTML = '';
+        }, 5000);
+    }
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    showMessage();
+    loadMenu();
+});
+</script> 
