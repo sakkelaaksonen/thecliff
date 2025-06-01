@@ -1,0 +1,26 @@
+<section id="menu" class="min-h-screen scroll-target bg-black">
+    {% for category in menu.categories %}
+    <div class="min-h-screen flex flex-col p-6 md:p-12 pt-24 {% if loop.index % 2 == 0 %}bg-neutral-900{% endif %}">
+        <h2 class="text-4xl md:text-5xl font-bold text-amber-500 mb-8 text-center">{{ category.name }}</h2>
+        
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto w-full">
+            {% for item in category.items %}
+            {% if item.available %}
+            <div class="bg-black/50 p-6 rounded-lg border border-amber-600">
+                <h3 class="text-2xl font-semibold mb-2 text-amber-400">{{ item.name }}</h3>
+                <p class="text-gray-300 mb-2">{{ item.description }}</p>
+                <p class="text-amber-500 font-semibold">${{ item.price }}</p>
+            </div>
+            {% else %}
+            <div class="bg-black/30 p-6 rounded-lg border border-gray-600 opacity-50">
+                <h3 class="text-2xl font-semibold mb-2 text-gray-400">{{ item.name }}</h3>
+                <p class="text-gray-500 mb-2">{{ item.description }}</p>
+                <p class="text-gray-500 font-semibold line-through">${{ item.price }}</p>
+                <p class="text-red-400 text-sm mt-1">Currently Unavailable</p>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</section>

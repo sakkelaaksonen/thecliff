@@ -1,0 +1,92 @@
+   
+   <!-- Hero Section -->
+        <section id="hero" class="relative scroll-target bg-black" role="banner" aria-label="Welcome to The Cliff">
+            <!-- Pure Video Section -->
+            <div class="hero-video-container">
+                <!-- Video Background -->
+                <video class="hero-video" id="bgVideo" autoplay loop muted playsinline preload="metadata"
+                    aria-hidden="true">
+                    <source src="{{ hero.video.src }}" type="video/mp4">
+                    <!-- Fallback for browsers that don't support video -->
+                    <img src="{{ hero.video.fallback }}" alt="{{ hero.video.fallbackAlt }}"
+                        class="video-fallback hidden w-full h-full object-cover" loading="lazy">
+                </video>
+
+                <!-- Sound Toggle Button -->
+                <button id="soundToggle" aria-label="Toggle sound"
+                    class="absolute bottom-4 right-4 z-20 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light">
+                    <svg id="soundOffIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                    </svg>
+                    <svg id="soundOnIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Content Section -->
+            <div class="relative h-screen w-full bg-black flex flex-col justify-center items-center text-center px-4">
+                <!-- Accessible overlay with proper contrast -->
+                <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80"
+                    aria-hidden="true"></div>
+
+                <!-- Navigation -->
+                
+                <nav class="fixed top-0 w-full z-50 p-6 bg-nav-bg backdrop-blur-sm hidden">
+                    <ul class="flex justify-center space-x-8">
+                        {% for item in navigation %}
+                        <li><a href="{{ item.href }}"
+                                class="text-white hover:text-cliff-carmine-light focus:text-cliff-carmine-light text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-white rounded-lg px-2 py-1">{{ item.text }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+                <!-- Hero Content -->
+                <div class="relative z-10 flex flex-col justify-center items-center text-center">
+                    <h1 class="logo-heading mb-6">
+                        <span class="sr-only">{{ hero.heading }}</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-white mb-8 max-w-2xl leading-relaxed">
+                        {{ hero.tagline }}
+                    </p>
+                    
+                    <!-- Hero Announcement Box -->
+                    {# {% include "hero-announcement.njk" %} #}
+
+                    {# <div class="space-x-4 hidden">
+                        <a href="#menu"
+                            class="inline-block bg-cliff-carmine hover:bg-cliff-carmine-dark focus:bg-cliff-carmine-dark text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light">
+                            View Menu
+                        </a>
+                        <a href="#events"
+                            class="inline-block bg-transparent border-2 border-white hover:border-cliff-carmine-light focus:border-cliff-carmine-light text-white font-bold py-3 px-8 rounded-lg text-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light">
+                            See Events
+                        </a>
+                    </div> #}
+
+                    <!-- Contact Link -->
+                    <div class="mt-8">
+                        <a 
+                            href="{{ hero.contact.link }}" 
+                            id="heroContactBtn"
+                            data-maps-url="{{ config.footer.contact.address.mapsUrl }}"
+                            onclick="window.open(this.dataset.mapsUrl, '_blank'); return true;"
+                            class="inline-block bg-cliff-carmine hover:bg-cliff-carmine-dark focus:bg-cliff-carmine-dark text-white font-bold py-4 px-8 rounded-lg text-xl transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light shadow-lg hover:shadow-xl transform hover:scale-105"
+                            aria-label="View contact information or open location in Google Maps"
+                        >
+                            <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            {{ hero.contact.text }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>

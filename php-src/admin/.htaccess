@@ -1,0 +1,37 @@
+# Security headers for admin area
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set Cache-Control "no-cache, no-store, must-revalidate"
+    Header always set Pragma "no-cache"
+    Header always set Expires "0"
+</IfModule>
+
+# Force index.php as the ONLY entry point
+DirectoryIndex index.php
+
+# Block direct access to index.html
+<Files "index.html">
+    Require all denied
+</Files>
+
+# Protect sensitive files
+<Files "config.php">
+    Require all denied
+</Files>
+
+<Files ".env">
+    Require all denied
+</Files>
+
+<Files "auth-check.php">
+    Require all denied
+</Files>
+
+# Disable server signature
+ServerSignature Off
+
+# Prevent access to backup files
+<FilesMatch "\.(bak|backup|old|tmp)$">
+    Require all denied
+</FilesMatch>

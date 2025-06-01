@@ -1,0 +1,72 @@
+---
+title: "The Cliff - Music Bar"
+description: "The Cliff - Embrace great food, drinks all around and a cozy atmosphere - all wrapped up in a fabulous musical tapestry"
+keywords: "music bar, live music, cocktails, Kallio, Helsinki, craft bee, burgers, lunch, brunch"
+og:
+  title: "The Cliff - Music Bar"
+  description: "Experience live music in Kallio"
+preload:
+  - href: "./assets/launch-small.mp4"
+    as: "video"
+    type: "video/mp4"
+  - href: "./assets/fallback-image.png"
+    as: "image"
+hero:
+  video:
+    src: "/assets/launch-small.mp4"
+    fallback: "/assets/fallback-image.png"
+    fallbackAlt: "The Cliff bar atmosphere"
+  heading: "THE CLIFF"
+  tagline: "The Cliff - Embrace great food, drinks all around and a cozy atmosphere - all wrapped up in a fabulous musical tapestry"
+  announcement:
+    fi: "Avajais A'la Carte Brunssi puoleen hintaan. Lisätietoja SoMessa."
+    en: "Opening A'la Carte Brunch at half price. More info on social media."
+  contact:
+    text: "Find us in Kallio, Helsinki"
+    link: "#contact"
+navigation:
+  - text: "Home"
+    href: "#hero"
+  - text: "Menu"
+    href: "#menu"
+  - text: "Events"
+    href: "#events"
+---
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="build-version" content="{{ build.version }}">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="css/main.css?v={{ build.version }}">
+    {% for item in preload %}
+    <link rel="preload" href="{{ item.href }}" as="{{ item.as }}"{% if item.type %} type="{{ item.type }}"{% endif %}>
+    {% endfor %}
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <meta name="description" content="{{ description }}">
+    <meta name="keywords" content="{{ keywords }}">
+    <meta property="og:title" content="{{ og.title }}">
+    <meta property="og:description" content="{{ og.description }}">
+</head>
+
+<body>
+    <main id="main-content">
+        {% include "hero.njk" %}
+        {% if features.menu.indexMenu.enabled %}
+        {% include "menu-items.njk" %}
+        {% endif %}
+
+        {% include "footer.njk" %}
+        </div>
+    </main>
+
+    <script src="js/main.js?v={{ build.version }}" defer></script>
+
+    <script type="application/ld+json">
+        {% include "schema.json" %}
+    </script>
+</body>
+
+</html>

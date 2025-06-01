@@ -1,22 +1,6 @@
+/* src/css/main.css */
 @import "tailwindcss";
-
-@theme {
-  /* Brand Colors - The Cliff Identity */
-  --color-cliff-carmine: #dc143c;
-  --color-cliff-carmine-dark: #b91c3c;
-  --color-cliff-carmine-light: #ff4757;
-  --color-cliff-wine: #a0394a;
-  --color-cliff-wine-dark: #5c252a;
-
-  /* High contrast variants for better accessibility */
-  --color-cliff-carmine-bright: #ff3742;
-  --color-cliff-wine-bright: #c44569;
-
-  /* Semantic Colors - Functional Usage */
-  --color-overlay: rgb(0 0 0 / 0.75);
-  --color-card-bg: rgb(0 0 0 / 0.5);
-  --color-nav-bg: rgb(0 0 0 / 0.8);
-}
+@import "./theme.css";
 
 @layer components {
 
@@ -102,7 +86,7 @@
 
   .logo-heading {
     @apply text-6xl md:text-8xl font-bold text-white;
-    background-image: url('./assets/logo_trans.png');
+    background-image: url('/assets/logo_trans.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -202,6 +186,26 @@
 
   .footer-link:hover::before {
     @apply w-full;
+  }
+
+  /* Hero announcement box styling */
+  .hero-announcement-box {
+    @apply bg-gray-800 border-2 border-cliff-carmine;
+    @apply rounded-lg p-4 mb-6 max-w-md mx-auto;
+    @apply shadow-lg;
+  }
+
+  .hero-announcement-text {
+    @apply text-white text-center text-sm md:text-base;
+    @apply leading-relaxed;
+  }
+
+  .hero-announcement-date {
+    @apply text-cliff-carmine-bright font-bold;
+  }
+
+  .hero-announcement-highlight {
+    @apply text-cliff-carmine-light font-semibold;
   }
 }
 

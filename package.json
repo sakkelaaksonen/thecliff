@@ -1,34 +1,36 @@
 {
-  "name": "thecliff-website",
+  "name": "thecliff",
   "version": "1.0.0",
-  "description": "Static website for The Cliff music bar",
-  "private": true,
-  "license": "UNLICENSED",
-  "scripts": {
-    "dev": "npx tailwindcss -i ./src/source.css -o ./htdocs/main.css --watch",
-    "build": "node build.js prod",
-    "build:prod": "node build.js prod",
-    "build:deploy": "node build.js deploy",
-    "video:info": "node scripts/video-info.js",
-    "video:compress": "node scripts/video-compress.js",
-    "video:web": "node scripts/video-compress.js --preset web",
-    "video:mobile": "node scripts/video-compress.js --preset mobile",
-    "video:720p": "node scripts/video-compress.js --preset 720p",
-    "video:480p": "node scripts/video-compress.js --preset 480p"
+  "type": "module",
+  "engines": {
+    "node": ">=22.0.0"
   },
-  "keywords": [
-    "music",
-    "bar",
-    "events",
-    "drinks",
-    "food",
-    "helsinki",
-    "kallio"
-  ],
-  "author": "muchmodedesign",
+  "scripts": {
+    "build": "npm run build:css && npm run build:js && eleventy && npm run copy:php",
+    "build:assets": "npm run build:css & npm run build:js & wait",
+    "build:css": "tailwindcss -i ./src/css/main.css -o ./htdocs/css/main.css --minify",
+    "build:js": "API_BASE_URL='' esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --minify --define:process.env.API_BASE_URL='\"\"'",
+    "build:js:dev": "API_BASE_URL='http://localhost:8080' esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --define:process.env.API_BASE_URL='\"http://localhost:8080\"'",
+    "copy:php": "mkdir -p htdocs/admin htdocs/api && cp -r php-src/admin/. htdocs/admin/ && cp -r php-src/api/* htdocs/api/",
+    "dev": "eleventy --serve --port=8081",
+    "dev:php": "cd htdocs && php -S localhost:8080",
+    "dev:all": "npm run build:css && npm run build:js:dev && npm run copy:php && concurrently --names \"11ty,PHP\" --prefix-colors \"blue,yellow\" \"npm run dev\" \"npm run dev:php\"",
+    "dev:watch": "npm run copy:php && concurrently \"npm run watch:css\" \"npm run watch:js\" \"npm run watch:php\" \"npm run dev\" \"npm run dev:php\"",
+    "watch:css": "tailwindcss -i ./src/css/main.css -o ./htdocs/css/main.css --watch",
+    "watch:js": "esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --watch",
+    "watch:php": "nodemon --watch php-src --exec \"npm run copy:php\"",
+    "deploy": "npm run build && node scripts/deploy.js",
+    "deploy:test": "node scripts/deploy.js --test-connection"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.0"
+  },
   "dependencies": {
-    "@tailwindcss/cli": "4.1.7",
-    "eleventy": "^1.0.7",
-    "tailwindcss": "4.1.7"
+    "@emailjs/browser": "^4.4.1",
+    "@tailwindcss/cli": "^4.1.8",
+    "concurrently": "^9.1.2",
+    "esbuild": "^0.25.5",
+    "mustache": "^4.2.0",
+    "tailwindcss": "^4.1.8"
   }
 }

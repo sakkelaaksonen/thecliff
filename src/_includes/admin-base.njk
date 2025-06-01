@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} - The Cliff</title>
+  <meta name="description" content="{{ description or 'The Cliff Restaurant - Fine dining experience' }}">
+  <meta name="author" content="{{ config.siteAuthor }}">
+  <link rel="stylesheet" href="/css/main.css?v={{ build.version }}">
+  
+  <link rel="icon" type="image/png" href="assets/favicon.svg">
+</head>
+<body class="bg-neutral-900 text-white font-sans">
+    {{ content | safe }}
+</body>
+</html> 

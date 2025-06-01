@@ -1,49 +1,51 @@
-# .cursorrules
 
 
-## Static website for a music bar called "The Cliff"
+# ES Module (Node.js)
 
-The website will have a home page, a menu page, and an events page.
-The website will be built using HTML, CSS, and JavaScript.
+## General
+- **Follow Best Practices**: Adhere to industry best practices and lean towards agile methodologies.
+- **Prioritize Modularity, DRY, Performance, and Security**: Ensure code is modular, avoids repetition, performs well, and is secure.
+- **Task Breakdown**: Break tasks into distinct, prioritized steps and follow them systematically.
+- **Response Length**: Keep responses concise unless a verbosity level (Vx) is specified:
+  - **V0**: Default, code golf (minimal code)
+  - **V1**: Concise
+  - **V2**: Simple
+  - **V3**: Verbose, DRY with extracted functions
+
+## Code
+- **ES Module Syntax**: Use ES module syntax exclusively.
+- **Refactoring Suggestions**: Suggest refactorings and code improvements where appropriate.
+- **Latest Features**: Favor using the latest ES and Node.js features.
+- **Error Handling**: Don’t apologize for errors; fix them. If unable to complete code, add `TODO:` comments.
+
+## Comments
+- **JSDoc**: Use JSDoc to document functions and classes.
+- **Clarity**: Add comments where the operation isn't clear from the code or where uncommon libraries are used.
+- **File Path**: Start code with the path/filename as a one-line comment.
+- **Purpose**: Comments should describe the purpose of the code, not just the effect.
+
+## Example
+```javascript
+// src/utils/logger.js
+import { createLogger, format, transports } from 'winston';
+
+const logger = createLogger({
+  level: 'info',
+  format: format.combine(
+    format.timestamp(),
+    format.json()
+  ),
+  transports: [
+    new transports.Console(),
+    new transports.File({ filename: 'logs/app.log' })
+  ]
+});
+
+export default logger;
+```
+
+This example demonstrates the use of ES module syntax, modularity, and clear commenting practices.
 
 
-## Guidelines
-- site name : The Cliff
-- site description : A music bar called "The Cliff"
-- site keywords : music, bar, events, drinks, food
-- site author : muchmodedesign
-- address : Kallio District, Helsinki, Finland, Toinen Linja 7 00530 Helsinki, 
-- Use JSDoc to document the code.
-- Use Tailwind CSS for the design.
-- Avoid front end frameworks.
-- No server side code.
-- Static hosting in local hosting company with apache and FTP
-- Use a custom domain name.
-
- ### Prompt Generation Rules:
-
-- Analyze the component requirements thoroughly
-- Specify desired Tailwind CSS classes for styling
-- Mention any required TypeScript types or interfaces
-- Include instructions for responsive design
-- Specify any necessary state management 
-- Include accessibility considerations
-- Mention any required icons or assets
-- Suggest error handling and loading states
-- Include instructions for animations or transitions if needed
-- Specify any required API integrations or data fetching
-- Mention performance optimization techniques if applicable
-- Include instructions for testing the component
-- Suggest documentation requirements for the component
-
-## General Component Creation Guidelines:
-
-- Prioritize reusability and modularity
-- Ensure consistent naming conventions
-- Follow HTML5 best practices and patterns
-- Implement proper prop validation
-- Consider internationalization requirements
-- Optimize for SEO when applicable
-- Ensure compatibility with different browsers and devices
-
-
+##    PHP
+PHP Version: 5.6.40

@@ -1,0 +1,49 @@
+{
+    "@context": "https://schema.org",
+    "@type": "BarOrPub",
+    "name": "The Cliff",
+    "description": "Music bar with live performances and craft cocktails",
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Toinen Linja 7",
+        "postalCode": "00530",
+        "addressLocality": "Helsinki",
+        "addressRegion": "Uusimaa",
+        "addressCountry": "FI"
+    },
+    "email": "info@thecliff.fi",
+    "url": "https://thecliff.fi",
+    "openingHours": [
+        "Mo-Th 10:00-24:00",
+        "Fr 10:00-02:00",
+        "Fr-Sa 11:00-02:00",
+        "Su 11:00-24:00"
+    ],
+    "image": "https://thecliff.fi/assets/og-image.jpg",
+    "priceRange": "$$",
+    "servesCuisine": "Bar food",
+    "hasMenu": "https://thecliff.fi/#menu",
+    "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "60.1699",
+        "longitude": "24.9384"
+    },
+    "sameAs": [
+        "https://www.facebook.com/thecliffkallio/",
+        "https://www.instagram.com/thecliffkallio/"
+    ],
+    "foundingDate": "2025",
+    "maximumAttendeeCapacity": 80,
+    "amenityFeature": [
+        {
+            "@type": "LocationFeatureSpecification",
+            "name": "Live Music",
+            "value": "Weekly live performances"
+        },
+        {
+            "@type": "LocationFeatureSpecification", 
+            "name": "Age Restriction",
+            "value": "18+"
+        }
+    ]
+}
