@@ -13,78 +13,6 @@ import { readFileSync } from 'fs';
 
 console.log('🏗️  The Cliff Website Build & Deploy');
 console.log('====================================');
-const REQUIRED_FILES = [ 'sitemap.xml', 'index.html', '.htaccess', 'robots.txt','admin/.htpasswd', 'css/main.css', 'js/main.js'];
-/**
- * Verify build outputs in htdocs
- */
-function verifyBuild() {
-    console.log('🔍 Verifying build outputs...');
-    
-    // Check if htdocs exists
-    if (!fs.existsSync('htdocs')) {
-        console.error('❌ htdocs directory not found');
-        process.exit(1);
-    }
-    
-    const requiredFiles = [ 'sitemap.xml', 'index.html', '.htaccess', 'robots.txt','admin/.htpasswd'];
-    
-    requiredFiles.forEach(file => {
-        const filePath = `htdocs/${file}`;
-        if (!fs.existsSync(filePath)) {
-            console.error(`❌ ${file} not found in htdocs/`);
-            process.exit(1);
-        }
-    });
-    
-    // Show directory listing
-    console.log('\n📁 htdocs/ contents:');
-    console.log('===================');
-    
-    try {
-        const items = fs.readdirSync('htdocs', { withFileTypes: true });
-        
-        // Sort items: directories first, then files
-        const sortedItems = items.sort((a, b) => {
-            if (a.isDirectory() && !b.isDirectory()) return -1;
-            if (!a.isDirectory() && b.isDirectory()) return 1;
-            return a.name.localeCompare(b.name);
-        });
-        
-        let totalSize = 0;
-        
-        sortedItems.forEach(item => {
-            const itemPath = `htdocs/${item.name}`;
-            
-            if (item.isDirectory()) {
-                console.log(`   📁 ${item.name}/`);
-                try {
-                    const dirItems = fs.readdirSync(itemPath, { recursive: true });
-                    console.log(`      (${dirItems.length} items)`);
-                } catch (error) {
-                    console.log(`      (unable to read)`);
-                }
-            } else {
-                try {
-                    const stats = fs.statSync(itemPath);
-                    const size = (stats.size / 1024).toFixed(1);
-                    totalSize += stats.size;
-                    console.log(`   📄 ${item.name} (${size}KB)`);
-                } catch (error) {
-                    console.log(`   📄 ${item.name} (size unknown)`);
-                }
-            }
-        });
-        
-        const totalSizeMB = (totalSize / (1024 * 1024)).toFixed(2);
-        console.log(`\n📊 Total size: ${totalSizeMB}MB`);
-        console.log(`📊 Total items: ${items.length}`);
-        
-    } catch (error) {
-        console.warn('⚠️  Could not read htdocs directory listing');
-    }
-    
-    console.log('✅ Build verification complete');
-}
 
 /**
  * Get SFTP credentials from keys.json
@@ -144,32 +72,21 @@ EOF`;
 }
 
 /**
- * Verify deployment files exist
+ * Ask user for deployment confirmation
  */
-function verifyDeploymentFiles() {
-    console.log('\n📋 Verifying deployment files...');
+async function confirmDeployment() {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
     
-    try {
-        // Check if htdocs directory exists
-        execSync('ls htdocs/', { stdio: 'pipe' });
-        console.log('✅ htdocs directory found');
-        
-        // Check for essential files
-        const essentialFiles = ['index.html', 'css/main.css','admin/.htpasswd'];
-        for (const file of essentialFiles) {
-            try {
-                execSync(`ls htdocs/${file}`, { stdio: 'pipe' });
-                console.log(`✅ ${file} found`);
-            } catch {
-                console.warn(`⚠️  ${file} not found - you may need to run 'npm run build' first`);
-            }
-        }
-        
-    } catch (error) {
-        console.error('❌ htdocs directory not found');
-        console.error('Please run "npm run build" first to generate deployment files');
-        process.exit(1);
-    }
+    return new Promise((resolve) => {
+        rl.question('\n❓ Are you sure you want to deploy to the live server? (y/N): ', (answer) => {
+            rl.close();
+            const confirmed = answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes';
+            resolve(confirmed);
+        });
+    });
 }
 
 /**
@@ -214,20 +131,23 @@ async function deploy() {
         await testSFTPConnection();
         return;
     }
-    
-    if (args.includes('--verify-only')) {
-        verifyDeploymentFiles();
-        return;
-    }
+
     
     console.log('🎯 The Cliff - Deployment Script');
     console.log('================================');
     
-    // Verify files before deployment
-    verifyDeploymentFiles();
-    
     // Test connection before deployment
     await testSFTPConnection();
+    
+    // Ask for confirmation unless --force flag is used
+    if (!args.includes('--force')) {
+        const confirmed = await confirmDeployment();
+        
+        if (!confirmed) {
+            console.log('❌ Deployment cancelled by user');
+            process.exit(0);
+        }
+    }
     
     // Deploy to SFTP
     await deploySFTP();

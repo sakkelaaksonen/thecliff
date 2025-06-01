@@ -20,7 +20,6 @@
     "watch:js": "esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --watch",
     "watch:php": "nodemon --watch php-src --exec \"npm run copy:php\"",
     "deploy": "npm run build && node scripts/deploy.js",
-    "deploy:verify": "node scripts/deploy.js --verify-only",
     "deploy:test": "node scripts/deploy.js --test-connection"
   },
   "devDependencies": {
