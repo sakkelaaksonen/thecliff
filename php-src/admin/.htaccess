@@ -7,6 +7,20 @@
     Header always set Expires "0"
 </IfModule>
 
+# Production environment variables (alternative syntax)
+<IfModule mod_env.c>
+    SetEnv ADMIN_USERNAME admin
+    SetEnv ADMIN_PASSWORD_HASH $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi
+</IfModule>
+
+# Force index.php as the ONLY entry point
+DirectoryIndex index.php
+
+# Block direct access to index.html
+<Files "index.html">
+    Require all denied
+</Files>
+
 # Protect sensitive files
 <Files "config.php">
     Require all denied
@@ -16,16 +30,9 @@
     Require all denied
 </Files>
 
-# Protect admin HTML files from direct access
-<Files "index-redirect.php">
-    Order allow,deny
-    Deny from all
+<Files "auth-check.php">
+    Require all denied
 </Files>
-
-# Set index.php as the only entry point
-DirectoryIndex index.php
-
-
 
 # Disable server signature
 ServerSignature Off

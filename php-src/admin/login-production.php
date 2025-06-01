@@ -1,5 +1,5 @@
 <?php
-// php-src/admin/login.php
+// php-src/admin/login-production.php
 /**
  * Production admin login - PHP 5.6 compatible
  */

@@ -1,7 +1,7 @@
 <?php
 // php-src/admin/auth-check.php
 /**
- * Simple authentication check
+ * Simple authentication check - PHP 5.6 compatible
  * Include this at the top of any protected admin page
  */
 
@@ -13,17 +13,10 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Check if user is logged in
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+if (!isAdminLoggedIn()) {
     // Store the requested page for redirect after login
     $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
     header('Location: /admin/login.php');
-    exit;
-}
-
-// Check session timeout
-if (isset($_SESSION['login_time']) && (time() - $_SESSION['login_time']) > SESSION_TIMEOUT) {
-    session_destroy();
-    header('Location: /admin/login.php?expired=1');
     exit;
 }
 

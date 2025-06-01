@@ -1,34 +1,39 @@
 <?php
 // php-src/admin/config.php
 /**
- * Admin configuration with environment variables
+ * Admin configuration - PHP 5.6 compatible
  */
 
-// Load environment variables in development
-if (file_exists(__DIR__ . '/../../.env')) {
-    $envFile = __DIR__ . '/../../.env';
-    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    foreach ($lines as $line) {
-        if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
-            list($key, $value) = explode('=', $line, 2);
-            $key = trim($key);
-            $value = trim($value, '"\'');
-            if (!array_key_exists($key, $_ENV)) {
-                $_ENV[$key] = $value;
-                putenv("$key=$value");
-            }
+// Default credentials (fallback)
+$adminUsername = 'admin';
+$adminPasswordHash = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi';
+
+// Try environment variables first (production)
+if (getenv('ADMIN_USERNAME')) {
+    $adminUsername = getenv('ADMIN_USERNAME');
+}
+if (getenv('ADMIN_PASSWORD_HASH')) {
+    $adminPasswordHash = getenv('ADMIN_PASSWORD_HASH');
+}
+
+// Try .env file (development)
+$envFile = __DIR__ . '/../../.env';
+if (file_exists($envFile)) {
+    $content = file_get_contents($envFile);
+    if ($content !== false) {
+        if (preg_match('/ADMIN_USERNAME=(.+)/', $content, $matches)) {
+            $adminUsername = trim($matches[1], '"\'');
+        }
+        if (preg_match('/ADMIN_PASSWORD_HASH=(.+)/', $content, $matches)) {
+            $adminPasswordHash = trim($matches[1], '"\'');
         }
     }
 }
 
-// Admin credentials from environment variables
-define('ADMIN_USERNAME', $_ENV['ADMIN_USERNAME'] ?? getenv('ADMIN_USERNAME') ?? 'admin');
-define('ADMIN_PASSWORD_HASH', $_ENV['ADMIN_PASSWORD_HASH'] ?? getenv('ADMIN_PASSWORD_HASH') ?? password_hash('password', PASSWORD_DEFAULT));
-
-// Session configuration
-define('SESSION_TIMEOUT', 3600); // 1 hour
-define('MAX_LOGIN_ATTEMPTS', 5);
-define('LOCKOUT_TIME', 900); // 15 minutes
+// Define constants
+define('ADMIN_USERNAME', $adminUsername);
+define('ADMIN_PASSWORD_HASH', $adminPasswordHash);
+define('SESSION_TIMEOUT', 3600);
 
 /**
  * Check if user is logged in
@@ -42,7 +47,6 @@ function isAdminLoggedIn() {
         return false;
     }
     
-    // Check session timeout
     if (isset($_SESSION['login_time']) && (time() - $_SESSION['login_time']) > SESSION_TIMEOUT) {
         session_destroy();
         return false;
@@ -57,4 +61,3 @@ function isAdminLoggedIn() {
 function validateAdminCredentials($username, $password) {
     return $username === ADMIN_USERNAME && password_verify($password, ADMIN_PASSWORD_HASH);
 }
-?> 
