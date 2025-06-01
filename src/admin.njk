@@ -86,7 +86,10 @@ async function loadMenu() {
     const container = document.getElementById('menu-container');
     
     try {
-        const response = await fetch('/api/menu.php');
+        // Add timestamp to prevent caching
+        const cacheBuster = new Date().getTime();
+        const response = await fetch(`/api/menu.php?t=${cacheBuster}`);
+        
         if (!response.ok) throw new Error('Failed to load menu');
         
         const menuData = await response.json();
@@ -195,4 +198,10 @@ document.addEventListener('DOMContentLoaded', function() {
     showMessage();
     loadMenu();
 });
+
+// Also reload data if URL has message parameter (from form submission redirect)
+if (window.location.search.includes('message=')) {
+    // Small delay to ensure DOM is ready
+    setTimeout(loadMenu, 100);
+}
 </script> 
