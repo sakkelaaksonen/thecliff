@@ -25,9 +25,7 @@
 # Set index.php as the only entry point
 DirectoryIndex index.php
 
-# Production environment variables (uncomment and set in production)
-# SetEnv ADMIN_USERNAME "your_admin_username"
-# SetEnv ADMIN_PASSWORD_HASH "$2y$10$your_password_hash_here"
+
 
 # Disable server signature
 ServerSignature Off
