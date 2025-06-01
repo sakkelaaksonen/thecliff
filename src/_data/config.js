@@ -19,7 +19,7 @@ export default {
       address: {
         street: "Siltasaarenkatu 22",
         postal: "00530 Helsinki, Finland",
-        mapsUrl: "https://maps.google.com/?q=Siltasaarenkatu+22,+00530+Helsinki,+Finland"
+        mapsUrl: "https://maps.app.goo.gl/UPWvTRTupQA85Dh58"
       },
       phone: "+358 505 387 662",
       email: "info@thecliff.fi"
