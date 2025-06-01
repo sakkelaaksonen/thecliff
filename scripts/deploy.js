@@ -13,7 +13,7 @@ import { readFileSync } from 'fs';
 
 console.log('🏗️  The Cliff Website Build & Deploy');
 console.log('====================================');
-
+const REQUIRED_FILES = [ 'sitemap.xml', 'index.html', '.htaccess', 'robots.txt','admin/.htpasswd', 'css/main.css', 'js/main.js'];
 /**
  * Verify build outputs in htdocs
  */
@@ -26,7 +26,7 @@ function verifyBuild() {
         process.exit(1);
     }
     
-    const requiredFiles = [ 'sitemap.xml', 'index.html', '.htaccess', 'robots.txt'];
+    const requiredFiles = [ 'sitemap.xml', 'index.html', '.htaccess', 'robots.txt','admin/.htpasswd'];
     
     requiredFiles.forEach(file => {
         const filePath = `htdocs/${file}`;
@@ -155,7 +155,7 @@ function verifyDeploymentFiles() {
         console.log('✅ htdocs directory found');
         
         // Check for essential files
-        const essentialFiles = ['index.html', 'css/main.css'];
+        const essentialFiles = ['index.html', 'css/main.css','admin/.htpasswd'];
         for (const file of essentialFiles) {
             try {
                 execSync(`ls htdocs/${file}`, { stdio: 'pipe' });

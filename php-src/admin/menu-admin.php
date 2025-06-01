@@ -2,8 +2,11 @@
 // php-src/admin/menu-admin.php
 /**
  * Menu Administration Backend - Form Processing Only
- * Authentication handled entirely by htpasswd
+ * Authentication handled by PHP session
  */
+
+// Authentication check - must be first
+require_once __DIR__ . '/auth-check.php';
 
 class MenuValidator {
     /**
@@ -96,26 +99,26 @@ class MenuManager {
      */
     private function initializeMenuFile() {
         if (!file_exists($this->menuFile)) {
-            $defaultMenu = [
+            $defaultMenu = array(
                 'lastUpdated' => date('c'),
-                'categories' => [
-                    [
+                'categories' => array(
+                    array(
                         'id' => 'mains',
                         'name' => 'Main Courses',
-                        'items' => []
-                    ],
-                    [
+                        'items' => array()
+                    ),
+                    array(
                         'id' => 'sides',
                         'name' => 'Sides & Appetizers',
-                        'items' => []
-                    ],
-                    [
+                        'items' => array()
+                    ),
+                    array(
                         'id' => 'desserts',
                         'name' => 'Desserts',
-                        'items' => []
-                    ]
-                ]
-            ];
+                        'items' => array()
+                    )
+                )
+            );
             $this->saveMenuData($defaultMenu);
         }
     }
@@ -191,7 +194,7 @@ class MenuManager {
         // Load current menu first to validate category
         $menuData = $this->loadMenuData();
         if (!$menuData) {
-            return ['success' => false, 'message' => 'Cannot load menu data'];
+            return array('success' => false, 'message' => 'Cannot load menu data');
         }
         
         // Sanitize inputs
@@ -201,25 +204,25 @@ class MenuManager {
         
         // Validate inputs
         if (!MenuValidator::isValidName($name)) {
-            return ['success' => false, 'message' => 'Invalid item name'];
+            return array('success' => false, 'message' => 'Invalid item name');
         }
         
         if (!MenuValidator::isValidCategory($categoryId, $menuData)) {
-            return ['success' => false, 'message' => 'Invalid category'];
+            return array('success' => false, 'message' => 'Invalid category');
         }
         
         if ($price === false) {
-            return ['success' => false, 'message' => 'Invalid price'];
+            return array('success' => false, 'message' => 'Invalid price');
         }
         
         // Create new item
-        $newItem = [
+        $newItem = array(
             'id' => MenuValidator::generateItemId($name),
             'name' => $name,
             'description' => $description,
             'price' => $price,
             'available' => true
-        ];
+        );
         
         // Add to appropriate category
         foreach ($menuData['categories'] as &$category) {
@@ -231,9 +234,9 @@ class MenuManager {
         
         // Save updated menu
         if ($this->saveMenuData($menuData)) {
-            return ['success' => true, 'message' => 'Item added successfully'];
+            return array('success' => true, 'message' => 'Item added successfully');
         } else {
-            return ['success' => false, 'message' => 'Failed to save menu'];
+            return array('success' => false, 'message' => 'Failed to save menu');
         }
     }
     
@@ -243,7 +246,7 @@ class MenuManager {
     public function toggleAvailability($itemId) {
         $menuData = $this->loadMenuData();
         if (!$menuData) {
-            return ['success' => false, 'message' => 'Cannot load menu data'];
+            return array('success' => false, 'message' => 'Cannot load menu data');
         }
         
         // Find and toggle item
@@ -253,15 +256,15 @@ class MenuManager {
                     $item['available'] = !$item['available'];
                     
                     if ($this->saveMenuData($menuData)) {
-                        return ['success' => true, 'message' => 'Item updated successfully'];
+                        return array('success' => true, 'message' => 'Item updated successfully');
                     } else {
-                        return ['success' => false, 'message' => 'Failed to save menu'];
+                        return array('success' => false, 'message' => 'Failed to save menu');
                     }
                 }
             }
         }
         
-        return ['success' => false, 'message' => 'Item not found'];
+        return array('success' => false, 'message' => 'Item not found');
     }
     
     /**
@@ -270,7 +273,7 @@ class MenuManager {
     public function deleteItem($itemId) {
         $menuData = $this->loadMenuData();
         if (!$menuData) {
-            return ['success' => false, 'message' => 'Cannot load menu data'];
+            return array('success' => false, 'message' => 'Cannot load menu data');
         }
         
         // Find and remove item
@@ -282,9 +285,9 @@ class MenuManager {
         }
         
         if ($this->saveMenuData($menuData)) {
-            return ['success' => true, 'message' => 'Item deleted successfully'];
+            return array('success' => true, 'message' => 'Item deleted successfully');
         } else {
-            return ['success' => false, 'message' => 'Failed to save menu'];
+            return array('success' => false, 'message' => 'Failed to save menu');
         }
     }
 }
@@ -297,28 +300,28 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $menuManager = new MenuManager();
-$action = $_POST['action'] ?? '';
+$action = isset($_POST['action']) ? $_POST['action'] : '';
 
 switch ($action) {
     case 'add_item':
         $result = $menuManager->addItem(
-            $_POST['category_id'] ?? '',
-            $_POST['item_name'] ?? '',
-            $_POST['item_description'] ?? '',
-            $_POST['item_price'] ?? ''
+            isset($_POST['category_id']) ? $_POST['category_id'] : '',
+            isset($_POST['item_name']) ? $_POST['item_name'] : '',
+            isset($_POST['item_description']) ? $_POST['item_description'] : '',
+            isset($_POST['item_price']) ? $_POST['item_price'] : ''
         );
         break;
         
     case 'toggle_availability':
-        $result = $menuManager->toggleAvailability($_POST['item_id'] ?? '');
+        $result = $menuManager->toggleAvailability(isset($_POST['item_id']) ? $_POST['item_id'] : '');
         break;
         
     case 'delete_item':
-        $result = $menuManager->deleteItem($_POST['item_id'] ?? '');
+        $result = $menuManager->deleteItem(isset($_POST['item_id']) ? $_POST['item_id'] : '');
         break;
         
     default:
-        $result = ['success' => false, 'message' => 'Invalid action'];
+        $result = array('success' => false, 'message' => 'Invalid action');
 }
 
 // Redirect back to admin page with message

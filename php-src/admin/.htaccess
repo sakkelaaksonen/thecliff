@@ -1,9 +1,28 @@
-# Admin authentication
-AuthType Basic
-AuthName "Menu Administration"
-AuthUserFile /path/to/.htpasswd
-Require valid-user
+# Security headers for admin area
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set Cache-Control "no-cache, no-store, must-revalidate"
+    Header always set Pragma "no-cache"
+    Header always set Expires "0"
+</IfModule>
 
-# Security headers
-Header always set X-Content-Type-Options nosniff
-Header always set X-Frame-Options DENY 
+# Protect sensitive files
+<Files "config.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "auth-check.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Protect admin HTML files from direct access
+<Files "index-redirect.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Set index.php as the only entry point
+DirectoryIndex index.php

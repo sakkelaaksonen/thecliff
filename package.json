@@ -11,7 +11,7 @@
     "build:css": "tailwindcss -i ./src/css/main.css -o ./htdocs/css/main.css --minify",
     "build:js": "API_BASE_URL='' esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --minify --define:process.env.API_BASE_URL='\"\"'",
     "build:js:dev": "API_BASE_URL='http://localhost:8080' esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --define:process.env.API_BASE_URL='\"http://localhost:8080\"'",
-    "copy:php": "mkdir -p htdocs/admin htdocs/api && cp -r php-src/admin/* htdocs/admin/ && cp -r php-src/api/* htdocs/api/",
+    "copy:php": "mkdir -p htdocs/admin htdocs/api && cp -r php-src/admin/. htdocs/admin/ && cp -r php-src/api/* htdocs/api/",
     "dev": "eleventy --serve --port=8081",
     "dev:php": "cd htdocs && php -S localhost:8080",
     "dev:all": "npm run build:css && npm run build:js:dev && concurrently --names \"11ty,PHP\" --prefix-colors \"blue,yellow\" \"npm run dev\" \"npm run dev:php\"",
