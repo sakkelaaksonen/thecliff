@@ -90,18 +90,48 @@ async function confirmDeployment() {
 }
 
 /**
- * Deploy to SFTP server
+ * Verify deployment files (remove menu copying logic)
+ */
+function verifyDeploymentFiles() {
+    console.log('\n📋 Verifying deployment files...');
+    
+    const requiredFiles = [
+        'htdocs/index.html',
+        'htdocs/admin/index.html',
+        'htdocs/css/style.css'
+    ];
+    
+    for (const file of requiredFiles) {
+        if (!fs.existsSync(file)) {
+            console.error(`❌ Required file missing: ${file}`);
+            process.exit(1);
+        }
+    }
+    
+    console.log('✅ All required files present');
+    
+    // Ensure local data directory exists (but don't deploy it)
+    const dataDir = 'data';
+    if (!fs.existsSync(dataDir)) {
+        console.log('📁 Creating local data directory...');
+        fs.mkdirSync(dataDir, { recursive: true });
+    }
+    
+    console.log('✅ File verification complete');
+}
+
+/**
+ * Deploy to SFTP server (exclude data directory)
  */
 async function deploySFTP() {
     console.log('\n🚀 Starting SFTP Deployment...');
     
-    // Get credentials from keys.json
     const credentials = await getSFTPCredentials();
     
     console.log(`📡 Connecting to ${credentials.username}@${credentials.host}:${credentials.port}...`);
     
     try {
-        // Use here-document approach instead of batch file
+        // Deploy only htdocs contents, exclude data directory
         const sftpCommand = `sshpass -p '${credentials.password}' sftp -P ${credentials.port} -o StrictHostKeyChecking=no ${credentials.username}@${credentials.host} << 'EOF'
 cd ${credentials.remoteDir}
 lcd htdocs
@@ -113,6 +143,7 @@ EOF`;
         
         console.log('✅ SFTP deployment successful!');
         console.log('🌐 Website deployed to server');
+        console.log('📝 Note: data/ directory remains on server for persistence');
         
     } catch (error) {
         console.error('❌ SFTP deployment failed');
@@ -151,6 +182,9 @@ async function deploy() {
     
     // Deploy to SFTP
     await deploySFTP();
+    
+    // Verify deployment files
+    verifyDeploymentFiles();
     
     console.log('\n🎉 Deployment completed successfully!');
 }

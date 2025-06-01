@@ -67,7 +67,7 @@ class MenuManager {
     private $dataDir;
     
     public function __construct() {
-        $this->dataDir = __DIR__ . '/../data';
+        $this->dataDir = __DIR__ . '/../../data';
         $this->menuFile = $this->dataDir . '/menu.json';
         $this->ensureDataDirectory();
     }
