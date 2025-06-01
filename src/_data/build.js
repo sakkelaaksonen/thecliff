@@ -1,6 +1,3 @@
-const buildVersion = {
+export default {
     version: `thecliff-${Date.now()}`,
-    // timestamp: new Date().toISOString(),
-    // date: new Date().toLocaleDateString()
-}; 
-export default buildVersion;
+};

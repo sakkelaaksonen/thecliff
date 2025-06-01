@@ -54,8 +54,9 @@ navigation:
 <body>
     <main id="main-content">
         {% include "hero.njk" %}
-
+        {% if features.menu.indexMenu.enabled %}
         {% include "menu-items.njk" %}
+        {% endif %}
 
         {% include "footer.njk" %}
         </div>

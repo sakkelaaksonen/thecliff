@@ -44,5 +44,6 @@ export default {
     },
     copyright: "© 2025 The Cliff. All rights reserved.",
     designer: "muchmoredesign"
-  }
+  },
+
 };

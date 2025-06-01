@@ -1,6 +1,7 @@
 /**
  * Configuration object for all CSS classes, IDs, and magic numbers
  */
+import features from '../../_data/features.js';
 const CONFIG = {
     // Element IDs
     elements: {
@@ -70,8 +71,10 @@ export function initializeApp() {
     Navigation.init();
     
     // Initialize menu renderer
-    const menuRenderer = new MenuRenderer();
-    menuRenderer.init();
+    if (features.menu.api.enabled) {
+        const menuRenderer = new MenuRenderer();
+        menuRenderer.init();
+    }
     
     console.log('The Cliff app initialized');
 }
