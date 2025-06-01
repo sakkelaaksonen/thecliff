@@ -9,21 +9,22 @@
     "build": "npm run build:css && npm run build:js && eleventy && npm run copy:php",
     "build:assets": "npm run build:css & npm run build:js & wait",
     "build:css": "tailwindcss -i ./src/css/main.css -o ./htdocs/css/main.css --minify",
-    "build:js": "API_BASE_URL='' esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --minify --define:process.env.API_BASE_URL='\"\"'",
-    "build:js:dev": "API_BASE_URL='http://localhost:8080' esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --define:process.env.API_BASE_URL='\"http://localhost:8080\"'",
+    "build:js": "esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --minify --define:process.env.API_BASE_URL='\"\"'",
+    "build:js:dev": "esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --define:process.env.API_BASE_URL='\"http://localhost:8080\"'",
     "copy:php": "mkdir -p htdocs/admin htdocs/api && cp -r php-src/admin/. htdocs/admin/ && cp -r php-src/api/* htdocs/api/",
-    "dev": "eleventy --serve --port=8081",
+    "dev": "npm run copy:php && npm run build:js:dev && concurrently \"npm run watch:css\" \"npm run watch:js\" \"npm run watch:php\" \"npm run dev:eleventy\" \"npm run dev:php\"",
+    "dev:eleventy": "eleventy --serve --port=8081",
     "dev:php": "cd htdocs && php -S localhost:8080",
-    "dev:all": "npm run build:css && npm run build:js:dev && npm run copy:php && concurrently --names \"11ty,PHP\" --prefix-colors \"blue,yellow\" \"npm run dev\" \"npm run dev:php\"",
-    "dev:watch": "npm run copy:php && concurrently \"npm run watch:css\" \"npm run watch:js\" \"npm run watch:php\" \"npm run dev\" \"npm run dev:php\"",
+    "dev:all": "npm run build:css && npm run build:js:dev && npm run copy:php && concurrently --names \"11ty,PHP\" --prefix-colors \"blue,yellow\" \"npm run dev:eleventy\" \"npm run dev:php\"",
     "watch:css": "tailwindcss -i ./src/css/main.css -o ./htdocs/css/main.css --watch",
-    "watch:js": "esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --watch",
+    "watch:js": "esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --watch --define:process.env.API_BASE_URL='\"http://localhost:8080\"'",
     "watch:php": "nodemon --watch php-src --exec \"npm run copy:php\"",
     "deploy": "npm run build && node scripts/deploy.js",
     "deploy:test": "node scripts/deploy.js --test-connection"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^3.1.0"
+    "@11ty/eleventy": "^3.1.0",
+    "nodemon": "^3.1.10"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

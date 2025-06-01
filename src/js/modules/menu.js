@@ -32,7 +32,8 @@ class MenuRenderer {
      * Get API URL based on environment
      */
     getApiUrl() {
-        const apiBaseUrl = process.env.API_BASE_URL || '';
+        // Provide fallback if process.env is not defined
+        const apiBaseUrl = (typeof process !== 'undefined' && process.env && process.env.API_BASE_URL) || '';
         return apiBaseUrl 
             ? `${apiBaseUrl}${CONFIG.api.endpoint}`  // Development
             : CONFIG.api.endpoint;              // Production
