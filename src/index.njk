@@ -2,7 +2,6 @@
 title: "The Cliff - Music Bar"
 description: "The Cliff - Embrace great food, drinks all around and a cozy atmosphere - all wrapped up in a fabulous musical tapestry"
 keywords: "music bar, live music, cocktails, Kallio, Helsinki, craft bee, burgers, lunch, brunch"
-buildVersion: "thecliff-2025-05-30-1748590940856"
 og:
   title: "The Cliff - Music Bar"
   description: "Experience live music in Kallio"
@@ -39,9 +38,9 @@ navigation:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="build-version" content="{{ buildVersion }}">
+    <meta name="build-version" content="{{ build.version }}">
     <title>{{ title }}</title>
-    <link rel="stylesheet" href="css/main.css?v={{ buildVersion }}">
+    <link rel="stylesheet" href="css/main.css?v={{ build.version }}">
     {% for item in preload %}
     <link rel="preload" href="{{ item.href }}" as="{{ item.as }}"{% if item.type %} type="{{ item.type }}"{% endif %}>
     {% endfor %}
@@ -62,7 +61,7 @@ navigation:
         </div>
     </main>
 
-    <script src="js/main.js?v={{ buildVersion }}" defer></script>
+    <script src="js/main.js?v={{ build.version }}" defer></script>
 
     <script type="application/ld+json">
         {% include "schema.json" %}

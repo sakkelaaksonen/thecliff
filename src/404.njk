@@ -6,9 +6,9 @@ permalink: /404.html
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="build-version" content="thecliff-2025-05-30-1748590940856">
+    <meta name="build-version" content="{{ build.version }}">
     <title>Page Not Found - {{ config.siteName }}</title>
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/main.css?v={{ build.version }}">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <meta name="description" content="The page you're looking for doesn't exist. Return to {{ config.siteName }} music bar website.">
     <meta name="author" content="{{ config.siteAuthor }}">
