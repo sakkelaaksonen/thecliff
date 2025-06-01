@@ -28,9 +28,9 @@ permalink: /admin/index.html
                     <select name="category_id" id="category_id" required 
                             class="w-full px-3 py-2 bg-gray-700 border border-gray-500 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light focus:border-cliff-carmine-light">
                         <option value="">Select Category</option>
-                        <option value="mains">Main Courses</option>
-                        <option value="sides">Sides & Appetizers</option>
-                        <option value="desserts">Desserts</option>
+                        {% for category in menu.categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
 

@@ -43,11 +43,20 @@ class MenuValidator {
     }
     
     /**
-     * Validate category ID against whitelist
+     * Validate category ID against current menu categories
      */
-    public static function isValidCategory($categoryId) {
-        $allowedCategories = ['mains', 'sides', 'desserts'];
-        return in_array($categoryId, $allowedCategories);
+    public static function isValidCategory($categoryId, $menuData) {
+        if (!$menuData || !isset($menuData['categories'])) {
+            return false;
+        }
+        
+        foreach ($menuData['categories'] as $category) {
+            if ($category['id'] === $categoryId) {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     /**
@@ -179,6 +188,12 @@ class MenuManager {
      * Add new menu item
      */
     public function addItem($categoryId, $name, $description, $price) {
+        // Load current menu first to validate category
+        $menuData = $this->loadMenuData();
+        if (!$menuData) {
+            return ['success' => false, 'message' => 'Cannot load menu data'];
+        }
+        
         // Sanitize inputs
         $name = MenuValidator::sanitizeName($name);
         $description = MenuValidator::sanitizeDescription($description);
@@ -189,18 +204,12 @@ class MenuManager {
             return ['success' => false, 'message' => 'Invalid item name'];
         }
         
-        if (!MenuValidator::isValidCategory($categoryId)) {
+        if (!MenuValidator::isValidCategory($categoryId, $menuData)) {
             return ['success' => false, 'message' => 'Invalid category'];
         }
         
         if ($price === false) {
             return ['success' => false, 'message' => 'Invalid price'];
-        }
-        
-        // Load current menu
-        $menuData = $this->loadMenuData();
-        if (!$menuData) {
-            return ['success' => false, 'message' => 'Cannot load menu data'];
         }
         
         // Create new item

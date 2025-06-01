@@ -124,8 +124,18 @@ class MenuRenderer {
      */
     generateMenuHTML(menuData) {
         return menuData.categories
+            .filter(category => this.categoryHasAvailableItems(category))
             .map((category, index) => this.generateCategoryHTML(category, index))
             .join('');
+    }
+    
+    /**
+     * Check if category has any available items
+     */
+    categoryHasAvailableItems(category) {
+        return category.items && 
+               category.items.length > 0 && 
+               category.items.some(item => item.available);
     }
     
     /**
@@ -133,7 +143,8 @@ class MenuRenderer {
      */
     generateCategoryHTML(category, categoryIndex) {
         const bgClass = categoryIndex % 2 === 1 ? 'bg-neutral-900' : '';
-        const itemsHTML = this.generateItemsHTML(category.items);
+        const availableItems = category.items.filter(item => item.available);
+        const itemsHTML = this.generateItemsHTML(availableItems);
         
         return `
             <div class="min-h-screen flex flex-col p-6 md:p-12 pt-24 ${bgClass}">
@@ -152,17 +163,15 @@ class MenuRenderer {
      */
     generateItemsHTML(items) {
         return items
-            .map(item => this.generateItemHTML(item))
+            .map(item => this.generateAvailableItemHTML(item))
             .join('');
     }
     
     /**
-     * Generate HTML for a single menu item
+     * Generate HTML for a single menu item (only available items now)
      */
     generateItemHTML(item) {
-        return item.available 
-            ? this.generateAvailableItemHTML(item)
-            : this.generateUnavailableItemHTML(item);
+        return this.generateAvailableItemHTML(item);
     }
     
     /**
@@ -179,28 +188,6 @@ class MenuRenderer {
                 </p>
                 <p class="text-amber-500 font-semibold">
                     $${this.formatPrice(item.price)}
-                </p>
-            </div>
-        `;
-    }
-    
-    /**
-     * Generate HTML for unavailable menu item
-     */
-    generateUnavailableItemHTML(item) {
-        return `
-            <div class="bg-black/30 p-6 rounded-lg border border-gray-600 opacity-50 hidden">
-                <h3 class="text-2xl font-semibold mb-2 text-gray-400">
-                    ${this.escapeHtml(item.name)}
-                </h3>
-                <p class="text-gray-500 mb-2">
-                    ${this.escapeHtml(item.description)}
-                </p>
-                <p class="text-gray-500 font-semibold line-through">
-                    $${this.formatPrice(item.price)}
-                </p>
-                <p class="text-red-400 text-sm mt-1">
-                    ${CONFIG.text.unavailableLabel}
                 </p>
             </div>
         `;
