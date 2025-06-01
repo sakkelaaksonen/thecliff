@@ -9,13 +9,11 @@
 
 # Protect sensitive files
 <Files "config.php">
-    Order allow,deny
-    Deny from all
+    Require all denied
 </Files>
 
-<Files "auth-check.php">
-    Order allow,deny
-    Deny from all
+<Files ".env">
+    Require all denied
 </Files>
 
 # Protect admin HTML files from direct access
@@ -26,3 +24,15 @@
 
 # Set index.php as the only entry point
 DirectoryIndex index.php
+
+# Production environment variables (uncomment and set in production)
+# SetEnv ADMIN_USERNAME "your_admin_username"
+# SetEnv ADMIN_PASSWORD_HASH "$2y$10$your_password_hash_here"
+
+# Disable server signature
+ServerSignature Off
+
+# Prevent access to backup files
+<FilesMatch "\.(bak|backup|old|tmp)$">
+    Require all denied
+</FilesMatch>

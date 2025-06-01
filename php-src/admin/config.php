@@ -1,12 +1,29 @@
 <?php
 // php-src/admin/config.php
 /**
- * Simple admin configuration
+ * Admin configuration with environment variables
  */
 
-// Admin credentials
-define('ADMIN_USERNAME', 'admin');
-define('ADMIN_PASSWORD_HASH', password_hash('password', PASSWORD_DEFAULT));
+// Load environment variables in development
+if (file_exists(__DIR__ . '/../../.env')) {
+    $envFile = __DIR__ . '/../../.env';
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos($line, '=') !== false && strpos($line, '#') !== 0) {
+            list($key, $value) = explode('=', $line, 2);
+            $key = trim($key);
+            $value = trim($value, '"\'');
+            if (!array_key_exists($key, $_ENV)) {
+                $_ENV[$key] = $value;
+                putenv("$key=$value");
+            }
+        }
+    }
+}
+
+// Admin credentials from environment variables
+define('ADMIN_USERNAME', $_ENV['ADMIN_USERNAME'] ?? getenv('ADMIN_USERNAME') ?? 'admin');
+define('ADMIN_PASSWORD_HASH', $_ENV['ADMIN_PASSWORD_HASH'] ?? getenv('ADMIN_PASSWORD_HASH') ?? password_hash('password', PASSWORD_DEFAULT));
 
 // Session configuration
 define('SESSION_TIMEOUT', 3600); // 1 hour
