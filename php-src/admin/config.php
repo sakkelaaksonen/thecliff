@@ -2,32 +2,40 @@
 // php-src/admin/config.php
 /**
  * Admin configuration - PHP 5.6 compatible
+ * Loads credentials from external file outside document root
  */
 
-// Default credentials (fallback)
-$adminUsername = 'admin';
-$adminPasswordHash = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi';
+// Initialize variables
+$adminUsername = '';
+$adminPasswordHash = '';
 
-// Try environment variables first (production)
-if (getenv('ADMIN_USERNAME')) {
-    $adminUsername = getenv('ADMIN_USERNAME');
-}
-if (getenv('ADMIN_PASSWORD_HASH')) {
-    $adminPasswordHash = getenv('ADMIN_PASSWORD_HASH');
-}
+// Load from external credential file (production)
+$externalConfig =  '../../admin-config.php';
 
-// Try .env file (development)
-$envFile = __DIR__ . '/../../.env';
-if (file_exists($envFile)) {
-    $content = file_get_contents($envFile);
-    if ($content !== false) {
-        if (preg_match('/ADMIN_USERNAME=(.+)/', $content, $matches)) {
-            $adminUsername = trim($matches[1], '"\'');
-        }
-        if (preg_match('/ADMIN_PASSWORD_HASH=(.+)/', $content, $matches)) {
-            $adminPasswordHash = trim($matches[1], '"\'');
+if (file_exists($externalConfig)) {
+    include $externalConfig;
+    
+} 
+
+// Fallback to .env file (development only)
+if (empty($adminUsername) || empty($adminPasswordHash)) {
+    $envFile = __DIR__ . '/../../.env';
+    if (file_exists($envFile)) {
+        $content = file_get_contents($envFile);
+        if ($content !== false) {
+            if (preg_match('/ADMIN_USERNAME=(.+)/', $content, $matches)) {
+                $adminUsername = trim($matches[1], '"\'');
+            }
+            if (preg_match('/ADMIN_PASSWORD_HASH=(.+)/', $content, $matches)) {
+                $adminPasswordHash = trim($matches[1], '"\'');
+            }
         }
     }
+}
+
+// Validate that credentials are set
+if (empty($adminUsername) || empty($adminPasswordHash)) {
+    die('Admin credentials not configured. Please create admin-credentials.php file or run setup-admin.php');
 }
 
 // Define constants

@@ -5,19 +5,26 @@ npm-debug.log*
 # Build output
 htdocs/
 
-# Environment variables
+# Environment variables (contains sensitive data)
 .env
 
-# IDE
-.vscode/
-.idea/
+# Admin credentials (never commit these)
+admin-credentials.php
+../admin-credentials.php
 
-# OS
-.DS_Store
-Thumbs.db
+# Admin setup script (delete after use)
+setup-admin.php
 
 # Logs
 *.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
 
 # Temporary files
 *.tmp
@@ -157,9 +164,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# PHP source files (tracked)
-!php-src/
-
 # Keys
 keys.json
 
@@ -168,3 +172,7 @@ keys.json
 
 # But keep the structure
 !/data/.gitkeep
+
+#admin
+admin-env.conf
+admin-config.php
