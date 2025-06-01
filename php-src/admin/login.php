@@ -1,72 +1,63 @@
 <?php
 // php-src/admin/login.php
+/**
+ * Debug admin login - no redirects
+ */
+
 require_once __DIR__ . '/config.php';
+session_start();
 
-initSecureSession();
+echo "<h1>Login Debug Page</h1>";
+echo "<p><strong>File:</strong> " . __FILE__ . "</p>";
+echo "<p><strong>Session ID:</strong> " . session_id() . "</p>";
+echo "<p><strong>Session Status:</strong> " . session_status() . "</p>";
 
-// If already logged in, redirect to admin area
-if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
-    $redirect = isset($_SESSION['redirect_after_login']) ? $_SESSION['redirect_after_login'] : 'index.php';
-    unset($_SESSION['redirect_after_login']);
-    header('Location: ' . $redirect);
-    exit;
+// Debug session data
+echo "<h2>Session Data:</h2>";
+echo "<pre>" . print_r($_SESSION, true) . "</pre>";
+
+// Check if already logged in
+$isLoggedIn = isAdminLoggedIn();
+echo "<p><strong>isAdminLoggedIn():</strong> " . ($isLoggedIn ? 'TRUE' : 'FALSE') . "</p>";
+
+if ($isLoggedIn) {
+    echo "<p style='color: green;'>✅ User is logged in!</p>";
+    echo "<p><a href='/admin/index.php'>👉 Click here to go to admin dashboard</a></p>";
+} else {
+    echo "<p style='color: red;'>❌ User is NOT logged in</p>";
 }
 
 $error = '';
-$lockout = false;
 
-// Check for lockout
-if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= MAX_LOGIN_ATTEMPTS) {
-    if (isset($_SESSION['lockout_time']) && time() - $_SESSION['lockout_time'] < LOCKOUT_TIME) {
-        $lockout = true;
-        $remaining = LOCKOUT_TIME - (time() - $_SESSION['lockout_time']);
-        $error = "Too many failed attempts. Try again in " . ceil($remaining / 60) . " minutes.";
-    } else {
-        // Reset lockout
-        unset($_SESSION['login_attempts']);
-        unset($_SESSION['lockout_time']);
-    }
-}
-
-// Process login form
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$lockout) {
-    $username = isset($_POST['username']) ? $_POST['username'] : '';
-    $password = isset($_POST['password']) ? $_POST['password'] : '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    echo "<h2>Processing Login Form:</h2>";
     
-    // Verify credentials
-    if ($username === ADMIN_USERNAME && password_verify($password, ADMIN_PASSWORD_HASH)) {
-        // Successful login
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
+    
+    echo "<p><strong>Username:</strong> " . htmlspecialchars($username) . "</p>";
+    echo "<p><strong>Password length:</strong> " . strlen($password) . "</p>";
+    
+    $isValid = validateAdminCredentials($username, $password);
+    echo "<p><strong>Credentials valid:</strong> " . ($isValid ? 'TRUE' : 'FALSE') . "</p>";
+    
+    if ($isValid) {
+        echo "<p style='color: green;'>✅ Setting session variables...</p>";
+        
         $_SESSION['admin_logged_in'] = true;
+        $_SESSION['admin_username'] = $username;
         $_SESSION['login_time'] = time();
         $_SESSION['last_activity'] = time();
         
-        // Reset login attempts
-        unset($_SESSION['login_attempts']);
-        unset($_SESSION['lockout_time']);
+        echo "<p>Session variables set:</p>";
+        echo "<pre>" . print_r($_SESSION, true) . "</pre>";
         
-        // Redirect to requested page or admin home
-        $redirect = isset($_SESSION['redirect_after_login']) ? $_SESSION['redirect_after_login'] : 'index.php';
-        unset($_SESSION['redirect_after_login']);
-        header('Location: ' . $redirect);
-        exit;
+        echo "<p style='color: green;'>✅ Login successful!</p>";
+        echo "<p><a href='/admin/index.php'>👉 Click here to go to admin dashboard</a></p>";
     } else {
-        // Failed login
-        $_SESSION['login_attempts'] = isset($_SESSION['login_attempts']) ? $_SESSION['login_attempts'] + 1 : 1;
-        
-        if ($_SESSION['login_attempts'] >= MAX_LOGIN_ATTEMPTS) {
-            $_SESSION['lockout_time'] = time();
-            $lockout = true;
-            $error = "Too many failed attempts. Account locked for " . (LOCKOUT_TIME / 60) . " minutes.";
-        } else {
-            $remaining = MAX_LOGIN_ATTEMPTS - $_SESSION['login_attempts'];
-            $error = "Invalid credentials. $remaining attempts remaining.";
-        }
+        $error = 'Invalid username or password';
+        echo "<p style='color: red;'>❌ " . $error . "</p>";
     }
-}
-
-// Check for expired session message
-if (isset($_GET['expired'])) {
-    $error = "Your session has expired. Please log in again.";
 }
 ?>
 <!DOCTYPE html>
@@ -74,120 +65,51 @@ if (isset($_GET['expired'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login</title>
+    <title>Admin Login Debug</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .login-container {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 400px;
-        }
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .login-header h1 {
-            color: #333;
-            margin: 0;
-            font-size: 1.5rem;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #555;
-            font-weight: 500;
-        }
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-            box-sizing: border-box;
-        }
-        input[type="text"]:focus, input[type="password"]:focus {
-            outline: none;
-            border-color: #007cba;
-            box-shadow: 0 0 0 2px rgba(0,124,186,0.2);
-        }
-        .login-button {
-            width: 100%;
-            padding: 0.75rem;
-            background: #007cba;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .login-button:hover:not(:disabled) {
-            background: #005a87;
-        }
-        .login-button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-        .error {
-            background: #fee;
-            color: #c33;
-            padding: 0.75rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-            border: 1px solid #fcc;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 2rem;
-            color: #888;
-            font-size: 0.875rem;
-        }
+        body { font-family: monospace; margin: 2rem; }
+        .form-container { background: #f5f5f5; padding: 2rem; margin: 2rem 0; }
+        input { padding: 0.5rem; margin: 0.5rem; }
+        button { padding: 0.5rem 1rem; background: #007cba; color: white; border: none; }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <h1>Admin Login</h1>
-        </div>
+    <div class="form-container">
+        <h2>Login Form</h2>
         
         <?php if ($error): ?>
-            <div class="error"><?php echo htmlspecialchars($error); ?></div>
+            <div style="color: red; background: #fee; padding: 1rem;">
+                <?php echo htmlspecialchars($error); ?>
+            </div>
         <?php endif; ?>
         
-        <form method="post" action="">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required <?php echo $lockout ? 'disabled' : ''; ?>>
+        <form method="post">
+            <div>
+                <label for="username">Username:</label><br>
+                <input type="text" id="username" name="username" value="admin" required>
             </div>
             
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required <?php echo $lockout ? 'disabled' : ''; ?>>
+            <div>
+                <label for="password">Password:</label><br>
+                <input type="password" id="password" name="password" value="password" required>
             </div>
             
-            <button type="submit" class="login-button" <?php echo $lockout ? 'disabled' : ''; ?>>
-                <?php echo $lockout ? 'Account Locked' : 'Login'; ?>
-            </button>
+            <div>
+                <button type="submit">Login</button>
+            </div>
         </form>
         
-        <div class="footer">
-            Secure Admin Access
-        </div>
+        <p><em>Default credentials: admin / password</em></p>
     </div>
+    
+    <hr>
+    
+    <h2>Debug Links</h2>
+    <ul>
+        <li><a href="/admin/index.php">Admin Dashboard</a></li>
+        <li><a href="/admin/logout.php">Logout</a></li>
+        <li><a href="/admin/login.php">Refresh this page</a></li>
+        <li><a href="/">Back to website</a></li>
+    </ul>
 </body>
 </html> 

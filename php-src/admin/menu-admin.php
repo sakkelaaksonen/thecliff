@@ -19,11 +19,11 @@ class MenuValidator {
     }
     
     /**
-     * Validate item name
+     * Validate price format
      */
-    public static function isValidName($name) {
-        return strlen($name) >= 2 && strlen($name) <= 100 && 
-               preg_match('/^[a-zA-Z0-9\s\-\.\,\&\']+$/', $name);
+    public static function validatePrice($price) {
+        $price = floatval($price);
+        return max(0, round($price, 2));
     }
     
     /**
@@ -31,18 +31,7 @@ class MenuValidator {
      */
     public static function sanitizeDescription($description) {
         $description = trim(strip_tags($description));
-        return substr($description, 0, 500);
-    }
-    
-    /**
-     * Sanitize and validate price
-     */
-    public static function sanitizePrice($price) {
-        $price = filter_var($price, FILTER_VALIDATE_FLOAT);
-        if ($price === false || $price < 0.01 || $price > 999.99) {
-            return false;
-        }
-        return round($price, 2);
+        return substr($description, 0, 500); // Limit length
     }
     
     /**
@@ -78,11 +67,9 @@ class MenuManager {
     private $dataDir;
     
     public function __construct() {
-        // Use shared data directory at project root
-        $this->dataDir = realpath(__DIR__ . '/../../data');
+        $this->dataDir = __DIR__ . '/../data';
         $this->menuFile = $this->dataDir . '/menu.json';
         $this->ensureDataDirectory();
-        $this->initializeMenuFile();
     }
     
     /**
@@ -90,100 +77,72 @@ class MenuManager {
      */
     private function ensureDataDirectory() {
         if (!is_dir($this->dataDir)) {
-            mkdir($this->dataDir, 0755, true);
+            if (!mkdir($this->dataDir, 0755, true)) {
+                throw new Exception('Unable to create data directory');
+            }
         }
     }
     
     /**
-     * Initialize menu file with default structure
+     * Load menu data, create default if doesn't exist
      */
-    private function initializeMenuFile() {
+    private function loadMenu() {
         if (!file_exists($this->menuFile)) {
-            $defaultMenu = array(
-                'lastUpdated' => date('c'),
-                'categories' => array(
-                    array(
-                        'id' => 'mains',
-                        'name' => 'Main Courses',
-                        'items' => array()
-                    ),
-                    array(
-                        'id' => 'sides',
-                        'name' => 'Sides & Appetizers',
-                        'items' => array()
-                    ),
-                    array(
-                        'id' => 'desserts',
-                        'name' => 'Desserts',
-                        'items' => array()
-                    )
-                )
-            );
-            $this->saveMenuData($defaultMenu);
-        }
-    }
-    
-    /**
-     * Load menu data from JSON file
-     */
-    public function loadMenuData() {
-        if (!file_exists($this->menuFile)) {
-            return false;
+            return $this->createDefaultMenu();
         }
         
         $jsonData = file_get_contents($this->menuFile);
-        $menuData = json_decode($jsonData, true);
+        $menu = json_decode($jsonData, true);
         
         if (json_last_error() !== JSON_ERROR_NONE) {
-            error_log('Menu JSON decode error: ' . json_last_error_msg());
-            return false;
+            throw new Exception('Invalid menu data format');
         }
         
-        return $menuData;
+        return $menu;
     }
     
     /**
-     * Save menu data to JSON file with atomic write
+     * Create default menu structure
      */
-    public function saveMenuData($menuData) {
-        $menuData['lastUpdated'] = date('c');
+    private function createDefaultMenu() {
+        $defaultMenu = array(
+            'categories' => array(
+                array(
+                    'id' => 'appetizers',
+                    'name' => 'Appetizers',
+                    'description' => 'Start your meal with our delicious appetizers',
+                    'items' => array()
+                ),
+                array(
+                    'id' => 'mains',
+                    'name' => 'Main Courses', 
+                    'description' => 'Hearty meals to satisfy your appetite',
+                    'items' => array()
+                ),
+                array(
+                    'id' => 'drinks',
+                    'name' => 'Beverages',
+                    'description' => 'Craft cocktails and local brews',
+                    'items' => array()
+                )
+            ),
+            'lastUpdated' => date('c'),
+            'version' => '1.0'
+        );
         
-        // Validate JSON structure
-        $jsonData = json_encode($menuData, JSON_PRETTY_PRINT);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            error_log('Menu JSON encode error: ' . json_last_error_msg());
-            return false;
-        }
+        $this->saveMenu($defaultMenu);
+        return $defaultMenu;
+    }
+    
+    /**
+     * Save menu data to file
+     */
+    private function saveMenu($menu) {
+        $menu['lastUpdated'] = date('c');
+        $jsonData = json_encode($menu, JSON_PRETTY_PRINT);
         
-        // Atomic write: write to temp file first
-        $tempFile = $this->menuFile . '.tmp';
-        
-        // Use file locking to prevent concurrent writes
-        $handle = fopen($tempFile, 'w');
-        if (!$handle) {
-            error_log('Cannot create temp menu file: ' . $tempFile);
-            return false;
-        }
-        
-        if (flock($handle, LOCK_EX)) {
-            fwrite($handle, $jsonData);
-            fflush($handle);
-            flock($handle, LOCK_UN);
-            fclose($handle);
-            
-            // Atomic rename
-            if (rename($tempFile, $this->menuFile)) {
-                return true;
-            } else {
-                error_log('Cannot rename temp menu file');
-                unlink($tempFile);
-                return false;
-            }
-        } else {
-            fclose($handle);
-            unlink($tempFile);
-            error_log('Cannot lock temp menu file');
-            return false;
+        if (file_put_contents($this->menuFile, $jsonData) === false) {
+            throw new Exception('Unable to save menu data');
         }
     }
     
@@ -191,52 +150,93 @@ class MenuManager {
      * Add new menu item
      */
     public function addItem($categoryId, $name, $description, $price) {
-        // Load current menu first to validate category
-        $menuData = $this->loadMenuData();
-        if (!$menuData) {
-            return array('success' => false, 'message' => 'Cannot load menu data');
-        }
-        
-        // Sanitize inputs
-        $name = MenuValidator::sanitizeName($name);
-        $description = MenuValidator::sanitizeDescription($description);
-        $price = MenuValidator::sanitizePrice($price);
-        
-        // Validate inputs
-        if (!MenuValidator::isValidName($name)) {
-            return array('success' => false, 'message' => 'Invalid item name');
-        }
-        
-        if (!MenuValidator::isValidCategory($categoryId, $menuData)) {
-            return array('success' => false, 'message' => 'Invalid category');
-        }
-        
-        if ($price === false) {
-            return array('success' => false, 'message' => 'Invalid price');
-        }
-        
-        // Create new item
-        $newItem = array(
-            'id' => MenuValidator::generateItemId($name),
-            'name' => $name,
-            'description' => $description,
-            'price' => $price,
-            'available' => true
-        );
-        
-        // Add to appropriate category
-        foreach ($menuData['categories'] as &$category) {
-            if ($category['id'] === $categoryId) {
-                $category['items'][] = $newItem;
-                break;
+        try {
+            $menu = $this->loadMenu();
+            
+            // Validate and sanitize input
+            $name = MenuValidator::sanitizeName($name);
+            $description = MenuValidator::sanitizeDescription($description);
+            $price = MenuValidator::validatePrice($price);
+            
+            if (empty($name)) {
+                return array('success' => false, 'message' => 'Item name is required');
             }
-        }
-        
-        // Save updated menu
-        if ($this->saveMenuData($menuData)) {
+            
+            // Find category
+            $categoryIndex = -1;
+            for ($i = 0; $i < count($menu['categories']); $i++) {
+                if ($menu['categories'][$i]['id'] === $categoryId) {
+                    $categoryIndex = $i;
+                    break;
+                }
+            }
+            
+            if ($categoryIndex === -1) {
+                return array('success' => false, 'message' => 'Category not found');
+            }
+            
+            // Create new item
+            $newItem = array(
+                'id' => MenuValidator::generateItemId($name),
+                'name' => $name,
+                'description' => $description,
+                'price' => $price,
+                'available' => true,
+                'dietary' => array()
+            );
+            
+            // Add to category
+            $menu['categories'][$categoryIndex]['items'][] = $newItem;
+            
+            $this->saveMenu($menu);
+            
             return array('success' => true, 'message' => 'Item added successfully');
-        } else {
-            return array('success' => false, 'message' => 'Failed to save menu');
+            
+        } catch (Exception $e) {
+            return array('success' => false, 'message' => 'Error: ' . $e->getMessage());
+        }
+    }
+    
+    /**
+     * Update existing menu item
+     */
+    public function updateItem($itemId, $name, $description, $price) {
+        try {
+            $menu = $this->loadMenu();
+            
+            // Validate and sanitize input
+            $name = MenuValidator::sanitizeName($name);
+            $description = MenuValidator::sanitizeDescription($description);
+            $price = MenuValidator::validatePrice($price);
+            
+            if (empty($name)) {
+                return array('success' => false, 'message' => 'Item name is required');
+            }
+            
+            // Find and update item
+            $found = false;
+            for ($i = 0; $i < count($menu['categories']); $i++) {
+                for ($j = 0; $j < count($menu['categories'][$i]['items']); $j++) {
+                    if ($menu['categories'][$i]['items'][$j]['id'] === $itemId) {
+                        $menu['categories'][$i]['items'][$j]['name'] = $name;
+                        $menu['categories'][$i]['items'][$j]['description'] = $description;
+                        $menu['categories'][$i]['items'][$j]['price'] = $price;
+                        $found = true;
+                        break 2;
+                    }
+                }
+            }
+            
+            if (!$found) {
+                return array('success' => false, 'message' => 'Item not found');
+            }
+            
+            $this->saveMenu($menu);
+            
+            return array('success' => true, 'message' => 'Item updated successfully');
+            
+        } catch (Exception $e) {
+            return array('success' => false, 'message' => 'Error: ' . $e->getMessage());
         }
     }
     
@@ -244,59 +244,71 @@ class MenuManager {
      * Toggle item availability
      */
     public function toggleAvailability($itemId) {
-        $menuData = $this->loadMenuData();
-        if (!$menuData) {
-            return array('success' => false, 'message' => 'Cannot load menu data');
-        }
-        
-        // Find and toggle item
-        foreach ($menuData['categories'] as &$category) {
-            foreach ($category['items'] as &$item) {
-                if ($item['id'] === $itemId) {
-                    $item['available'] = !$item['available'];
-                    
-                    if ($this->saveMenuData($menuData)) {
-                        return array('success' => true, 'message' => 'Item updated successfully');
-                    } else {
-                        return array('success' => false, 'message' => 'Failed to save menu');
+        try {
+            $menu = $this->loadMenu();
+            
+            // Find and toggle item
+            $found = false;
+            for ($i = 0; $i < count($menu['categories']); $i++) {
+                for ($j = 0; $j < count($menu['categories'][$i]['items']); $j++) {
+                    if ($menu['categories'][$i]['items'][$j]['id'] === $itemId) {
+                        $menu['categories'][$i]['items'][$j]['available'] = !$menu['categories'][$i]['items'][$j]['available'];
+                        $found = true;
+                        break 2;
                     }
                 }
             }
+            
+            if (!$found) {
+                return array('success' => false, 'message' => 'Item not found');
+            }
+            
+            $this->saveMenu($menu);
+            
+            return array('success' => true, 'message' => 'Item availability updated');
+            
+        } catch (Exception $e) {
+            return array('success' => false, 'message' => 'Error: ' . $e->getMessage());
         }
-        
-        return array('success' => false, 'message' => 'Item not found');
     }
     
     /**
      * Delete menu item
      */
     public function deleteItem($itemId) {
-        $menuData = $this->loadMenuData();
-        if (!$menuData) {
-            return array('success' => false, 'message' => 'Cannot load menu data');
-        }
-        
-        // Find and remove item
-        foreach ($menuData['categories'] as &$category) {
-            $category['items'] = array_filter($category['items'], function($item) use ($itemId) {
-                return $item['id'] !== $itemId;
-            });
-            $category['items'] = array_values($category['items']); // Reindex array
-        }
-        
-        if ($this->saveMenuData($menuData)) {
+        try {
+            $menu = $this->loadMenu();
+            
+            // Find and remove item
+            $found = false;
+            for ($i = 0; $i < count($menu['categories']); $i++) {
+                for ($j = 0; $j < count($menu['categories'][$i]['items']); $j++) {
+                    if ($menu['categories'][$i]['items'][$j]['id'] === $itemId) {
+                        array_splice($menu['categories'][$i]['items'], $j, 1);
+                        $found = true;
+                        break 2;
+                    }
+                }
+            }
+            
+            if (!$found) {
+                return array('success' => false, 'message' => 'Item not found');
+            }
+            
+            $this->saveMenu($menu);
+            
             return array('success' => true, 'message' => 'Item deleted successfully');
-        } else {
-            return array('success' => false, 'message' => 'Failed to save menu');
+            
+        } catch (Exception $e) {
+            return array('success' => false, 'message' => 'Error: ' . $e->getMessage());
         }
     }
 }
 
-// Handle POST requests only
+// Process form submission
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    header('Allow: POST');
-    exit('Method not allowed');
+    header('Location: /admin/');
+    exit;
 }
 
 $menuManager = new MenuManager();
@@ -306,9 +318,18 @@ switch ($action) {
     case 'add_item':
         $result = $menuManager->addItem(
             isset($_POST['category_id']) ? $_POST['category_id'] : '',
-            isset($_POST['item_name']) ? $_POST['item_name'] : '',
-            isset($_POST['item_description']) ? $_POST['item_description'] : '',
-            isset($_POST['item_price']) ? $_POST['item_price'] : ''
+            isset($_POST['name']) ? $_POST['name'] : '',
+            isset($_POST['description']) ? $_POST['description'] : '',
+            isset($_POST['price']) ? $_POST['price'] : 0
+        );
+        break;
+        
+    case 'update_item':
+        $result = $menuManager->updateItem(
+            isset($_POST['item_id']) ? $_POST['item_id'] : '',
+            isset($_POST['name']) ? $_POST['name'] : '',
+            isset($_POST['description']) ? $_POST['description'] : '',
+            isset($_POST['price']) ? $_POST['price'] : 0
         );
         break;
         
