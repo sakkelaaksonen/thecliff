@@ -86,63 +86,61 @@ class MenuManager {
     /**
      * Load menu data, create default if doesn't exist
      */
-    private function loadMenu() {
+    public function loadMenu() {
         if (!file_exists($this->menuFile)) {
-            return $this->createDefaultMenu();
+            $defaultMenu = array(
+                'categories' => array(
+                    array(
+                        'id' => 'wine-selection',
+                        'name' => 'Wine Selection',
+                        'items' => array()
+                    ),
+                    array(
+                        'id' => 'bar-bites',
+                        'name' => 'Bar Bites',
+                        'items' => array()
+                    )
+                )
+            );
+            $this->saveMenu($defaultMenu);
+            return $defaultMenu;
         }
         
-        $jsonData = file_get_contents($this->menuFile);
-        $menu = json_decode($jsonData, true);
+        $content = file_get_contents($this->menuFile);
+        if ($content === false) {
+            throw new Exception('Unable to read menu file');
+        }
         
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception('Invalid menu data format');
+        $menu = json_decode($content, true);
+        if ($menu === null) {
+            throw new Exception('Invalid menu file format');
         }
         
         return $menu;
     }
     
     /**
-     * Create default menu structure
+     * Save menu data with backup
      */
-    private function createDefaultMenu() {
-        $defaultMenu = array(
-            'categories' => array(
-                array(
-                    'id' => 'appetizers',
-                    'name' => 'Appetizers',
-                    'description' => 'Start your meal with our delicious appetizers',
-                    'items' => array()
-                ),
-                array(
-                    'id' => 'mains',
-                    'name' => 'Main Courses', 
-                    'description' => 'Hearty meals to satisfy your appetite',
-                    'items' => array()
-                ),
-                array(
-                    'id' => 'drinks',
-                    'name' => 'Beverages',
-                    'description' => 'Craft cocktails and local brews',
-                    'items' => array()
-                )
-            ),
-            'lastUpdated' => date('c'),
-            'version' => '1.0'
-        );
+    private function saveMenu($menuData) {
+        // Create backup if file exists
+        if (file_exists($this->menuFile)) {
+            $backupFile = $this->menuFile . '.backup.' . date('Y-m-d-H-i-s');
+            copy($this->menuFile, $backupFile);
+            
+            // Keep only last 5 backups
+            $backups = glob($this->menuFile . '.backup.*');
+            if (count($backups) > 5) {
+                rsort($backups);
+                for ($i = 5; $i < count($backups); $i++) {
+                    unlink($backups[$i]);
+                }
+            }
+        }
         
-        $this->saveMenu($defaultMenu);
-        return $defaultMenu;
-    }
-    
-    /**
-     * Save menu data to file
-     */
-    private function saveMenu($menu) {
-        $menu['lastUpdated'] = date('c');
-        $jsonData = json_encode($menu, JSON_PRETTY_PRINT);
-        
-        if (file_put_contents($this->menuFile, $jsonData) === false) {
-            throw new Exception('Unable to save menu data');
+        $json = json_encode($menuData, JSON_PRETTY_PRINT);
+        if (file_put_contents($this->menuFile, $json, LOCK_EX) === false) {
+            throw new Exception('Unable to save menu file');
         }
     }
     
@@ -162,17 +160,8 @@ class MenuManager {
                 return array('success' => false, 'message' => 'Item name is required');
             }
             
-            // Find category
-            $categoryIndex = -1;
-            for ($i = 0; $i < count($menu['categories']); $i++) {
-                if ($menu['categories'][$i]['id'] === $categoryId) {
-                    $categoryIndex = $i;
-                    break;
-                }
-            }
-            
-            if ($categoryIndex === -1) {
-                return array('success' => false, 'message' => 'Category not found');
+            if (!MenuValidator::isValidCategory($categoryId, $menu)) {
+                return array('success' => false, 'message' => 'Invalid category selected');
             }
             
             // Create new item
@@ -181,12 +170,16 @@ class MenuManager {
                 'name' => $name,
                 'description' => $description,
                 'price' => $price,
-                'available' => true,
-                'dietary' => array()
+                'available' => true
             );
             
-            // Add to category
-            $menu['categories'][$categoryIndex]['items'][] = $newItem;
+            // Add to appropriate category
+            for ($i = 0; $i < count($menu['categories']); $i++) {
+                if ($menu['categories'][$i]['id'] === $categoryId) {
+                    $menu['categories'][$i]['items'][] = $newItem;
+                    break;
+                }
+            }
             
             $this->saveMenu($menu);
             
@@ -308,6 +301,13 @@ class MenuManager {
 // Process form submission
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: /admin/');
+    exit;
+}
+
+// Validate CSRF token first
+$csrfToken = isset($_POST['csrf_token']) ? $_POST['csrf_token'] : '';
+if (!validateCSRFToken($csrfToken)) {
+    header("Location: /admin/?message=" . urlencode('Invalid request. Please try again.') . "&type=error");
     exit;
 }
 
