@@ -5,6 +5,9 @@
     Header always set Cache-Control "no-cache, no-store, must-revalidate"
     Header always set Pragma "no-cache"
     Header always set Expires "0"
+    
+    # Additional admin security
+    Header always set X-Robots-Tag "noindex, nofollow"
 </IfModule>
 
 # Force index.php as the ONLY entry point
@@ -15,23 +18,31 @@ DirectoryIndex index.php
     Require all denied
 </Files>
 
-# Protect sensitive files
-<Files "config.php">
+# Block direct access to sensitive admin files
+<FilesMatch "^(config|auth-check|menu-admin)\.php$">
     Require all denied
-</Files>
+</FilesMatch>
 
 <Files ".env">
-    Require all denied
-</Files>
-
-<Files "auth-check.php">
     Require all denied
 </Files>
 
 # Disable server signature
 ServerSignature Off
 
-# Prevent access to backup files
-<FilesMatch "\.(bak|backup|old|tmp)$">
+# Prevent access to backup/temp files
+<FilesMatch "\.(bak|backup|old|tmp|log)$">
     Require all denied
 </FilesMatch>
+
+# Block common attack patterns
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Block SQL injection attempts
+    RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+    RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
+    RewriteCond %{QUERY_STRING} (\||%7C) [NC]
+    RewriteRule .* - [F,L]
+</IfModule>

@@ -5,6 +5,9 @@
  */
 
 require_once __DIR__ . '/config.php';
+
+// Configure secure session before starting
+configureSecureSession();
 session_start();
 
 // If already logged in, redirect to admin
@@ -18,19 +21,31 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = isset($_POST['username']) ? $_POST['username'] : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
+    $csrfToken = isset($_POST['csrf_token']) ? $_POST['csrf_token'] : '';
     
-    if (validateAdminCredentials($username, $password)) {
-        $_SESSION['admin_logged_in'] = true;
-        $_SESSION['admin_username'] = $username;
-        $_SESSION['login_time'] = time();
-        $_SESSION['last_activity'] = time();
+    // Validate CSRF token
+    if (!validateCSRFToken($csrfToken)) {
+        $error = 'Invalid request. Please try again.';
+    } elseif (validateAdminCredentials($username, $password)) {
+        // Initialize secure session
+        initializeAdminSession($username);
         
-        header('Location: /admin/index.php');
+        // Redirect to admin or requested page
+        $redirectUrl = isset($_SESSION['redirect_after_login']) ? $_SESSION['redirect_after_login'] : '/admin/index.php';
+        unset($_SESSION['redirect_after_login']);
+        
+        header('Location: ' . $redirectUrl);
         exit;
     } else {
         $error = 'Invalid username or password';
+        
+        // Add small delay to prevent brute force
+        sleep(1);
     }
 }
+
+// Generate CSRF token for form
+$csrfToken = generateCSRFToken();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,6 +79,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
             
             <form method="post" class="space-y-6">
+                <!-- CSRF Token -->
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                
                 <div>
                     <label for="username" class="block text-gray-200 font-semibold text-lg uppercase tracking-wide mb-3">
                         Username
@@ -76,6 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         placeholder="Enter username"
                         required 
                         autocomplete="username"
+                        maxlength="50"
                     >
                 </div>
                 
@@ -91,6 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         placeholder="Enter password"
                         required 
                         autocomplete="current-password"
+                        maxlength="100"
                     >
                 </div>
                 
