@@ -49,20 +49,13 @@ This example demonstrates the use of ES module syntax, modularity, and clear com
 
 ##  PHP
 
-PHP Version: 5.6.40
-
-Prefer classes over functions.
-
-Prefer OOP over procedural code when there are benefits for it.
-
-Consider php 5.6 security issues
-
-Follow Apache security best practices.
-
-Follow Php security best practices. (5.6)
-
-
+- PHP Version: 5.6.40
+- Prefer classes over functions.
+- Prefer OOP over procedural code when there are benefits for it.
+- Consider php 5.6 security issues
+- Follow Apache security best practices.
+- Follow Php security best practices. (5.6)
 
 ## Dev Environment
 
-Ignore htdocs folder and all other build assets. Read files from there only when verifying the build.
+Ignore htdocs folder and all other build assets. Read files from there only when verifying the build or debugging server issues.

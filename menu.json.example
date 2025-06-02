@@ -1,0 +1,32 @@
+{
+  "categories": [
+    {
+      "name": "Wine Selection",
+      "items": [
+        {
+          "name": "House Red Wine",
+          "description": "A smooth blend of local grapes",
+          "price": 12.50,
+          "available": true
+        },
+        {
+          "name": "Premium Chardonnay",
+          "description": "Crisp white wine with citrus notes",
+          "price": 15.00,
+          "available": false
+        }
+      ]
+    },
+    {
+      "name": "Bar Bites",
+      "items": [
+        {
+          "name": "Cliff Burger",
+          "description": "Signature beef burger with house sauce",
+          "price": 18.00,
+          "available": true
+        }
+      ]
+    }
+  ]
+}

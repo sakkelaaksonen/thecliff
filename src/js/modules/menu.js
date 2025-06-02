@@ -1,6 +1,54 @@
 /**
  * Menu Renderer Module
  * Handles dynamic menu loading and rendering from API
+ * 
+ * @typedef {Object} MenuItem
+ * @property {string} name - The name of the menu item
+ * @property {string} description - Description of the menu item
+ * @property {number|string} price - Price of the item (numeric or string format)
+ * @property {boolean} available - Whether the item is currently available
+ * 
+ * @typedef {Object} MenuCategory
+ * @property {string} name - The name of the menu category (e.g., "Wine Selection", "Bar Bites")
+ * @property {MenuItem[]} items - Array of menu items in this category
+ * 
+ * @typedef {Object} MenuData
+ * @property {MenuCategory[]} categories - Array of menu categories
+ * 
+ * @example
+ * // Expected API response structure:
+ * {
+ *   "categories": [
+ *     {
+ *       "name": "Wine Selection",
+ *       "items": [
+ *         {
+ *           "name": "House Red Wine",
+ *           "description": "A smooth blend of local grapes",
+ *           "price": 12.50,
+ *           "available": true
+ *         },
+ *         {
+ *           "name": "Premium Chardonnay",
+ *           "description": "Crisp white wine with citrus notes",
+ *           "price": 15.00,
+ *           "available": false
+ *         }
+ *       ]
+ *     },
+ *     {
+ *       "name": "Bar Bites",
+ *       "items": [
+ *         {
+ *           "name": "Cliff Burger",
+ *           "description": "Signature beef burger with house sauce",
+ *           "price": 18.00,
+ *           "available": true
+ *         }
+ *       ]
+ *     }
+ *   ]
+ * }
  */
 
 const CONFIG = {
@@ -30,6 +78,7 @@ class MenuRenderer {
     
     /**
      * Get API URL based on environment
+     * @returns {string} The complete API URL
      */
     getApiUrl() {
         // Provide fallback if process.env is not defined
@@ -41,6 +90,7 @@ class MenuRenderer {
     
     /**
      * Initialize the menu renderer
+     * @returns {Promise<void>}
      */
     async init() {
         this.menuContainer = document.getElementById(CONFIG.elements.menuContainer);
@@ -54,6 +104,7 @@ class MenuRenderer {
     
     /**
      * Load menu with retry logic
+     * @returns {Promise<void>}
      */
     async loadMenuWithRetry() {
         try {
@@ -73,6 +124,8 @@ class MenuRenderer {
     
     /**
      * Fetch menu data and render
+     * @returns {Promise<void>}
+     * @throws {Error} When API request fails or times out
      */
     async loadAndRenderMenu() {
         const controller = new AbortController();
@@ -100,6 +153,8 @@ class MenuRenderer {
     
     /**
      * Render menu data to DOM
+     * @param {MenuData} menuData - The menu data to render
+     * @throws {Error} When menu data is invalid
      */
     renderMenu(menuData) {
         if (!this.validateMenuData(menuData)) {
@@ -113,6 +168,8 @@ class MenuRenderer {
     
     /**
      * Validate menu data structure
+     * @param {MenuData} menuData - The menu data to validate
+     * @returns {boolean} True if valid, false otherwise
      */
     validateMenuData(menuData) {
         return menuData && 
@@ -122,6 +179,8 @@ class MenuRenderer {
     
     /**
      * Generate complete menu HTML
+     * @param {MenuData} menuData - The menu data
+     * @returns {string} Complete HTML string for all menu categories
      */
     generateMenuHTML(menuData) {
         return menuData.categories
@@ -132,6 +191,8 @@ class MenuRenderer {
     
     /**
      * Check if category has any available items
+     * @param {MenuCategory} category - The category to check
+     * @returns {boolean} True if category has available items
      */
     categoryHasAvailableItems(category) {
         return category.items && 
@@ -141,6 +202,9 @@ class MenuRenderer {
     
     /**
      * Generate HTML for a single category
+     * @param {MenuCategory} category - The category data
+     * @param {number} categoryIndex - Index of the category (for styling)
+     * @returns {string} HTML string for the category
      */
     generateCategoryHTML(category, categoryIndex) {
         const bgClass = categoryIndex % 2 === 1 ? 'bg-neutral-900' : '';
@@ -161,6 +225,8 @@ class MenuRenderer {
     
     /**
      * Generate HTML for all items in a category
+     * @param {MenuItem[]} items - Array of menu items
+     * @returns {string} HTML string for all items
      */
     generateItemsHTML(items) {
         return items
@@ -170,6 +236,8 @@ class MenuRenderer {
     
     /**
      * Generate HTML for a single menu item (only available items now)
+     * @param {MenuItem} item - The menu item data
+     * @returns {string} HTML string for the item
      */
     generateItemHTML(item) {
         return this.generateAvailableItemHTML(item);
@@ -177,6 +245,8 @@ class MenuRenderer {
     
     /**
      * Generate HTML for available menu item
+     * @param {MenuItem} item - The menu item data
+     * @returns {string} HTML string for available item
      */
     generateAvailableItemHTML(item) {
         return `
@@ -196,6 +266,8 @@ class MenuRenderer {
     
     /**
      * Format price for display
+     * @param {number|string} price - The price to format
+     * @returns {string} Formatted price string
      */
     formatPrice(price) {
         return typeof price === 'number' ? price.toFixed(2) : String(price);
@@ -203,6 +275,8 @@ class MenuRenderer {
     
     /**
      * Escape HTML to prevent XSS
+     * @param {string} text - Text to escape
+     * @returns {string} HTML-escaped text
      */
     escapeHtml(text) {
         const div = document.createElement('div');
