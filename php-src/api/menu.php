@@ -7,7 +7,22 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
-header('Cache-Control: public, max-age=60'); // 1 minute cache
+
+// Disable cache for development, enable for production
+$isLocalhost = isset($_SERVER['HTTP_HOST']) && (
+    strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
+    strpos($_SERVER['HTTP_HOST'], '127.0.0.1') !== false
+);
+
+if ($isLocalhost) {
+    // No caching for development
+    header('Cache-Control: no-cache, no-store, must-revalidate');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+} else {
+    // Light caching for production (1 minute)
+    header('Cache-Control: public, max-age=60');
+}
 
 // Load menu data from shared location
 $menuFile = realpath(__DIR__ . '/../../data/menu.json');
