@@ -38,10 +38,7 @@ permalink: /admin/index.html
                     <label for="category_id" class="block text-sm font-medium text-gray-200 mb-2">Category</label>
                     <select name="category_id" id="category_id" required 
                             class="w-full px-3 py-2 bg-gray-700 border border-gray-500 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light focus:border-cliff-carmine-light">
-                        <option value="">Select Category</option>
-                        {% for category in menu.categories %}
-                        <option value="{{ category.id }}">{{ category.name }}</option>
-                        {% endfor %}
+                        <option value="">Loading categories...</option>
                     </select>
                 </div>
 
@@ -105,6 +102,7 @@ async function loadMenu() {
         
         const menuData = await response.json();
         renderMenu(menuData);
+        populateCategoryDropdown(menuData);
     } catch (error) {
         container.innerHTML = `
             <div class="text-center text-red-400 py-8">
@@ -114,6 +112,25 @@ async function loadMenu() {
                 </button>
             </div>
         `;
+    }
+}
+
+function populateCategoryDropdown(menuData) {
+    const categorySelect = document.getElementById('category_id');
+    
+    // Clear existing options
+    categorySelect.innerHTML = '<option value="">Select Category</option>';
+    
+    // Add categories from current menu data
+    if (menuData.categories && menuData.categories.length > 0) {
+        menuData.categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.id;
+            option.textContent = category.name;
+            categorySelect.appendChild(option);
+        });
+    } else {
+        categorySelect.innerHTML = '<option value="">No categories available</option>';
     }
 }
 

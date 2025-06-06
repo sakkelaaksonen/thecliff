@@ -18,10 +18,19 @@ DirectoryIndex index.php
     Require all denied
 </Files>
 
-# Block direct access to sensitive admin files
-<FilesMatch "^(config|auth-check|menu-admin)\.php$">
+# Block direct GET access to sensitive admin files, but allow POST for menu-admin.php
+<FilesMatch "^(config|auth-check)\.php$">
     Require all denied
 </FilesMatch>
+
+# Block GET requests to menu-admin.php, but allow POST
+<Files "menu-admin.php">
+    <RequireAll>
+        <RequireAny>
+            Require method POST
+        </RequireAny>
+    </RequireAll>
+</Files>
 
 <Files ".env">
     Require all denied
