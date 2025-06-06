@@ -20,7 +20,11 @@
     "watch:js": "esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --watch --define:process.env.API_BASE_URL='\"http://localhost:8080\"'",
     "watch:php": "nodemon --watch php-src --exec \"npm run copy:php\"",
     "deploy": "npm run build && node scripts/deploy.js",
-    "deploy:test": "node scripts/deploy.js --test-connection"
+    "deploy:test": "node scripts/deploy.js --test-connection",
+    "db:migrate": "php scripts/json-to-sql-migration.php",
+    "db:migrate:dev": "php scripts/json-to-sql-migration.php --environment=development",
+    "db:migrate:prod": "php scripts/json-to-sql-migration.php --environment=production",
+    "db:backup": "php -r \"require 'php-src/admin/menu-manager-sql.php'; (new MenuManagerSQL())->createBackup();\""
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.0",
