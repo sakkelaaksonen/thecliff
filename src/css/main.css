@@ -1,63 +1,9 @@
 /* src/css/main.css */
 @import "tailwindcss";
 @import "./theme.css";
+@import "./hero.css";
 
 @layer components {
-
-  /* Default video styling - no scaling, natural fit */
-  .hero-video {
-    @apply absolute inset-0 w-full h-full;
-    object-fit: contain;
-    object-position: center center;
-    background-color: black;
-  }
-
-  /* For screens narrower than 16:9, use cover to fill */
-  @media (max-aspect-ratio: 16/9) {
-    .hero-video {
-      object-fit: cover;
-      object-position: center center;
-    }
-  }
-
-  /* Mobile portrait specific video handling */
-  @media (max-width: 768px) and (orientation: portrait) {
-    .hero-video {
-      object-fit: cover;
-      object-position: center center;
-      min-height: 100vh;
-      min-width: 100vw;
-    }
-  }
-
-  /* Specific handling for screens with aspect ratio similar to 357x667 or narrower */
-  @media (max-width: 768px) and (orientation: portrait) and (max-aspect-ratio: 9/16) {
-    .hero-video {
-      object-fit: cover;
-      object-position: center center;
-      min-height: 100vh;
-      min-width: 100vw;
-      transform: scale(1.1);
-      transform-origin: center;
-    }
-  }
-
-  /* Even more specific for very narrow screens (like 357x667) */
-  @media (max-width: 400px) and (orientation: portrait) and (max-aspect-ratio: 0.54) {
-    .hero-video {
-      object-fit: cover;
-      object-position: center center;
-      min-height: 100vh;
-      min-width: 100vw;
-      transform: scale(1.15);
-      transform-origin: center;
-    }
-  }
-
-  /* Ensure video container has black background */
-  .hero-video-container {
-    @apply relative min-h-screen w-full overflow-hidden bg-black;
-  }
 
   .menu-card {
     @apply bg-card-bg p-6 rounded-lg border border-cliff-carmine;
@@ -139,22 +85,6 @@
     @apply w-full;
   }
 
-  /* Hero contact link */
-  .hero-contact-link {
-    @apply text-sm text-gray-300 hover:text-cliff-carmine-light transition-colors duration-300;
-    @apply focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light rounded-lg px-2 py-1;
-    @apply relative;
-  }
-
-  .hero-contact-link::after {
-    content: '';
-    @apply absolute bottom-0 left-0 w-0 h-px bg-cliff-carmine-light;
-    transition: width 0.3s ease;
-  }
-
-  .hero-contact-link:hover::after {
-    @apply w-full;
-  }
 
   /* Address link styling */
   .address-link {
@@ -188,31 +118,9 @@
     @apply w-full;
   }
 
-  /* Hero announcement box styling */
-  .hero-announcement-box {
-    @apply bg-gray-800 border-2 border-cliff-carmine;
-    @apply rounded-lg p-4 mb-6 max-w-md mx-auto;
-    @apply shadow-lg;
-  }
-
-  .hero-announcement-text {
-    @apply text-white text-center text-sm md:text-base;
-    @apply leading-relaxed;
-  }
-
-  .hero-announcement-date {
-    @apply text-cliff-carmine-bright font-bold;
-  }
-
-  .hero-announcement-highlight {
-    @apply text-cliff-carmine-light font-semibold;
-  }
+ 
 }
 
-/* Video fallback for noscript */
-.video-fallback {
-  display: block !important;
-}
 
 /* Scroll offset for sections */
 .scroll-target {

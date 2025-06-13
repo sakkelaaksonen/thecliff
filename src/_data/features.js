@@ -9,7 +9,7 @@ export default  {
         url: "/admin"
       },
       indexMenu:  {
-        enabled: true,
+        enabled: false,
       },
   }
 }

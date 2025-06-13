@@ -20,7 +20,13 @@
     "watch:js": "esbuild src/js/main.js --bundle --outfile=htdocs/js/main.js --format=esm --watch --define:process.env.API_BASE_URL='\"http://localhost:8080\"'",
     "watch:php": "nodemon --watch php-src --exec \"npm run copy:php\"",
     "deploy": "npm run build && node scripts/deploy.js",
-    "deploy:test": "node scripts/deploy.js --test-connection"
+    "deploy:test": "node scripts/deploy.js --test-connection",
+    "video:info": "node scripts/video-info.js",
+    "video:compress": "node scripts/video-compress.js",
+    "video:web": "node scripts/video-compress.js --preset web",
+    "video:mobile": "node scripts/video-compress.js --preset mobile",
+    "video:720p": "node scripts/video-compress.js --preset 720p",
+    "video:480p": "node scripts/video-compress.js --preset 480p"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.0",

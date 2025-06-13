@@ -1,0 +1,107 @@
+@layer components {
+
+
+  /* Default video styling - no scaling, natural fit */
+  .hero-video {
+    @apply absolute inset-0 w-full h-full;
+    object-fit: contain;
+    object-position: center center;
+    background-color: black;
+  }
+
+  /* For screens narrower than 16:9, use cover to fill */
+  @media (max-aspect-ratio: 16/9) {
+    .hero-video {
+      object-fit: cover;
+      object-position: center center;
+    }
+  }
+
+  /* Mobile portrait specific video handling - scale down and show full video */
+  @media (max-width: 768px) and (orientation: portrait) {
+    .hero-video {
+      object-fit: contain;
+      object-position: center center;
+      height: 60vh; /* Scale down to 60% of viewport height */
+      width: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  /* For very small mobile screens - even more compact */
+  @media (max-width: 480px) and (orientation: portrait) {
+    .hero-video {
+      object-fit: cover;
+      object-position: center center;
+      height: 50vh; /* Scale down to 50% of viewport height */
+      width: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  /* Mobile landscape - use more screen width */
+  @media (max-width: 768px) and (orientation: landscape) {
+    .hero-video {
+      object-fit: cover;
+      object-position: center center;
+      height: 80vh;
+      width: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+
+
+  /* Ensure video container has black background */
+  .hero-video-container {
+    min-height: 50dvh;
+    @apply relative xl:min-h-screen w-full overflow-hidden bg-black sm:h-1/2;
+    
+  }
+
+  
+  /* Hero contact link */
+  .hero-contact-link {
+    @apply text-sm text-gray-300 hover:text-cliff-carmine-light transition-colors duration-300;
+    @apply focus:outline-none focus:ring-2 focus:ring-cliff-carmine-light rounded-lg px-2 py-1;
+    @apply relative;
+  }
+
+  .hero-contact-link::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-px bg-cliff-carmine-light;
+    transition: width 0.3s ease;
+  }
+
+  .hero-contact-link:hover::after {
+    @apply w-full;
+  }
+ /* Hero announcement box styling */
+ .hero-announcement-box {
+    @apply bg-gray-800 border-2 border-cliff-carmine;
+    @apply rounded-lg p-4 mb-6 max-w-md mx-auto;
+    @apply shadow-lg;
+  }
+
+  .hero-announcement-text {
+    @apply text-white text-center text-sm md:text-base;
+    @apply leading-relaxed;
+  }
+
+  .hero-announcement-date {
+    @apply text-cliff-carmine-bright font-bold;
+  }
+
+  .hero-announcement-highlight {
+    @apply text-cliff-carmine-light font-semibold;
+  }
+  
+
+  /* Video fallback for noscript */
+.video-fallback {
+    display: block !important;
+  }
+}

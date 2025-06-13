@@ -6,9 +6,9 @@
  * Usage: npm run video:compress <filename> [--preset web|mobile|720p|480p]
  */
 
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+import { execSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
 
 console.log('🎬 Video Compression Tool');
 console.log('=========================');
