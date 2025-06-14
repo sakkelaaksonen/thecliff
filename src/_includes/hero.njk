@@ -29,9 +29,9 @@
             </div>
 
             <!-- Content Section -->
-            <div class="relative h-screen w-full bg-black flex flex-col justify-center items-center text-center px-4">
-                <!-- Accessible overlay with proper contrast -->
-                <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80"
+            <div class="relative h-screen w-full bg-black bg-gradient-to-b bg-black from-black via-cliff-carmine-dark/50 to-cliff-carmine-dark flex flex-col items-center text-center px-4">
+                
+                <div class=" absolute inset-0"
                     aria-hidden="true"></div>
 
                 <!-- Navigation -->
@@ -46,13 +46,12 @@
                     </ul>
                 </nav>
                 <!-- Hero Content -->
-                <div class="relative z-10 flex flex-col justify-center items-center text-center">
-                    <h1 class="logo-heading mb-6">
-                        <span class="sr-only">{{ hero.heading }}</span>
-                    </h1>
-                    <p class="text-xl md:text-2xl text-white mb-8 max-w-2xl leading-relaxed">
+                <div class="relative h-3/6 z-10 flex flex-col justify-center items-center text-center">
+           
+                    <h1 class="text-xl md:text-2xl text-white mb-8 max-w-2xl leading-relaxed">
+                         <span class="sr-only">{{ hero.heading }}</span>
                         {{ hero.tagline }}
-                    </p>
+                    </h1>
                     
                     <!-- Hero Announcement Box -->
                     {# {% include "hero-announcement.njk" %} #}
@@ -69,7 +68,7 @@
                     </div> #}
 
                     <!-- Contact Link -->
-                    <div class="mt-8">
+                    <div class="">
                         <a 
                             href="{{ hero.contact.link }}" 
                             id="heroContactBtn"

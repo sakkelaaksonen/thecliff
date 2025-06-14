@@ -3,53 +3,18 @@
 
   /* Default video styling - no scaling, natural fit */
   .hero-video {
-    @apply absolute inset-0 w-full h-full;
-    object-fit: contain;
+    @apply inset-0 w-full h-full;
+    object-fit: cover;
     object-position: center center;
     background-color: black;
+    overflow: hidden;
   }
 
   /* For screens narrower than 16:9, use cover to fill */
   @media (max-aspect-ratio: 16/9) {
-    .hero-video {
-      object-fit: cover;
-      object-position: center center;
-    }
-  }
-
-  /* Mobile portrait specific video handling - scale down and show full video */
-  @media (max-width: 768px) and (orientation: portrait) {
-    .hero-video {
+    .hero-video1 {
       object-fit: contain;
       object-position: center center;
-      height: 60vh; /* Scale down to 60% of viewport height */
-      width: 100%;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-  }
-
-  /* For very small mobile screens - even more compact */
-  @media (max-width: 480px) and (orientation: portrait) {
-    .hero-video {
-      object-fit: cover;
-      object-position: center center;
-      height: 50vh; /* Scale down to 50% of viewport height */
-      width: 100%;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-  }
-
-  /* Mobile landscape - use more screen width */
-  @media (max-width: 768px) and (orientation: landscape) {
-    .hero-video {
-      object-fit: cover;
-      object-position: center center;
-      height: 80vh;
-      width: 100%;
-      top: 50%;
-      transform: translateY(-50%);
     }
   }
 
@@ -57,8 +22,8 @@
 
   /* Ensure video container has black background */
   .hero-video-container {
-    min-height: 50dvh;
-    @apply relative xl:min-h-screen w-full overflow-hidden bg-black sm:h-1/2;
+    min-height: 30dvh;
+    @apply relative xl:min-h-screen w-full overflow-hidden  bg-gradient-to-b  sm:h-1/2;
     
   }
 
