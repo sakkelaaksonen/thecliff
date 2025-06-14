@@ -98,7 +98,7 @@ function verifyDeploymentFiles() {
     const requiredFiles = [
         'htdocs/index.html',
         'htdocs/admin/index.html',
-        'htdocs/css/style.css'
+        'htdocs/css/main.css'
     ];
     
     for (const file of requiredFiles) {
